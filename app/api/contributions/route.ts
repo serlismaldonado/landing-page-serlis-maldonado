@@ -3,9 +3,47 @@ import { NextResponse } from "next/server";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const USERNAME = "serlismaldonado";
 
+interface GitHubContributionDay {
+  contributionCount: number;
+  date: string;
+}
+
+interface GitHubContributionWeek {
+  contributionDays: GitHubContributionDay[];
+}
+
+interface GitHubContributionCalendar {
+  totalContributions: number;
+  weeks: GitHubContributionWeek[];
+}
+
+interface GitHubContributionsCollection {
+  contributionCalendar: GitHubContributionCalendar;
+}
+
+interface GitHubUser {
+  contributionsCollection: GitHubContributionsCollection;
+}
+
+interface GitHubResponse {
+  data: {
+    user: GitHubUser;
+  };
+  errors?: Array<{ message: string }>;
+}
+
+interface ContributionDay {
+  date: string;
+  intensity: number;
+  count: number;
+}
+
 export async function GET() {
   if (!GITHUB_TOKEN) {
-    return NextResponse.json({ error: "GITHUB_TOKEN not configured" }, { status: 500 });
+    return NextResponse.json(
+      { error: "GITHUB_TOKEN not configured" },
+      { status: 500 },
+    );
   }
 
   const query = `
@@ -42,22 +80,37 @@ export async function GET() {
     const data = await response.json();
 
     if (data.errors) {
-      return NextResponse.json({ error: data.errors[0].message }, { status: 500 });
+      return NextResponse.json(
+        { error: data.errors[0].message },
+        { status: 500 },
+      );
     }
 
-    const weeks = data.data.user.contributionsCollection.contributionCalendar.weeks;
+    const weeks =
+      data.data.user.contributionsCollection.contributionCalendar.weeks;
 
     // Transform to our format
-    const contributions = weeks.flatMap((week: any) =>
-      week.contributionDays.map((day: any) => ({
+    const contributions = weeks.flatMap((week: GitHubContributionWeek) =>
+      week.contributionDays.map((day: GitHubContributionDay) => ({
         date: day.date,
-        intensity: day.contributionCount > 0 ? Math.min(4, Math.ceil(day.contributionCount / 3)) : 0,
+        intensity:
+          day.contributionCount > 0
+            ? Math.min(4, Math.ceil(day.contributionCount / 3))
+            : 0,
         count: day.contributionCount,
-      }))
+      })),
     );
 
-    return NextResponse.json({ contributions, total: data.data.user.contributionsCollection.contributionCalendar.totalContributions });
+    return NextResponse.json({
+      contributions,
+      total:
+        data.data.user.contributionsCollection.contributionCalendar
+          .totalContributions,
+    });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch contributions" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch contributions" },
+      { status: 500 },
+    );
   }
 }

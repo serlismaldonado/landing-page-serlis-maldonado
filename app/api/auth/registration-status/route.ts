@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     // Get the ALLOW_PUBLIC_USER environment variable
-    const allowPublicUser = process.env.ALLOW_PUBLIC_USER === "true";
+    const allowPublicUser = process.env.ALLOW_PUBLIC_USER;
 
     // Also check if registration is enabled in Convex auth config
     // This is a fallback check
@@ -23,9 +23,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response, {
       status: 200,
       headers: {
-        'Cache-Control': 'no-store, max-age=0',
-        'CDN-Cache-Control': 'no-store',
-        'Vary': 'Authorization',
+        "Cache-Control": "no-store, max-age=0",
+        "CDN-Cache-Control": "no-store",
+        Vary: "Authorization",
       },
     });
   } catch (error) {
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
         allowPublicUser: false,
         registrationEnabled: false,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

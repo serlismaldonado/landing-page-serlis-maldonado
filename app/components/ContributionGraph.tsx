@@ -44,12 +44,12 @@ export default function ContributionGraph() {
     fetchContributions();
   }, []);
 
-  // Generate weeks with correct month labels (last 53 weeks to fill container)
+  // Generate weeks with correct month labels (last 40 weeks to fit max-w-xl)
   const { weeks, monthLabels } = useMemo(() => {
-    const weeksData = Array.from({ length: 53 }, (_, weekIndex) => {
+    const weeksData = Array.from({ length: 40 }, (_, weekIndex) => {
       return Array.from({ length: 7 }, (_, dayIndex) => {
         const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() - (52 - weekIndex) * 7 - (6 - dayIndex));
+        targetDate.setDate(targetDate.getDate() - (39 - weekIndex) * 7 - (6 - dayIndex));
         const contribution = contributions.find((c) => {
           const contribDate = new Date(c.date);
           return contribDate.toDateString() === targetDate.toDateString();
@@ -83,7 +83,7 @@ export default function ContributionGraph() {
   if (loading) {
     return (
       <section className="py-8 px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-xl mx-auto">
           {/* Header skeleton */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
             <div className="h-6 w-40 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
@@ -106,7 +106,7 @@ export default function ContributionGraph() {
                 ))}
               </div>
               <div className="flex gap-1">
-                {Array.from({ length: 53 }).map((_, weekIndex) => (
+                {Array.from({ length: 40 }).map((_, weekIndex) => (
                   <div key={weekIndex} className="flex flex-col gap-1">
                     {Array.from({ length: 7 }).map((_, dayIndex) => (
                       <div key={dayIndex} className="w-3 h-3 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
@@ -123,7 +123,7 @@ export default function ContributionGraph() {
 
   return (
     <section className="py-8 px-4">
-      <div className="max-w-5xl mx-auto" ref={containerRef}>
+      <div className="max-w-xl mx-auto" ref={containerRef}>
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
           <h2 className="font-mono text-lg font-bold text-zinc-900 dark:text-white">
@@ -151,9 +151,9 @@ export default function ContributionGraph() {
               </div>
 
               {/* Weeks grid */}
-              <div className="flex gap-1">
+              <div className="flex gap-0.5">
                 {weeks.map((week, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col gap-1">
+                  <div key={weekIndex} className="flex flex-col gap-0.5">
                     {week.map((cell, dayIndex) => {
                       const colorClass = intensityColors[cell.intensity as keyof typeof intensityColors];
                       const isHovered = tooltipData?.date.toDateString() === cell.date.toDateString();
@@ -161,7 +161,7 @@ export default function ContributionGraph() {
                       return (
                         <div
                           key={dayIndex}
-                          className={`w-3 h-3 rounded-sm transition-all duration-150 ${
+                          className={`w-2.5 h-2.5 rounded-sm transition-all duration-150 ${
                             colorClass
                           } ${cell.intensity > 0 ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
                             isHovered ? "scale-125" : ""
@@ -178,7 +178,7 @@ export default function ContributionGraph() {
           </div>
 
           {/* Month labels */}
-          <div className="flex gap-1 ml-9 mt-2 relative">
+          <div className="flex gap-0.5 ml-9 mt-2 relative">
             {monthLabels.map(({ month, index }) => (
               <span
                 key={`${month}-${index}`}

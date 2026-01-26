@@ -67,11 +67,18 @@ export default function AuthPage() {
     setLoading(true);
     setError("");
 
+    // Validate name field for registration
+    if (isRegistering && (!name || name.trim().length === 0)) {
+      setLoading(false);
+      setError("Name is required for registration");
+      return;
+    }
+
     try {
       const result = await authClient.signUp.email({
         email,
         password,
-        name: name || "",
+        name: name.trim(),
       });
 
       if (result.error) {
@@ -175,6 +182,23 @@ export default function AuthPage() {
               required
             />
           </div>
+
+          {isRegistering && (
+            <div className="mb-4">
+              <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
+                Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Your Name"
+                required
+                minLength={1}
+              />
+            </div>
+          )}
 
           <div className="mb-6">
             <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">

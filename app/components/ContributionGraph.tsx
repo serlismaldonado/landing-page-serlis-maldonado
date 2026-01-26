@@ -118,7 +118,7 @@ export default function ContributionGraph() {
                           className={`w-3 h-3 rounded-sm transition-all duration-150 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
                             colorClass
                           } ${cell.project ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
-                            isHovered ? "scale-125 ring-1 ring-zinc-400" : ""
+                            isHovered ? "scale-125" : ""
                           }`}
                           onMouseEnter={(e) => handleMouseEnter(cell.project, e)}
                           onMouseLeave={handleMouseLeave}

@@ -279,19 +279,19 @@ export default function ContributionGraph() {
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Month labels */}
-          <div className="flex gap-1 ml-9 mt-2 relative">
-            {monthLabels.map(({ month, index }) => (
-              <span
-                key={`${month}-${index}`}
-                className="font-mono text-[10px] text-zinc-400 absolute"
-                style={{ left: `${index * 14 + 3}px` }}
-              >
-                {month}
-              </span>
-            ))}
+            {/* Month labels - now inside scrollable container */}
+            <div className="flex gap-1 ml-9 mt-2 relative min-w-fit">
+              {monthLabels.map(({ month, index }) => (
+                <span
+                  key={`${month}-${index}`}
+                  className="font-mono text-[10px] text-zinc-400 absolute"
+                  style={{ left: `${index * 14 + 3}px` }}
+                >
+                  {month}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 

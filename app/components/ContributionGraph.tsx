@@ -185,11 +185,11 @@ export default function ContributionGraph() {
               </div>
               <div className="flex gap-1">
                 {Array.from({ length: 52 }).map((_, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col gap-1">
+                  <div key={weekIndex} className="flex flex-col gap-0.5">
                     {Array.from({ length: 7 }).map((_, dayIndex) => (
                       <div
                         key={dayIndex}
-                        className="w-3 h-3 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse"
+                        className="w-2.5 h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse"
                       />
                     ))}
                   </div>
@@ -227,8 +227,8 @@ export default function ContributionGraph() {
 
         {/* Graph container */}
         <div className="bg-white dark:bg-zinc-900 rounded-lg p-3 border border-zinc-200 dark:border-zinc-800">
-          <div className="overflow-x-auto">
-            <div className="flex gap-1.5 min-w-fit">
+          <div className="overflow-x-auto overflow-y-hidden">
+            <div className="flex gap-1 min-w-fit">
               {/* Day labels */}
               <div className="flex flex-col justify-between py-0.5 pr-2 text-[10px] text-zinc-400 font-mono">
                 {days.map((day, index) => (
@@ -244,7 +244,7 @@ export default function ContributionGraph() {
               {/* Weeks grid */}
               <div className="flex gap-1">
                 {weeks.map((week, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col gap-1">
+                  <div key={weekIndex} className="flex flex-col gap-0.5">
                     {week.map((cell, dayIndex) => {
                       const colorClass =
                         intensityColors[
@@ -257,7 +257,7 @@ export default function ContributionGraph() {
                       return (
                         <div
                           key={dayIndex}
-                          className={`w-3 h-3 rounded-sm transition-all duration-150 ${
+                          className={`w-2.5 h-2.5 rounded-sm transition-all duration-150 ${
                             colorClass
                           } ${cell.intensity > 0 ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
                             isHovered ? "scale-125" : ""
@@ -281,16 +281,24 @@ export default function ContributionGraph() {
             </div>
 
             {/* Month labels - now inside scrollable container */}
-            <div className="flex gap-1 ml-9 mt-2 relative min-w-fit">
-              {monthLabels.map(({ month, index }) => (
-                <span
-                  key={`${month}-${index}`}
-                  className="font-mono text-[10px] text-zinc-400 absolute"
-                  style={{ left: `${index * 14 + 3}px` }}
-                >
-                  {month}
-                </span>
-              ))}
+            <div className="flex ml-9 mt-2 min-w-fit">
+              {Array.from({ length: 52 }).map((_, weekIndex) => {
+                const monthLabel = monthLabels.find(
+                  (m) => m.index === weekIndex,
+                );
+                return (
+                  <div
+                    key={weekIndex}
+                    className="flex flex-col gap-0.5 w-[14px]"
+                  >
+                    {monthLabel && (
+                      <span className="font-mono text-[10px] text-zinc-400 h-3">
+                        {monthLabel.month}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Github, Linkedin, Mail } from "lucide-react";
 import SearchGrid from "./components/SearchGrid";
+import ContributionGraph from "./components/ContributionGraph";
 
 export default function Home() {
   return (
@@ -63,6 +64,7 @@ export default function Home() {
       </main>
 
       <SearchGrid />
+      <ContributionGraph />
     </div>
   );
 }

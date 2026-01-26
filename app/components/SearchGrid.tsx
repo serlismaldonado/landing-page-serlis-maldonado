@@ -42,7 +42,7 @@ const items = [
   },
 ];
 
-const categories = [
+const categories: { key: "all" | "proyecto" | "blog"; label: string }[] = [
   { key: "all", label: "All" },
   { key: "proyecto", label: "Projects" },
   { key: "blog", label: "Blog" },

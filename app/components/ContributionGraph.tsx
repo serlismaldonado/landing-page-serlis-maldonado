@@ -146,7 +146,7 @@ export default function ContributionGraph() {
         {hoveredProject && (
           <div
             className="fixed z-50 p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 pointer-events-none"
-            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y + 15, maxWidth: "260px" }}
+            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y - 100, maxWidth: "260px" }}
           >
             <div className="flex items-start justify-between mb-1.5">
               <div>

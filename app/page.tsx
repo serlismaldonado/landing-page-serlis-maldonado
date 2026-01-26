@@ -25,14 +25,17 @@ export default function Home() {
         {/* ASCII Art Style Title */}
         <div className="text-center max-w-2xl mb-6">
           <h1 className="font-mono text-2xl sm:text-3xl text-zinc-900 dark:text-white tracking-tight">
-            serlis@dev:~$ <span className="text-blue-600 dark:text-blue-400">SM</span>
+            serlis@dev:~${" "}
+            <span className="text-blue-600 dark:text-blue-400">SM</span>
           </h1>
         </div>
 
         {/* Subtitle */}
         <div className="text-center max-w-lg mb-8">
           <p className="font-mono text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-            Gracias por visitar mi sitio web, si estás aquí es porque seguro necesitas ayuda con tech, AI, o Sistemas. Estás en el lugar correcto.
+            Gracias por visitar mi sitio web, si estás aquí es porque seguro
+            necesitas ayuda con tech, AI, o Sistemas. Estás en el lugar
+            correcto.
           </p>
         </div>
 

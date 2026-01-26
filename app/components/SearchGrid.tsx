@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Copy, Check, Code, FileText } from "lucide-react";
@@ -27,14 +27,16 @@ export default function SearchGrid() {
   const [copied, setCopied] = useState(false);
 
   // Fetch projects from Convex
-  const projects = useQuery(api.convex.projects.getAllProjects);
+  const projects = useQuery(api.projects.queries.getAllProjects);
 
   const filteredItems = useMemo(() => {
     if (!projects) return [];
     return projects.filter((item: Project) => {
       const matchesQuery =
         item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase()));
+        item.tags.some((tag) =>
+          tag.toLowerCase().includes(query.toLowerCase()),
+        );
       const matchesFilter = filter === "all" || item.category === filter;
       return matchesQuery && matchesFilter;
     });
@@ -63,7 +65,11 @@ export default function SearchGrid() {
             $ npx skills add --serlis
           </span>
           <span className="ml-auto text-zinc-400 dark:text-zinc-500">
-            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors" />}
+            {copied ? (
+              <Check className="w-4 h-4 text-green-500" />
+            ) : (
+              <Copy className="w-4 h-4 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors" />
+            )}
           </span>
         </button>
       </div>
@@ -106,7 +112,13 @@ export default function SearchGrid() {
           {filteredItems.map((item: Project) => (
             <a
               key={item._id}
-              href={item.url && item.url !== "#" ? (item.url.startsWith("http") ? item.url : `https://${item.url}`) : "#"}
+              href={
+                item.url && item.url !== "#"
+                  ? item.url.startsWith("http")
+                    ? item.url
+                    : `https://${item.url}`
+                  : "#"
+              }
               target={item.url && item.url !== "#" ? "_blank" : "_self"}
               rel="noopener noreferrer"
               className="group flex items-start gap-3 py-3 px-3 -mx-3 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"

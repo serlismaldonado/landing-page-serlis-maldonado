@@ -41,11 +41,11 @@ export default function AdminPage() {
     visibility: "public" as "public" | "private",
   });
 
-  const projects = useQuery(api.convex.projects.getAllProjectsAdmin);
-  const createProject = useMutation(api.convex.projects.createProject);
-  const updateProject = useMutation(api.convex.projects.updateProject);
-  const deleteProject = useMutation(api.convex.projects.deleteProject);
-  const toggleVisibility = useMutation(api.convex.projects.toggleVisibility);
+  const projects = useQuery(api.projects.queries.getAllProjectsAdmin);
+  const createProject = useMutation(api.projects.mutations.createProject);
+  const updateProject = useMutation(api.projects.mutations.updateProject);
+  const deleteProject = useMutation(api.projects.mutations.deleteProject);
+  const toggleVisibility = useMutation(api.projects.mutations.toggleVisibility);
 
   useEffect(() => {
     checkAuth();

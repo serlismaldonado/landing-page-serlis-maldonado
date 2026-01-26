@@ -227,8 +227,8 @@ export default function ContributionGraph() {
                           ref={(el) => { cellRefs.current[weekIndex] ||= []; cellRefs.current[weekIndex][dayIndex] = el; }}
                           className={`w-4 h-4 rounded-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                             colorClass
-                          } ${cell.project ? "cursor-pointer hover:scale-110 hover:ring-2 hover:ring-zinc-300 dark:hover:ring-zinc-600" : "cursor-default"} ${
-                            isHovered ? "ring-2 ring-zinc-500 dark:ring-zinc-400 scale-110" : ""
+                          } ${cell.project ? "cursor-pointer hover:scale-110" : "cursor-default"} ${
+                            isHovered ? "scale-110" : ""
                           }`}
                           onMouseEnter={(e) => handleMouseEnter(cell.project, e)}
                           onMouseLeave={handleMouseLeave}

@@ -2,7 +2,20 @@
 
 import { useState, useRef, useEffect, useMemo } from "react";
 
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 const days = ["Mon", "", "Wed", "", "Fri", "", "Sun"];
 
 const intensityColors = {
@@ -22,7 +35,11 @@ interface ContributionDay {
 export default function ContributionGraph() {
   const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tooltipData, setTooltipData] = useState<{ date: Date; intensity: number; count: number } | null>(null);
+  const [tooltipData, setTooltipData] = useState<{
+    date: Date;
+    intensity: number;
+    count: number;
+  } | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,15 +63,29 @@ export default function ContributionGraph() {
 
   // Generate weeks with correct month labels (52 weeks to fit max-w-4xl)
   const { weeks, monthLabels } = useMemo(() => {
+    const today = new Date();
     const weeksData = Array.from({ length: 52 }, (_, weekIndex) => {
       return Array.from({ length: 7 }, (_, dayIndex) => {
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() - (51 - weekIndex) * 7 - (6 - dayIndex));
+        const targetDate = new Date(today);
+        // Calculate date: start from today and go backwards
+        // weekIndex 51 = most recent week (including today), weekIndex 0 = 51 weeks ago
+        // dayIndex 0 = Monday, dayIndex 6 = Sunday
+        // We want the most recent cell (weekIndex=51, dayIndex=0) to be today
+        const daysOffset = (51 - weekIndex) * 7 + dayIndex;
+        targetDate.setDate(targetDate.getDate() - daysOffset);
+
         const contribution = contributions.find((c) => {
           const contribDate = new Date(c.date);
-          return contribDate.toDateString() === targetDate.toDateString();
+          // Compare dates ignoring time and timezone
+          const contribDateStr = contribDate.toISOString().split("T")[0];
+          const targetDateStr = targetDate.toISOString().split("T")[0];
+          return contribDateStr === targetDateStr;
         });
-        return { date: targetDate, intensity: contribution?.intensity || 0, count: contribution?.count || 0 };
+        return {
+          date: targetDate,
+          intensity: contribution?.intensity || 0,
+          count: contribution?.count || 0,
+        };
       });
     });
 
@@ -73,7 +104,12 @@ export default function ContributionGraph() {
   // Calculate statistics
   const totalContributions = contributions.reduce((sum, c) => sum + c.count, 0);
 
-  const handleMouseEnter = (date: Date, intensity: number, count: number, e: React.MouseEvent) => {
+  const handleMouseEnter = (
+    date: Date,
+    intensity: number,
+    count: number,
+    e: React.MouseEvent,
+  ) => {
     setTooltipPosition({ x: e.clientX, y: e.clientY });
     setTooltipData({ date, intensity, count });
   };
@@ -91,7 +127,10 @@ export default function ContributionGraph() {
               <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
               <div className="flex gap-1">
                 {[0, 1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-2.5 h-2.5 rounded-sm bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
+                  <div
+                    key={i}
+                    className="w-2.5 h-2.5 rounded-sm bg-zinc-200 dark:bg-zinc-800 animate-pulse"
+                  />
                 ))}
               </div>
             </div>
@@ -102,14 +141,20 @@ export default function ContributionGraph() {
             <div className="flex gap-1.5 min-w-fit">
               <div className="flex flex-col justify-between py-0.5 pr-2">
                 {days.map((_, i) => (
-                  <div key={i} className="h-3 w-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
+                  <div
+                    key={i}
+                    className="h-3 w-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse"
+                  />
                 ))}
               </div>
               <div className="flex gap-1">
                 {Array.from({ length: 52 }).map((_, weekIndex) => (
                   <div key={weekIndex} className="flex flex-col gap-1">
                     {Array.from({ length: 7 }).map((_, dayIndex) => (
-                      <div key={dayIndex} className="w-3 h-3 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
+                      <div
+                        key={dayIndex}
+                        className="w-3 h-3 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse"
+                      />
                     ))}
                   </div>
                 ))}
@@ -130,10 +175,15 @@ export default function ContributionGraph() {
             Contribution Graph
           </h2>
           <div className="flex items-center gap-4 text-xs text-zinc-500">
-            <span className="font-mono">{totalContributions} contributions</span>
+            <span className="font-mono">
+              {totalContributions} contributions
+            </span>
             <div className="flex items-center gap-1">
               {[0, 1, 2, 3, 4].map((level) => (
-                <div key={level} className={`w-2.5 h-2.5 rounded-sm ${intensityColors[level as keyof typeof intensityColors]}`} />
+                <div
+                  key={level}
+                  className={`w-2.5 h-2.5 rounded-sm ${intensityColors[level as keyof typeof intensityColors]}`}
+                />
               ))}
             </div>
           </div>
@@ -146,7 +196,12 @@ export default function ContributionGraph() {
               {/* Day labels */}
               <div className="flex flex-col justify-between py-0.5 pr-2 text-[10px] text-zinc-400 font-mono">
                 {days.map((day, index) => (
-                  <span key={index} className="h-3 flex items-center justify-end">{day}</span>
+                  <span
+                    key={index}
+                    className="h-3 flex items-center justify-end"
+                  >
+                    {day}
+                  </span>
                 ))}
               </div>
 
@@ -155,8 +210,13 @@ export default function ContributionGraph() {
                 {weeks.map((week, weekIndex) => (
                   <div key={weekIndex} className="flex flex-col gap-1">
                     {week.map((cell, dayIndex) => {
-                      const colorClass = intensityColors[cell.intensity as keyof typeof intensityColors];
-                      const isHovered = tooltipData?.date.toDateString() === cell.date.toDateString();
+                      const colorClass =
+                        intensityColors[
+                          cell.intensity as keyof typeof intensityColors
+                        ];
+                      const isHovered =
+                        tooltipData?.date.toDateString() ===
+                        cell.date.toDateString();
 
                       return (
                         <div
@@ -166,7 +226,15 @@ export default function ContributionGraph() {
                           } ${cell.intensity > 0 ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
                             isHovered ? "scale-125" : ""
                           }`}
-                          onMouseEnter={(e) => cell.intensity > 0 && handleMouseEnter(cell.date, cell.intensity, cell.count, e)}
+                          onMouseEnter={(e) =>
+                            cell.intensity > 0 &&
+                            handleMouseEnter(
+                              cell.date,
+                              cell.intensity,
+                              cell.count,
+                              e,
+                            )
+                          }
                           onMouseLeave={handleMouseLeave}
                         />
                       );
@@ -195,13 +263,21 @@ export default function ContributionGraph() {
         {tooltipData && (
           <div
             className="fixed z-50 p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 pointer-events-none"
-            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y - 100, maxWidth: "200px" }}
+            style={{
+              left: tooltipPosition.x + 15,
+              top: tooltipPosition.y - 100,
+              maxWidth: "200px",
+            }}
           >
             <div className="font-mono text-sm font-bold text-zinc-900 dark:text-white">
               {tooltipData.count} contributions
             </div>
             <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-              {tooltipData.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+              {tooltipData.date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </div>
           </div>
         )}

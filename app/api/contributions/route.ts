@@ -12,32 +12,6 @@ interface GitHubContributionWeek {
   contributionDays: GitHubContributionDay[];
 }
 
-interface GitHubContributionCalendar {
-  totalContributions: number;
-  weeks: GitHubContributionWeek[];
-}
-
-interface GitHubContributionsCollection {
-  contributionCalendar: GitHubContributionCalendar;
-}
-
-interface GitHubUser {
-  contributionsCollection: GitHubContributionsCollection;
-}
-
-interface GitHubResponse {
-  data: {
-    user: GitHubUser;
-  };
-  errors?: Array<{ message: string }>;
-}
-
-interface ContributionDay {
-  date: string;
-  intensity: number;
-  count: number;
-}
-
 export async function GET() {
   if (!GITHUB_TOKEN) {
     return NextResponse.json(

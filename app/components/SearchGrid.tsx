@@ -12,7 +12,7 @@ interface Project {
   url?: string;
   category: "proyecto" | "blog";
   tags: string[];
-  visibility: "public" | "private";
+  visibility?: "public" | "private";
 }
 
 const categories: { key: "all" | "proyecto" | "blog"; label: string }[] = [
@@ -31,7 +31,7 @@ export default function SearchGrid() {
 
   const filteredItems = useMemo(() => {
     if (!projects) return [];
-    return projects.filter((item: Project) => {
+    return projects.filter((item) => {
       const matchesQuery =
         item.title.toLowerCase().includes(query.toLowerCase()) ||
         item.tags.some((tag) =>

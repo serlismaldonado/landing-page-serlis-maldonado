@@ -10,12 +10,12 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center py-20 px-6 sm:py-24">
         {/* Profile Image */}
         <div className="relative mb-6">
-          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-zinc-200 dark:border-zinc-800">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden border-2 border-zinc-200 dark:border-zinc-800 transition-all hover:scale-105 hover:border-zinc-300 dark:hover:border-zinc-700">
             <Image
               src="/profile.jpg"
               alt="Serlis Maldonado"
-              width={160}
-              height={160}
+              width={100}
+              height={100}
               className="object-cover w-full h-full"
               priority
             />

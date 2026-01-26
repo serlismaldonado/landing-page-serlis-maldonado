@@ -14,9 +14,9 @@ import {
   Edit2,
   LogOut,
   ExternalLink,
-  X,
 } from "lucide-react";
 import { Loader2 } from "lucide-react";
+import ProjectFormModal from "@/app/components/projects/ProjectFormModal";
 
 interface Project {
   _id: Id<"projects">;
@@ -238,210 +238,18 @@ export default function AdminPage() {
         </div>
 
         {/* Modal para formulario */}
-        {showForm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-            <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-mono text-lg font-bold text-zinc-900 dark:text-white">
-                    {editingProject ? "Edit Project" : "New Project"}
-                  </h2>
-                  <button
-                    onClick={() => {
-                      setShowForm(false);
-                      setEditingProject(null);
-                      resetForm();
-                    }}
-                    className="p-1 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors rounded"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                        Title *
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.title}
-                        onChange={(e) =>
-                          setFormData({ ...formData, title: e.target.value })
-                        }
-                        className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                        URL
-                      </label>
-                      <input
-                        type="url"
-                        value={formData.url}
-                        onChange={(e) =>
-                          setFormData({ ...formData, url: e.target.value })
-                        }
-                        className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="https://github.com/..."
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                        Category *
-                      </label>
-                      <select
-                        value={formData.category}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            category: e.target.value as "proyecto" | "blog",
-                          })
-                        }
-                        className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      >
-                        <option value="proyecto">Proyecto</option>
-                        <option value="blog">Blog</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                        Tags (comma separated)
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.tags}
-                        onChange={(e) =>
-                          setFormData({ ...formData, tags: e.target.value })
-                        }
-                        className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="React, TypeScript, Node.js"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                        Date (YYYY-MM-DD)
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) =>
-                          setFormData({ ...formData, date: e.target.value })
-                        }
-                        className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                        Intensity (0-4)
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="4"
-                        value={formData.intensity}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            intensity: parseFloat(e.target.value),
-                          })
-                        }
-                        className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                      Description
-                    </label>
-                    <textarea
-                      value={formData.description}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          description: e.target.value,
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                      Visibility
-                    </label>
-                    <div className="flex gap-4">
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          value="public"
-                          checked={formData.visibility === "public"}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              visibility: e.target.value as
-                                | "public"
-                                | "private",
-                            })
-                          }
-                          className="text-blue-500"
-                        />
-                        <span className="font-mono text-sm">Public</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          value="private"
-                          checked={formData.visibility === "private"}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              visibility: e.target.value as
-                                | "public"
-                                | "private",
-                            })
-                          }
-                          className="text-blue-500"
-                        />
-                        <span className="font-mono text-sm">Private</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowForm(false);
-                        setEditingProject(null);
-                        resetForm();
-                      }}
-                      className="px-4 py-2 font-mono text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
-                    >
-                      {editingProject ? "Update Project" : "Create Project"}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        )}
+        <ProjectFormModal
+          isOpen={showForm}
+          editingProject={editingProject}
+          formData={formData}
+          onClose={() => {
+            setShowForm(false);
+            setEditingProject(null);
+          }}
+          onSubmit={handleSubmit}
+          onFormDataChange={(data) => setFormData({ ...formData, ...data })}
+          onResetForm={resetForm}
+        />
 
         {/* Projects List */}
         {projects === undefined ? (

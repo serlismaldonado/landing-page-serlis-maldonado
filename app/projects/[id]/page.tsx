@@ -66,9 +66,6 @@ export default function ProjectDetailPage() {
               <h1 className="font-mono text-3xl font-bold text-zinc-900 dark:text-white mb-2">
                 {project.title}
               </h1>
-              <p className="font-mono text-lg text-zinc-600 dark:text-zinc-400">
-                {project.description}
-              </p>
             </div>
 
             <div className="flex items-center gap-3">

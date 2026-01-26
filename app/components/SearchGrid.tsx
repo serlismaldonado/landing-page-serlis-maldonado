@@ -98,7 +98,7 @@ export default function SearchGrid() {
               href={`https://${item.url}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-start gap-3 py-3 px-3 -mx-3 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className="group flex items-start gap-3 py-3 px-3 -mx-3 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
             >
               {/* Icon */}
               <div className="mt-0.5">

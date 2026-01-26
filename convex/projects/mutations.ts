@@ -1,6 +1,7 @@
 import { mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { validatorProject } from "./index";
+import { requireAuth } from "./queries";
 
 // Create a new project
 export const createProject = mutation({
@@ -107,11 +108,45 @@ export const toggleVisibility = mutation({
       throw new Error("Project not found");
     }
 
-    const newVisibility = project.visibility === "public" ? "private" : "public";
+    const newVisibility =
+      project.visibility === "public" ? "private" : "public";
     await ctx.db.patch(args.id, {
       visibility: newVisibility,
       updatedAt: Date.now(),
     });
     return newVisibility;
+  },
+});
+
+export const deleteProjectAdmin = mutation({
+  args: { id: v.id("projects") },
+  handler: async (ctx, args) => {
+    await requireAuth(ctx);
+    const project = await ctx.db.get(args.id);
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    if (project.imageId) {
+      await ctx.storage.delete(project.imageId);
+    }
+
+    await ctx.db.delete(args.id);
+    return { success: true };
+  },
+});
+
+export const bulkDeleteProjects = mutation({
+  args: { ids: v.array(v.id("projects")) },
+  handler: async (ctx, args) => {
+    await requireAuth(ctx);
+    for (const id of args.ids) {
+      const project = await ctx.db.get(id);
+      if (project?.imageId) {
+        await ctx.storage.delete(project.imageId);
+      }
+      await ctx.db.delete(id);
+    }
+    return { success: true, count: args.ids.length };
   },
 });

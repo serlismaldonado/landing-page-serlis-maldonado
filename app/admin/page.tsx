@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useConvex, useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Eye, EyeOff, Edit2, LogOut, ExternalLink } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface Project {
   _id: string;
@@ -22,7 +23,6 @@ interface Project {
 }
 
 export default function AdminPage() {
-  const convex = useConvex();
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -145,7 +145,7 @@ export default function AdminPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center">
-        <div className="font-mono text-zinc-500">Loading...</div>
+        <Loader2 className="w-6 h-6 animate-spin text-zinc-500" />
       </div>
     );
   }
@@ -372,7 +372,7 @@ export default function AdminPage() {
         {/* Projects List */}
         {projects === undefined ? (
           <div className="text-center py-12">
-            <div className="font-mono text-zinc-500">Loading projects...</div>
+            <Loader2 className="w-6 h-6 animate-spin text-zinc-500 mx-auto" />
           </div>
         ) : projects.length === 0 ? (
           <div className="text-center py-12">

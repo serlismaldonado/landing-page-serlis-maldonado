@@ -3,9 +3,9 @@ import { ClientAuthBoundary } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-export default async function AuthLayout({ children }: PropsWithChildren) {
-  if (await isAuthenticated()) {
-    redirect("/admin");
+export default async function AdminLayout({ children }: PropsWithChildren) {
+  if (!(await isAuthenticated())) {
+    redirect("/(auth)");
   }
   return <ClientAuthBoundary>{children}</ClientAuthBoundary>;
 }

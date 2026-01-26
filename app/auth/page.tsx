@@ -139,11 +139,7 @@ export default function AuthPage() {
             className="w-full py-2 px-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading
-              ? "Loading..."
-              : isSignUp
-              ? "Create Account"
-              : "Sign In"}
+            {loading ? "Loading..." : isSignUp ? "Create Account" : "Sign In"}
           </button>
         </form>
 

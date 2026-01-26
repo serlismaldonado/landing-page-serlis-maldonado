@@ -1,6 +1,10 @@
-import { query } from "../_generated/server";
+import { query } from "../../_generated/server";
 import { v } from "convex/values";
 import { projects } from "./index";
+
+// ============================================
+// PUBLIC QUERIES (No requieren autenticación)
+// ============================================
 
 // Get all public projects
 export const getAllProjects = query({
@@ -25,7 +29,7 @@ export const getProjectsByCategory = query({
   },
 });
 
-// Get single project by ID
+// Get single project by ID (puede ver proyectos privados si está autenticado)
 export const getProject = query({
   args: { id: v.id("projects") },
   handler: async (ctx, args) => {
@@ -63,7 +67,7 @@ export const getProjectsWithImages = query({
   },
 });
 
-// Search projects
+// Search projects (público)
 export const searchProjects = query({
   args: {
     search: v.string(),

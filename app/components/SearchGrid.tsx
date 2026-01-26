@@ -1,16 +1,19 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { Copy, Check, Code, FileText } from "lucide-react";
 
-const items = [
-  { title: "ERP Heskala", category: "proyecto", tags: ["React", "Node.js", "TypeScript"], url: "github.com/serlismaldonado/heskala-erp" },
-  { title: "Clawdbot", category: "proyecto", tags: ["TypeScript", "Docker"], url: "github.com/serlismaldonado/clawdbot" },
-  { title: "Landing Page", category: "proyecto", tags: ["Next.js", "Tailwind"], url: "serlis.dev" },
-  { title: "TanStack Router", category: "blog", tags: ["React", "Tutorial"], url: "blog/migracion-tanstack-router" },
-  { title: "n8n Automations", category: "blog", tags: ["Automation"], url: "blog/n8n-workflows" },
-  { title: "Docker Guide", category: "blog", tags: ["Docker", "DevOps"], url: "blog/docker-developers" },
-];
+interface Project {
+  _id: string;
+  title: string;
+  description?: string;
+  url?: string;
+  category: "proyecto" | "blog";
+  tags: string[];
+  visibility: "public" | "private";
+}
 
 const categories: { key: "all" | "proyecto" | "blog"; label: string }[] = [
   { key: "all", label: "All" },
@@ -23,15 +26,19 @@ export default function SearchGrid() {
   const [filter, setFilter] = useState<"all" | "proyecto" | "blog">("all");
   const [copied, setCopied] = useState(false);
 
+  // Fetch projects from Convex
+  const projects = useQuery(api.convex.projects.getAllProjects);
+
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
+    if (!projects) return [];
+    return projects.filter((item: Project) => {
       const matchesQuery =
         item.title.toLowerCase().includes(query.toLowerCase()) ||
         item.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase()));
       const matchesFilter = filter === "all" || item.category === filter;
       return matchesQuery && matchesFilter;
     });
-  }, [query, filter]);
+  }, [projects, query, filter]);
 
   const copyCommand = () => {
     navigator.clipboard.writeText("npx skills add --serlis");
@@ -42,7 +49,7 @@ export default function SearchGrid() {
   return (
     <section className="py-12 px-6">
       {/* Install Title */}
-      <p className="max-w-xl mx-auto mb-3 font-mono text-xs text-zinc-400 uppercase tracking-wider">
+      <p className="max-w-3xl mx-auto mb-3 font-mono text-xs text-zinc-400 uppercase tracking-wider">
         Install in one command
       </p>
 
@@ -90,13 +97,17 @@ export default function SearchGrid() {
       </div>
 
       {/* Table-like Grid */}
-      {filteredItems.length > 0 ? (
+      {!projects ? (
+        <div className="text-center py-12">
+          <div className="font-mono text-zinc-400">Loading projects...</div>
+        </div>
+      ) : filteredItems.length > 0 ? (
         <div className="max-w-4xl mx-auto">
-          {filteredItems.map((item) => (
+          {filteredItems.map((item: Project) => (
             <a
-              key={item.title}
-              href={`https://${item.url}`}
-              target="_blank"
+              key={item._id}
+              href={item.url && item.url !== "#" ? (item.url.startsWith("http") ? item.url : `https://${item.url}`) : "#"}
+              target={item.url && item.url !== "#" ? "_blank" : "_self"}
               rel="noopener noreferrer"
               className="group flex items-start gap-3 py-3 px-3 -mx-3 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
             >

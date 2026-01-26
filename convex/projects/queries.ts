@@ -1,4 +1,4 @@
-import { query, mutation } from "../../_generated/server";
+import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { authComponent } from "../auth";
 
@@ -10,18 +10,6 @@ async function requireAuth(ctx: any) {
   const user = await authComponent.getAuthUser(ctx);
   if (!user) {
     throw new Error("Unauthorized: Authentication required");
-  }
-  return user;
-}
-
-async function requireSuperAdmin(ctx: any) {
-  const user = await authComponent.getAuthUser(ctx);
-  if (!user) {
-    throw new Error("Unauthorized: Authentication required");
-  }
-  // Ajustar según el campo que use Better Auth para roles
-  if (user.role !== "super_admin" && user.isSuperAdmin !== true) {
-    throw new Error("Forbidden: Super admin required");
   }
   return user;
 }
@@ -304,7 +292,8 @@ export const toggleVisibility = mutation({
       throw new Error("Project not found");
     }
 
-    const newVisibility = project.visibility === "public" ? "private" : "public";
+    const newVisibility =
+      project.visibility === "public" ? "private" : "public";
     await ctx.db.patch(args.id, {
       visibility: newVisibility,
       updatedAt: Date.now(),
@@ -320,7 +309,7 @@ export const toggleVisibility = mutation({
 export const deleteProjectAdmin = mutation({
   args: { id: v.id("projects") },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.id);
     if (!project) {
       throw new Error("Project not found");
@@ -338,7 +327,7 @@ export const deleteProjectAdmin = mutation({
 export const bulkDeleteProjects = mutation({
   args: { ids: v.array(v.id("projects")) },
   handler: async (ctx, args) => {
-    await requireSuperAdmin(ctx);
+    await requireAuth(ctx);
     for (const id of args.ids) {
       const project = await ctx.db.get(id);
       if (project?.imageId) {

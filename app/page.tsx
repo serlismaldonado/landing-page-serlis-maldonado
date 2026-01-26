@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, Settings } from "lucide-react";
 import SearchGrid from "./components/SearchGrid";
 import ContributionGraph from "./components/ContributionGraph";
 
@@ -59,6 +59,13 @@ export default function Home() {
             className="p-2.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
           >
             <Mail className="w-4 h-4" />
+          </a>
+          <a
+            href="/admin"
+            className="p-2.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
+            title="Admin"
+          >
+            <Settings className="w-4 h-4" />
           </a>
         </div>
       </main>

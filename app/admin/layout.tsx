@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react";
 
 export default async function AdminLayout({ children }: PropsWithChildren) {
   if (!(await isAuthenticated())) {
-    redirect("/(auth)");
+    redirect("/login");
   }
   return <ClientAuthBoundary>{children}</ClientAuthBoundary>;
 }

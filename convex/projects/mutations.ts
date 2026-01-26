@@ -7,13 +7,10 @@ import { requireAuth } from "./queries";
 export const createProject = mutation({
   args: validatorProject,
   handler: async (ctx, args) => {
-    const now = Date.now();
     const projectId = await ctx.db.insert("projects", {
       ...args,
       visibility: args.visibility ?? "public",
       order: args.order ?? 0,
-      createdAt: now,
-      updatedAt: now,
     });
     return projectId;
   },
@@ -29,17 +26,14 @@ export const updateProject = mutation({
     imageId: v.optional(v.id("_storage")),
     category: v.optional(v.union(v.literal("proyecto"), v.literal("blog"))),
     tags: v.optional(v.array(v.string())),
-    intensity: v.optional(v.number()),
+    intensity: v.optional(v.float64()),
     date: v.optional(v.string()),
     visibility: v.optional(v.union(v.literal("public"), v.literal("private"))),
-    order: v.optional(v.number()),
+    order: v.optional(v.float64()),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;
-    await ctx.db.patch(id, {
-      ...updates,
-      updatedAt: Date.now(),
-    });
+    await ctx.db.patch(id, updates);
     return id;
   },
 });
@@ -72,7 +66,6 @@ export const uploadProjectImage = mutation({
   handler: async (ctx, args) => {
     await ctx.db.patch(args.projectId, {
       imageId: args.file,
-      updatedAt: Date.now(),
     });
     return args.file;
   },
@@ -84,7 +77,7 @@ export const reorderProjects = mutation({
     projects: v.array(
       v.object({
         id: v.id("projects"),
-        order: v.number(),
+        order: v.float64(),
       }),
     ),
   },
@@ -92,7 +85,6 @@ export const reorderProjects = mutation({
     for (const project of args.projects) {
       await ctx.db.patch(project.id, {
         order: project.order,
-        updatedAt: Date.now(),
       });
     }
     return { success: true };
@@ -112,7 +104,6 @@ export const toggleVisibility = mutation({
       project.visibility === "public" ? "private" : "public";
     await ctx.db.patch(args.id, {
       visibility: newVisibility,
-      updatedAt: Date.now(),
     });
     return newVisibility;
   },

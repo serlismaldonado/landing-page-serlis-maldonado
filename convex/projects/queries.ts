@@ -7,11 +7,20 @@ import { authComponent } from "../auth";
 // ============================================
 
 export async function requireAuth(ctx: QueryCtx | MutationCtx) {
-  const user = await authComponent.getAuthUser(ctx);
-  if (!user) {
-    throw new Error("Unauthorized: Authentication required");
+  try {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("Unauthorized: Authentication required");
+    }
+    return user;
+  } catch (error: unknown) {
+    // Re-lanzar el error con un mensaje más claro
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes("Unauthenticated")) {
+      throw new Error("Unauthorized: Please sign in to access this resource");
+    }
+    throw error;
   }
-  return user;
 }
 
 // ============================================

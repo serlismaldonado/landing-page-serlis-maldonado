@@ -18,10 +18,10 @@ export const validatorProject = {
   imageId: v.optional(v.id("_storage")),
   category: projectCategory,
   tags: v.array(v.string()),
-  intensity: v.optional(v.number()),
+  intensity: v.optional(v.float64()),
   date: v.optional(v.string()),
   visibility: v.optional(projectVisibility),
-  order: v.optional(v.number()),
+  order: v.optional(v.float64()),
 };
 
 export const projects = defineTable(validatorProject)

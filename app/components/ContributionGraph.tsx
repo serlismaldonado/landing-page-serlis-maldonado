@@ -55,9 +55,8 @@ export default function ContributionGraph() {
   const totalContributions = projects.reduce((sum, p) => sum + p.intensity, 0);
 
   const handleMouseEnter = (project: (typeof projects)[0] | null, e: React.MouseEvent) => {
-    if (project && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setTooltipPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    if (project) {
+      setTooltipPosition({ x: e.clientX, y: e.clientY });
       setHoveredProject(project);
     }
   };
@@ -147,7 +146,7 @@ export default function ContributionGraph() {
         {hoveredProject && (
           <div
             className="fixed z-50 p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 pointer-events-none"
-            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y - 90, maxWidth: "260px" }}
+            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y + 15, maxWidth: "260px" }}
           >
             <div className="flex items-start justify-between mb-1.5">
               <div>

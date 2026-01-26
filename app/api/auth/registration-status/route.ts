@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const registrationEnabled = allowPublicUser;
 
     const response = {
-      allowPublicUser,
+      allowPublicUser: allowPublicUser === "true",
       registrationEnabled,
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV,

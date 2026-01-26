@@ -23,6 +23,7 @@ export default function AuthPage() {
         const response = await fetch("/api/auth/registration-status");
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           setAllowPublicUser(data.allowPublicUser || false);
         } else {
           console.error(

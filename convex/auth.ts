@@ -7,6 +7,7 @@ import { betterAuth } from "better-auth/minimal";
 import authConfig from "./auth.config";
 
 const siteUrl = process.env.SITE_URL!;
+const isAllowNewUsers = process.env.ALLOW_PUBLIC_USER || false;
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
@@ -22,7 +23,7 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
       requireEmailVerification: false,
       // Deshabilitar registro de nuevos usuarios
       signUp: {
-        enabled: false,
+        enabled: isAllowNewUsers,
       },
     },
     plugins: [

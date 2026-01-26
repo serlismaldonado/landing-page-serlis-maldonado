@@ -45,12 +45,6 @@ export default function AuthPage() {
           <p className="font-mono text-sm text-zinc-500 mt-2">
             Sign in to access the admin panel
           </p>
-          <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-            <p className="font-mono text-xs text-amber-700 dark:text-amber-300">
-              Registration is currently disabled. Only authorized users can
-              access the admin panel.
-            </p>
-          </div>
         </div>
 
         <form

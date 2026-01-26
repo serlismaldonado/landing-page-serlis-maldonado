@@ -103,17 +103,53 @@ export default function ContributionGraph() {
 
   // Calculate statistics
   const totalContributions = contributions.reduce((sum, c) => sum + c.count, 0);
-
   const handleMouseEnter = (
     date: Date,
     intensity: number,
     count: number,
     e: React.MouseEvent,
   ) => {
-    setTooltipPosition({ x: e.clientX, y: e.clientY });
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    const tooltipWidth = 200;
+    const tooltipHeight = 80;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const offset = 15;
+    const margin = 20;
+
+    let tooltipX, tooltipY;
+
+    // Si el cursor está en la mitad izquierda, tooltip a la derecha
+    // Si está en la mitad derecha, tooltip a la izquierda
+    if (mouseX < viewportWidth / 2) {
+      // Cursor en mitad izquierda -> tooltip a la derecha
+      tooltipX = mouseX + offset;
+    } else {
+      // Cursor en mitad derecha -> tooltip a la izquierda
+      tooltipX = mouseX - tooltipWidth - offset;
+    }
+
+    // Asegurar que no se salga de los bordes
+    tooltipX = Math.max(
+      margin,
+      Math.min(tooltipX, viewportWidth - tooltipWidth - margin),
+    );
+
+    // Posicionamiento vertical: arriba del cursor por defecto
+    tooltipY = mouseY - tooltipHeight - offset;
+
+    // Ajustar vertical si se sale del viewport
+    if (tooltipY < margin) {
+      tooltipY = mouseY + offset;
+    } else if (tooltipY + tooltipHeight > viewportHeight - margin) {
+      tooltipY = viewportHeight - tooltipHeight - margin;
+    }
+
+    setTooltipPosition({ x: tooltipX, y: tooltipY });
     setTooltipData({ date, intensity, count });
   };
-
   const handleMouseLeave = () => setTooltipData(null);
 
   if (loading) {
@@ -264,8 +300,8 @@ export default function ContributionGraph() {
           <div
             className="fixed z-50 p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 pointer-events-none"
             style={{
-              left: tooltipPosition.x + 15,
-              top: tooltipPosition.y - 100,
+              left: tooltipPosition.x,
+              top: tooltipPosition.y,
               maxWidth: "200px",
             }}
           >

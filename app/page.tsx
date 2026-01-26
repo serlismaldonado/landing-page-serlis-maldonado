@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
+import SearchGrid from "./components/SearchGrid";
 
 export default function Home() {
   return (
@@ -69,6 +70,8 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <SearchGrid />
     </div>
   );
 }

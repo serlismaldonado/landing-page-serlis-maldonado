@@ -68,7 +68,7 @@ export default function SearchGrid() {
           placeholder="Search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full px-3 py-2 bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-base text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-900 dark:focus:border-white transition-colors font-mono"
+          className="w-full px-3 py-2 bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-900 dark:focus:border-white transition-colors font-mono"
         />
       </div>
 

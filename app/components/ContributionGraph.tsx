@@ -44,12 +44,12 @@ export default function ContributionGraph() {
     fetchContributions();
   }, []);
 
-  // Generate weeks with correct month labels (last 52 weeks = 12 months)
+  // Generate weeks with correct month labels (last 53 weeks to fill container)
   const { weeks, monthLabels } = useMemo(() => {
-    const weeksData = Array.from({ length: 52 }, (_, weekIndex) => {
+    const weeksData = Array.from({ length: 53 }, (_, weekIndex) => {
       return Array.from({ length: 7 }, (_, dayIndex) => {
         const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() - (51 - weekIndex) * 7 - (6 - dayIndex));
+        targetDate.setDate(targetDate.getDate() - (52 - weekIndex) * 7 - (6 - dayIndex));
         const contribution = contributions.find((c) => {
           const contribDate = new Date(c.date);
           return contribDate.toDateString() === targetDate.toDateString();
@@ -106,7 +106,7 @@ export default function ContributionGraph() {
                 ))}
               </div>
               <div className="flex gap-1">
-                {Array.from({ length: 52 }).map((_, weekIndex) => (
+                {Array.from({ length: 53 }).map((_, weekIndex) => (
                   <div key={weekIndex} className="flex flex-col gap-1">
                     {Array.from({ length: 7 }).map((_, dayIndex) => (
                       <div key={dayIndex} className="w-3 h-3 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />

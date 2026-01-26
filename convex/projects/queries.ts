@@ -63,6 +63,21 @@ export const getProject = query({
   },
 });
 
+export const getPublicProject = query({
+  args: { id: v.id("projects") },
+  handler: async (ctx, args) => {
+    const project = await ctx.db.get(args.id);
+    if (!project || project.visibility !== "public") return null;
+
+    let imageUrl: string | null = null;
+    if (project.imageId) {
+      imageUrl = await ctx.storage.getUrl(project.imageId);
+    }
+
+    return { ...project, imageUrl };
+  },
+});
+
 export const getProjectsWithImages = query({
   args: {},
   handler: async (ctx) => {

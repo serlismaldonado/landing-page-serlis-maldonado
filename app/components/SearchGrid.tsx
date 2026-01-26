@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Copy, Check, Code, FileText } from "lucide-react";
+import { Copy, Check, Code, FileText, Eye, ExternalLink } from "lucide-react";
 
 interface Project {
   _id: string;
@@ -110,17 +110,8 @@ export default function SearchGrid() {
       ) : filteredItems.length > 0 ? (
         <div className="max-w-4xl mx-auto">
           {filteredItems.map((item: Project) => (
-            <a
+            <div
               key={item._id}
-              href={
-                item.url && item.url !== "#"
-                  ? item.url.startsWith("http")
-                    ? item.url
-                    : `https://${item.url}`
-                  : "#"
-              }
-              target={item.url && item.url !== "#" ? "_blank" : "_self"}
-              rel="noopener noreferrer"
               className="group flex items-start gap-3 py-3 px-3 -mx-3 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
             >
               {/* Icon */}
@@ -132,10 +123,13 @@ export default function SearchGrid() {
                 )}
               </div>
 
-              {/* Title */}
-              <span className="font-mono text-sm text-zinc-900 dark:text-white flex-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {/* Title - Clickable to detail page */}
+              <a
+                href={`/projects/${item._id}`}
+                className="font-mono text-sm text-zinc-900 dark:text-white flex-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors hover:underline"
+              >
                 {item.title}
-              </span>
+              </a>
 
               {/* Tags */}
               <div className="flex gap-1">
@@ -148,7 +142,38 @@ export default function SearchGrid() {
                   </span>
                 ))}
               </div>
-            </a>
+
+              {/* Action Icons */}
+              <div className="flex items-center gap-1">
+                {/* Detail view icon */}
+                <a
+                  href={`/projects/${item._id}`}
+                  className="p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                  title="View details"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                </a>
+
+                {/* External link icon (only if URL exists) */}
+                {item.url && item.url !== "#" && (
+                  <a
+                    href={
+                      item.url.startsWith("http")
+                        ? item.url
+                        : `https://${item.url}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                    title="Open external link"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       ) : (

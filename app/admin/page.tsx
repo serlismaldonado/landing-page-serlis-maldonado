@@ -361,6 +361,18 @@ export default function AdminPage() {
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
+                        {/* Detail view icon */}
+                        <a
+                          href={`/projects/${project._id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                          title="View details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </a>
+
+                        {/* External link icon (only if URL exists) */}
                         {project.url && project.url !== "#" && (
                           <a
                             href={
@@ -371,7 +383,7 @@ export default function AdminPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1.5 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
-                            title="Open"
+                            title="Open external link"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </a>

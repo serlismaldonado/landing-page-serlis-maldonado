@@ -4,15 +4,17 @@ import { useState, useRef, useCallback } from "react";
 import { ExternalLink } from "lucide-react";
 
 const projects = [
-  { title: "ERP Heskala", year: 2025, month: 10, intensity: 4, tags: ["React", "Node.js", "TypeScript", "PostgreSQL"], url: "github.com/serlismaldonado/heskala-erp", description: "Sistema ERP completo para gestión empresarial" },
-  { title: "Clawdbot", year: 2025, month: 7, intensity: 3, tags: ["TypeScript", "Docker", "Automation", "API"], url: "github.com/serlismaldonado/clawdbot", description: "Bot automatizado para scraping y procesamiento de datos" },
-  { title: "Landing Page", year: 2026, month: 0, intensity: 2, tags: ["Next.js", "Tailwind", "React", "TypeScript"], url: "serlis.dev", description: "Portafolio personal y landing page" },
-  { title: "TanStack Router Post", year: 2026, month: 0, intensity: 1, tags: ["React", "Blog", "TypeScript", "Routing"], url: "#", description: "Artículo técnico sobre TanStack Router" },
-  { title: "n8n Workflows", year: 2025, month: 5, intensity: 2, tags: ["Automation", "n8n", "Workflows", "Integration"], url: "#", description: "Flujos de trabajo automatizados con n8n" },
-  { title: "Docker Guide", year: 2025, month: 3, intensity: 1, tags: ["Docker", "Blog", "DevOps", "Tutorial"], url: "#", description: "Guía completa de Docker para desarrolladores" },
-  { title: "Bitrate System", year: 2024, month: 11, intensity: 3, tags: ["React", "System"], url: "github.com/serlismaldonado/bitrate-system", description: "Sistema de gestión de bitrate" },
-  { title: "Video Production", year: 2024, month: 8, intensity: 2, tags: ["Video", "Production"], url: "#", description: "Proyecto de producción de video" },
-  { title: "Hack Net Provider", year: 2024, month: 6, intensity: 1, tags: ["Network", "Provider"], url: "#", description: "Proveedor de red hack" },
+  { title: "ERP Heskala", date: "2025-11-15", intensity: 4, tags: ["React", "Node.js", "TypeScript", "PostgreSQL"], url: "github.com/serlismaldonado/heskala-erp", description: "Sistema ERP completo para gestión empresarial" },
+  { title: "Clawdbot", date: "2025-08-22", intensity: 3, tags: ["TypeScript", "Docker", "Automation", "API"], url: "github.com/serlismaldonado/clawdbot", description: "Bot automatizado para scraping y procesamiento de datos" },
+  { title: "Landing Page", date: "2026-01-20", intensity: 2, tags: ["Next.js", "Tailwind", "React", "TypeScript"], url: "serlis.dev", description: "Portafolio personal y landing page" },
+  { title: "TanStack Router Post", date: "2026-01-18", intensity: 1, tags: ["React", "Blog", "TypeScript", "Routing"], url: "#", description: "Artículo técnico sobre TanStack Router" },
+  { title: "n8n Workflows", date: "2025-06-10", intensity: 2, tags: ["Automation", "n8n", "Workflows", "Integration"], url: "#", description: "Flujos de trabajo automatizados con n8n" },
+  { title: "Docker Guide", date: "2025-04-05", intensity: 1, tags: ["Docker", "Blog", "DevOps", "Tutorial"], url: "#", description: "Guía completa de Docker para desarrolladores" },
+  { title: "Bitrate System", date: "2024-12-20", intensity: 3, tags: ["React", "System"], url: "github.com/serlismaldonado/bitrate-system", description: "Sistema de gestión de bitrate" },
+  { title: "Video Production", date: "2024-09-15", intensity: 2, tags: ["Video", "Production"], url: "#", description: "Proyecto de producción de video" },
+  { title: "Hack Net Provider", date: "2024-07-01", intensity: 1, tags: ["Network", "Provider"], url: "#", description: "Proveedor de red hack" },
+  { title: "Super Admin Panel", date: "2025-02-28", intensity: 4, tags: ["React", "Admin", "TypeScript"], url: "#", description: "Panel de administración avanzado" },
+  { title: "PDF Invoice System", date: "2025-01-15", intensity: 3, tags: ["PDF", "Node.js", "Invoice"], url: "#", description: "Sistema de facturas PDF" },
 ];
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -43,10 +45,15 @@ export default function ContributionGraph() {
   // Generate weeks (last 26 weeks only for compact view)
   const weeks = Array.from({ length: 26 }, (_, weekIndex) => {
     return Array.from({ length: 7 }, (_, dayIndex) => {
-      const date = new Date();
-      date.setDate(date.getDate() - (25 - weekIndex) * 7 - (6 - dayIndex));
-      const project = projects.find((p) => p.year === date.getFullYear() && p.month === date.getMonth());
-      return { date, project: project || null, intensity: project?.intensity || 0 };
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() - (25 - weekIndex) * 7 - (6 - dayIndex));
+      const project = projects.find((p) => {
+        const projectDate = new Date(p.date);
+        return projectDate.getFullYear() === targetDate.getFullYear() &&
+               projectDate.getMonth() === targetDate.getMonth() &&
+               projectDate.getDate() === targetDate.getDate();
+      });
+      return { date: targetDate, project: project || null, intensity: project?.intensity || 0 };
     });
   });
 
@@ -152,7 +159,7 @@ export default function ContributionGraph() {
               <div>
                 <div className="font-mono text-sm font-bold text-zinc-900 dark:text-white">{hoveredProject.title}</div>
                 <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  {months[hoveredProject.month]} {hoveredProject.year}
+                  {new Date(hoveredProject.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
                 </div>
               </div>
               <div className={`w-2.5 h-2.5 rounded-sm ml-2 ${intensityColors[hoveredProject.intensity as keyof typeof intensityColors]}`} />

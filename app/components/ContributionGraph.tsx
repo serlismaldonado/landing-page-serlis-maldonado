@@ -1,21 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import { ExternalLink } from "lucide-react";
-
-const projects = [
-  { title: "ERP Heskala", date: "2025-11-15", intensity: 4, tags: ["React", "Node.js", "TypeScript", "PostgreSQL"], url: "github.com/serlismaldonado/heskala-erp", description: "Sistema ERP completo para gestión empresarial" },
-  { title: "Clawdbot", date: "2025-08-22", intensity: 3, tags: ["TypeScript", "Docker", "Automation", "API"], url: "github.com/serlismaldonado/clawdbot", description: "Bot automatizado para scraping y procesamiento de datos" },
-  { title: "Landing Page", date: "2026-01-20", intensity: 2, tags: ["Next.js", "Tailwind", "React", "TypeScript"], url: "serlis.dev", description: "Portafolio personal y landing page" },
-  { title: "TanStack Router Post", date: "2026-01-18", intensity: 1, tags: ["React", "Blog", "TypeScript", "Routing"], url: "#", description: "Artículo técnico sobre TanStack Router" },
-  { title: "n8n Workflows", date: "2025-06-10", intensity: 2, tags: ["Automation", "n8n", "Workflows", "Integration"], url: "#", description: "Flujos de trabajo automatizados con n8n" },
-  { title: "Docker Guide", date: "2025-04-05", intensity: 1, tags: ["Docker", "Blog", "DevOps", "Tutorial"], url: "#", description: "Guía completa de Docker para desarrolladores" },
-  { title: "Bitrate System", date: "2024-12-20", intensity: 3, tags: ["React", "System"], url: "github.com/serlismaldonado/bitrate-system", description: "Sistema de gestión de bitrate" },
-  { title: "Video Production", date: "2024-09-15", intensity: 2, tags: ["Video", "Production"], url: "#", description: "Proyecto de producción de video" },
-  { title: "Hack Net Provider", date: "2024-07-01", intensity: 1, tags: ["Network", "Provider"], url: "#", description: "Proveedor de red hack" },
-  { title: "Super Admin Panel", date: "2025-02-28", intensity: 4, tags: ["React", "Admin", "TypeScript"], url: "#", description: "Panel de administración avanzado" },
-  { title: "PDF Invoice System", date: "2025-01-15", intensity: 3, tags: ["PDF", "Node.js", "Invoice"], url: "#", description: "Sistema de facturas PDF" },
-];
+import { useState, useRef, useEffect } from "react";
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const days = ["Mon", "", "Wed", "", "Fri", "", "Sun"];
@@ -28,57 +13,74 @@ const intensityColors = {
   4: "bg-green-500 dark:bg-green-600",
 };
 
-const intensityLabels = {
-  0: "No activity",
-  1: "Low activity",
-  2: "Moderate activity",
-  3: "High activity",
-  4: "Very high activity",
-};
+interface ContributionDay {
+  date: string;
+  intensity: number;
+  count: number;
+}
 
 export default function ContributionGraph() {
-  const [hoveredProject, setHoveredProject] = useState<(typeof projects)[0] | null>(null);
+  const [contributions, setContributions] = useState<ContributionDay[]>([]);
+  const [loading, setLoading] = useState(true);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const cellRefs = useRef<(HTMLButtonElement | null)[][]>([]);
+
+  // Fetch real contributions from GitHub API
+  useEffect(() => {
+    async function fetchContributions() {
+      try {
+        const res = await fetch("/api/contributions");
+        const data = await res.json();
+        if (data.contributions) {
+          setContributions(data.contributions);
+        }
+      } catch (error) {
+        console.error("Failed to fetch contributions:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchContributions();
+  }, []);
 
   // Generate weeks (last 26 weeks only for compact view)
   const weeks = Array.from({ length: 26 }, (_, weekIndex) => {
     return Array.from({ length: 7 }, (_, dayIndex) => {
       const targetDate = new Date();
       targetDate.setDate(targetDate.getDate() - (25 - weekIndex) * 7 - (6 - dayIndex));
-      const project = projects.find((p) => {
-        const projectDate = new Date(p.date);
-        return projectDate.getFullYear() === targetDate.getFullYear() &&
-               projectDate.getMonth() === targetDate.getMonth() &&
-               projectDate.getDate() === targetDate.getDate();
+      const contribution = contributions.find((c) => {
+        const contribDate = new Date(c.date);
+        return contribDate.toDateString() === targetDate.toDateString();
       });
-      return { date: targetDate, project: project || null, intensity: project?.intensity || 0 };
+      return { date: targetDate, intensity: contribution?.intensity || 0, count: contribution?.count || 0 };
     });
   });
 
   // Calculate statistics
-  const totalProjects = projects.length;
-  const totalContributions = projects.reduce((sum, p) => sum + p.intensity, 0);
+  const totalContributions = contributions.reduce((sum, c) => sum + c.count, 0);
 
-  const handleMouseEnter = (project: (typeof projects)[0] | null, e: React.MouseEvent) => {
-    if (project) {
-      setTooltipPosition({ x: e.clientX, y: e.clientY });
-      setHoveredProject(project);
-    }
+  const handleMouseEnter = (date: Date, intensity: number, count: number, e: React.MouseEvent) => {
+    setTooltipPosition({ x: e.clientX, y: e.clientY });
+    setTooltipData({ date, intensity, count });
   };
 
-  const handleMouseLeave = () => setHoveredProject(null);
+  const [tooltipData, setTooltipData] = useState<{ date: Date; intensity: number; count: number } | null>(null);
+  const handleMouseLeave = () => setTooltipData(null);
 
-  const handleCellClick = (project: (typeof projects)[0] | null) => {
-    if (project && project.url !== "#") {
-      const url = project.url.startsWith("http") ? project.url : `https://${project.url}`;
-      window.open(url, "_blank", "noopener,noreferrer");
-    }
-  };
-
-  // Initialize cell refs
-  cellRefs.current = weeks.map(() => []);
+  if (loading) {
+    return (
+      <section className="py-8 px-4">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="font-mono text-lg font-bold text-zinc-900 dark:text-white mb-4">
+            Contribution Graph
+          </h2>
+          <div className="bg-white dark:bg-zinc-900 rounded-lg p-3 border border-zinc-200 dark:border-zinc-800">
+            <div className="font-mono text-sm text-zinc-500">Loading...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-8 px-4">
@@ -89,7 +91,7 @@ export default function ContributionGraph() {
             Contribution Graph
           </h2>
           <div className="flex items-center gap-4 text-xs text-zinc-500">
-            <span className="font-mono">{totalProjects} projects</span>
+            <span className="font-mono">{totalContributions} contributions</span>
             <div className="flex items-center gap-1">
               {[0, 1, 2, 3, 4].map((level) => (
                 <div key={level} className={`w-2.5 h-2.5 rounded-sm ${intensityColors[level as keyof typeof intensityColors]}`} />
@@ -115,21 +117,18 @@ export default function ContributionGraph() {
                   <div key={weekIndex} className="flex flex-col gap-1">
                     {week.map((cell, dayIndex) => {
                       const colorClass = intensityColors[cell.intensity as keyof typeof intensityColors];
-                      const isHovered = hoveredProject?.title === cell.project?.title;
+                      const isHovered = tooltipData?.date.toDateString() === cell.date.toDateString();
 
                       return (
-                        <button
+                        <div
                           key={dayIndex}
-                          ref={(el) => { cellRefs.current[weekIndex] ||= []; cellRefs.current[weekIndex][dayIndex] = el; }}
-                          className={`w-3 h-3 rounded-sm transition-all duration-150 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+                          className={`w-3 h-3 rounded-sm transition-all duration-150 ${
                             colorClass
-                          } ${cell.project ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
+                          } ${cell.intensity > 0 ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
                             isHovered ? "scale-125" : ""
                           }`}
-                          onMouseEnter={(e) => handleMouseEnter(cell.project, e)}
+                          onMouseEnter={(e) => cell.intensity > 0 && handleMouseEnter(cell.date, cell.intensity, cell.count, e)}
                           onMouseLeave={handleMouseLeave}
-                          onClick={() => handleCellClick(cell.project)}
-                          tabIndex={cell.project ? 0 : -1}
                         />
                       );
                     })}
@@ -150,27 +149,16 @@ export default function ContributionGraph() {
         </div>
 
         {/* Tooltip */}
-        {hoveredProject && (
+        {tooltipData && (
           <div
             className="fixed z-50 p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 pointer-events-none"
-            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y - 100, maxWidth: "260px" }}
+            style={{ left: tooltipPosition.x + 15, top: tooltipPosition.y - 100, maxWidth: "200px" }}
           >
-            <div className="flex items-start justify-between mb-1.5">
-              <div>
-                <div className="font-mono text-sm font-bold text-zinc-900 dark:text-white">{hoveredProject.title}</div>
-                <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  {new Date(hoveredProject.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
-                </div>
-              </div>
-              <div className={`w-2.5 h-2.5 rounded-sm ml-2 ${intensityColors[hoveredProject.intensity as keyof typeof intensityColors]}`} />
+            <div className="font-mono text-sm font-bold text-zinc-900 dark:text-white">
+              {tooltipData.count} contributions
             </div>
-            <p className="font-mono text-xs text-zinc-600 dark:text-zinc-300 mb-2 line-clamp-2">{hoveredProject.description}</p>
-            <div className="flex flex-wrap gap-1">
-              {hoveredProject.tags.map((tag) => (
-                <span key={tag} className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-zinc-100 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300">
-                  {tag}
-                </span>
-              ))}
+            <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              {tooltipData.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
             </div>
           </div>
         )}

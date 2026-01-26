@@ -1,5 +1,6 @@
 import { query } from "../_generated/server";
 import { v } from "convex/values";
+import { projects } from "./index";
 
 // Get all public projects
 export const getAllProjects = query({
@@ -41,7 +42,7 @@ export const getProject = query({
   },
 });
 
-// Get projects with images (for contribution graph)
+// Get projects with images
 export const getProjectsWithImages = query({
   args: {},
   handler: async (ctx) => {
@@ -50,7 +51,6 @@ export const getProjectsWithImages = query({
       .withIndex("by_visibility", (q) => q.eq("visibility", "public"))
       .collect();
 
-    // Add image URLs
     return Promise.all(
       projects.map(async (project) => {
         let imageUrl: string | null = null;
@@ -81,7 +81,7 @@ export const searchProjects = query({
   },
 });
 
-// Get featured projects (ordered first)
+// Get featured projects
 export const getFeaturedProjects = query({
   args: {},
   handler: async (ctx) => {
@@ -93,7 +93,7 @@ export const getFeaturedProjects = query({
   },
 });
 
-// Get project count
+// Get projects count
 export const getProjectsCount = query({
   args: {},
   handler: async (ctx) => {
@@ -105,7 +105,7 @@ export const getProjectsCount = query({
   },
 });
 
-// Get all projects with contribution data (for contribution graph)
+// Get contribution data for graph
 export const getContributionProjects = query({
   args: {},
   handler: async (ctx) => {

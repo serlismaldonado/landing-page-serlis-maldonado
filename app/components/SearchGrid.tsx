@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Code, FileText } from "lucide-react";
 
 const items = [
   { title: "ERP Heskala", category: "proyecto", tags: ["React", "Node.js", "TypeScript"], url: "github.com/serlismaldonado/heskala-erp" },
@@ -98,22 +98,28 @@ export default function SearchGrid() {
               href={`https://${item.url}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-4 py-2.5 px-3 -mx-3 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className="group flex items-start gap-3 py-3 px-3 -mx-3 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
             >
-              <span className="font-mono text-sm text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors w-6">
-                →
-              </span>
-              <span className="font-mono text-sm text-zinc-500 uppercase w-20">
-                {item.category === "proyecto" ? "Project" : "Blog"}
-              </span>
+              {/* Icon */}
+              <div className="mt-0.5">
+                {item.category === "proyecto" ? (
+                  <Code className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
+                ) : (
+                  <FileText className="w-4 h-4 text-zinc-400 group-hover:text-green-500 transition-colors" />
+                )}
+              </div>
+
+              {/* Title */}
               <span className="font-mono text-sm text-zinc-900 dark:text-white flex-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {item.title}
               </span>
-              <div className="flex gap-1.5">
+
+              {/* Tags */}
+              <div className="flex gap-1">
                 {item.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-0.5 text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded"
+                    className="px-1.5 py-0.5 text-[10px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded"
                   >
                     {tag}
                   </span>

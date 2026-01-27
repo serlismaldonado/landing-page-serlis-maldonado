@@ -38,7 +38,7 @@ export default function TerminalAnimated() {
     }, typingSpeed);
 
     return () => clearTimeout(timeout);
-  }, [currentText, isDeleting, currentWordIndex, typingSpeed, words]);
+  }, [currentText, isDeleting, currentWordIndex, typingSpeed]);
 
   const asciiArt = `██  ██  ░░
 

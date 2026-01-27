@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Copy, Check, Code, FileText, Eye, ExternalLink } from "lucide-react";
+import { Send, Code, FileText, Eye, ExternalLink } from "lucide-react";
 
 interface Project {
   _id: string;
@@ -24,8 +24,6 @@ const categories: { key: "all" | "proyecto" | "blog"; label: string }[] = [
 export default function SearchGrid() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "proyecto" | "blog">("all");
-  const [copied, setCopied] = useState(false);
-
   // Fetch projects from Convex
   const projects = useQuery(api.projects.queries.getAllProjects);
 
@@ -42,41 +40,48 @@ export default function SearchGrid() {
     });
   }, [projects, query, filter]);
 
-  const copyCommand = () => {
-    navigator.clipboard.writeText("npx skills add --serlis");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleEmailSubmit = () => {
+    window.location.href = "mailto:serlismaldonado@heskala.com";
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleEmailSubmit();
+    }
   };
 
   return (
     <section className="py-12 px-6">
-      {/* Install Title */}
+      {/* Email Contact */}
       <p className="max-w-3xl mx-auto mb-3 font-mono text-xs text-zinc-400 uppercase tracking-wider text-center">
-        Contact in one command
+        Contact me in one command
       </p>
 
-      {/* Clipboard Command */}
-      <div className="max-w-md mx-auto mb-10">
-        <button
-          onClick={copyCommand}
-          className="w-full group flex items-center gap-3 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer text-left"
-        >
-          <span className="font-mono text-sm">
-            <span className="text-green-600 dark:text-green-500">$</span>
-            <span className="text-zinc-600 dark:text-zinc-400"> npx </span>
-            <span className="text-green-600 dark:text-green-500">
-              contact now
+      {/* Email Input */}
+      <div className="max-w-xs mx-auto mb-10">
+        <div className="relative group">
+          <div className="flex items-center gap-3 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
+            <span className="font-mono text-sm">
+              <span className="text-green-600 dark:text-green-500">$</span>
+              <span className="text-zinc-600 dark:text-zinc-400"> npx </span>
+              <span className="text-green-600 dark:text-green-500">
+                contact{" "}
+              </span>
+              <span className="text-green-600 dark:text-green-500">serlis</span>
+              <span className="text-zinc-600 dark:text-zinc-400"> --now </span>
             </span>
-            <span className="text-zinc-600 dark:text-zinc-400"> --serlis</span>
-          </span>
-          <span className="ml-auto text-zinc-400 dark:text-zinc-500">
-            {copied ? (
-              <Check className="w-4 h-4 text-green-500" />
-            ) : (
-              <Copy className="w-4 h-4 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors" />
-            )}
-          </span>
-        </button>
+            <button
+              onClick={handleEmailSubmit}
+              className="ml-auto p-1.5 text-zinc-400 hover:text-green-600 dark:hover:text-green-500 transition-colors"
+              title="Send email"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="mt-2 font-mono text-xs text-zinc-400 text-center">
+            Press Enter or click the send icon to open your email client
+          </div>
+        </div>
       </div>
 
       {/* Search */}

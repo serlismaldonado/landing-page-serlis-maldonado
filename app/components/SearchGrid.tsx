@@ -47,14 +47,19 @@ export default function SearchGrid() {
       {/* Search */}
       <div className="max-w-xs mx-auto mb-6 relative">
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 pl-3 pointer-events-none">
-          <Search className="w-4 h-4 text-zinc-400" />
+          <Search className="w-4 h-4 text-green-600 dark:text-green-500" />
         </div>
+
         <input
           type="text"
           placeholder="Search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full pl-10 pr-3 py-2 bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-900 dark:focus:border-white transition-colors font-mono"
+          className="w-full pl-10 pr-3 py-2 bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-sm text-green-600 dark:text-green-500 placeholder-green-400 dark:placeholder-green-500/70 focus:outline-none focus:border-green-600 dark:focus:border-green-500 transition-colors font-mono"
+          style={{
+            caretColor: "rgb(22 163 74)",
+            caretShape: "underscore",
+          }}
         />
       </div>
 

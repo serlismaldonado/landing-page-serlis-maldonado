@@ -64,7 +64,7 @@ export default function TerminalAnimated() {
         {/* Terminal Content - Left Aligned */}
         <div className="space-y-4">
           {/* ASCII Art Command */}
-          <div className="flex justify-center">
+          <div className="flex justify-center p-4">
             <div className="font-mono text-xs text-green-600 dark:text-green-500 whitespace-pre leading-tight text-center">
               {asciiArt}
             </div>
@@ -87,7 +87,7 @@ export default function TerminalAnimated() {
             <span className="text-green-600 dark:text-green-500">
               {currentText}
             </span>
-            <span className="inline-block w-1 h-4 ml-1 bg-green-600 dark:bg-green-500 animate-pulse"></span>
+            <span className="inline-block w-2 h-1 ml-1 bg-green-600 dark:bg-green-500 animate-pulse"></span>
           </div>
         </div>
       </div>

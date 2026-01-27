@@ -53,36 +53,6 @@ export default function SearchGrid() {
   return (
     <section className="py-12 px-6">
       {/* Email Contact */}
-      <p className="max-w-3xl mx-auto mb-3 font-mono text-xs text-zinc-400 uppercase tracking-wider text-center">
-        Contact me in one command
-      </p>
-
-      {/* Email Input */}
-      <div className="max-w-xs mx-auto mb-10">
-        <div className="relative group">
-          <div className="flex items-center gap-3 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
-            <span className="font-mono text-sm">
-              <span className="text-green-600 dark:text-green-500">$</span>
-              <span className="text-zinc-600 dark:text-zinc-400"> npx </span>
-              <span className="text-green-600 dark:text-green-500">
-                contact{" "}
-              </span>
-              <span className="text-green-600 dark:text-green-500">serlis</span>
-              <span className="text-zinc-600 dark:text-zinc-400"> --now </span>
-            </span>
-            <button
-              onClick={handleEmailSubmit}
-              className="ml-auto p-1.5 text-zinc-400 hover:text-green-600 dark:hover:text-green-500 transition-colors"
-              title="Send email"
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="mt-2 font-mono text-xs text-zinc-400 text-center">
-            Press Enter or click the send icon to open your email client
-          </div>
-        </div>
-      </div>
 
       {/* Search */}
       <div className="max-w-sm mx-auto mb-6">

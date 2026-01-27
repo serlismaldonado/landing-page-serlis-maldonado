@@ -40,16 +40,6 @@ export default function SearchGrid() {
     });
   }, [projects, query, filter]);
 
-  const handleEmailSubmit = () => {
-    window.location.href = "mailto:serlismaldonado@heskala.com";
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleEmailSubmit();
-    }
-  };
-
   return (
     <section className="py-12 px-6">
       {/* Email Contact */}
@@ -92,27 +82,27 @@ export default function SearchGrid() {
           {filteredItems.map((item: Project) => (
             <div
               key={item._id}
-              className="group flex items-start gap-3 py-3 px-3 -mx-3 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className="group flex items-start gap-2 py-2 px-3 -mx-3 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
             >
               {/* Icon */}
               <div className="mt-0.5">
                 {item.category === "proyecto" ? (
-                  <Code className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
+                  <Code className="w-3.5 h-3.5 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                 ) : (
-                  <FileText className="w-4 h-4 text-zinc-400 group-hover:text-green-500 transition-colors" />
+                  <FileText className="w-3.5 h-3.5 text-zinc-400 group-hover:text-green-500 transition-colors" />
                 )}
               </div>
 
               {/* Title - Clickable to detail page */}
               <a
                 href={`/projects/${item._id}`}
-                className="font-mono text-sm text-zinc-900 dark:text-white flex-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors hover:underline"
+                className="font-mono text-xs text-zinc-900 dark:text-white flex-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors hover:underline truncate max-w-[200px] sm:max-w-none"
               >
                 {item.title}
               </a>
 
-              {/* Tags */}
-              <div className="flex gap-1">
+              {/* Tags - Hidden on mobile */}
+              <div className="hidden sm:flex gap-1">
                 {item.tags.map((tag) => (
                   <span
                     key={tag}
@@ -123,16 +113,16 @@ export default function SearchGrid() {
                 ))}
               </div>
 
-              {/* Action Icons */}
-              <div className="flex items-center gap-1">
+              {/* Action Icons - Aligned to right */}
+              <div className="flex items-center gap-1 ml-auto">
                 {/* Detail view icon */}
                 <a
                   href={`/projects/${item._id}`}
-                  className="p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                  className="p-0.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                   title="View details"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Eye className="w-3.5 h-3.5" />
+                  <Eye className="w-3 h-3" />
                 </a>
 
                 {/* External link icon (only if URL exists) */}
@@ -145,11 +135,11 @@ export default function SearchGrid() {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                    className="p-0.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                     title="Open external link"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
               </div>

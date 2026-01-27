@@ -203,13 +203,10 @@ export default function ContributionGraph() {
   }
 
   return (
-    <section className="py-8 px-4">
+    <section className="py-2 px-4">
       <div className="max-w-4xl mx-auto" ref={containerRef}>
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-          <h2 className="font-mono text-lg font-bold text-zinc-900 dark:text-white">
-            Contribution Graph
-          </h2>
           <div className="flex items-center gap-4 text-xs text-zinc-500">
             <span className="font-mono">
               {totalContributions} contributions

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Send, Code, FileText, Eye, ExternalLink } from "lucide-react";
+import { Send, Code, FileText, Eye, ExternalLink, Search } from "lucide-react";
 
 interface Project {
   _id: string;
@@ -41,17 +41,20 @@ export default function SearchGrid() {
   }, [projects, query, filter]);
 
   return (
-    <section className="py-12 px-6">
+    <section className="py-4 px-6">
       {/* Email Contact */}
 
       {/* Search */}
-      <div className="max-w-sm mx-auto mb-6">
+      <div className="max-w-xs mx-auto mb-6 relative">
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 pl-3 pointer-events-none">
+          <Search className="w-4 h-4 text-zinc-400" />
+        </div>
         <input
           type="text"
           placeholder="Search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full px-3 py-2 bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-900 dark:focus:border-white transition-colors font-mono"
+          className="w-full pl-10 pr-3 py-2 bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-900 dark:focus:border-white transition-colors font-mono"
         />
       </div>
 

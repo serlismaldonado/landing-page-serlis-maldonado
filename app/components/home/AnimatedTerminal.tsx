@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function TerminalAnimated() {
-  const words = ["Automatizaciones", "AI", "Aplicaciones", "Tools"];
+  const words = ["Automation", "AI", "love 💚", "Apps", "Tools", "APIs"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);

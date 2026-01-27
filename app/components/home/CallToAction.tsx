@@ -41,7 +41,7 @@ export default function CallToAction() {
           </div>
         </div>
         <div className="mt-2 font-mono text-xs text-zinc-400 text-center">
-          Press Enter or click anywhere to open your email client
+          Click anywhere to open your email client
         </div>
       </div>
     </div>

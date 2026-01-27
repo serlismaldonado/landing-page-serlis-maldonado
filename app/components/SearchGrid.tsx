@@ -51,18 +51,23 @@ export default function SearchGrid() {
   return (
     <section className="py-12 px-6">
       {/* Install Title */}
-      <p className="max-w-3xl mx-auto mb-3 font-mono text-xs text-zinc-400 uppercase tracking-wider">
-        Install in one command
+      <p className="max-w-3xl mx-auto mb-3 font-mono text-xs text-zinc-400 uppercase tracking-wider text-center">
+        Contact in one command
       </p>
 
       {/* Clipboard Command */}
-      <div className="max-w-xl mx-auto mb-10">
+      <div className="max-w-md mx-auto mb-10">
         <button
           onClick={copyCommand}
           className="w-full group flex items-center gap-3 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all cursor-pointer text-left"
         >
-          <span className="font-mono text-sm text-zinc-600 dark:text-zinc-400">
-            $ npx skills add --serlis
+          <span className="font-mono text-sm">
+            <span className="text-green-600 dark:text-green-500">$</span>
+            <span className="text-zinc-600 dark:text-zinc-400"> npx </span>
+            <span className="text-green-600 dark:text-green-500">
+              contact now
+            </span>
+            <span className="text-zinc-600 dark:text-zinc-400"> --serlis</span>
           </span>
           <span className="ml-auto text-zinc-400 dark:text-zinc-500">
             {copied ? (
@@ -75,7 +80,7 @@ export default function SearchGrid() {
       </div>
 
       {/* Search */}
-      <div className="max-w-xl mx-auto mb-6">
+      <div className="max-w-sm mx-auto mb-6">
         <input
           type="text"
           placeholder="Search..."
@@ -177,7 +182,9 @@ export default function SearchGrid() {
           ))}
         </div>
       ) : (
-        <p className="text-center font-mono text-zinc-400">No results found.</p>
+        <p className="text-center font-mono text-zinc-400 text-xs">
+          No results found.
+        </p>
       )}
     </section>
   );

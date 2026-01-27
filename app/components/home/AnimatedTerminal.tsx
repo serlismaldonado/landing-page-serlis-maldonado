@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+const words = ["Backend", "Frontend", "AI", "love 💚", "Apps", "Tools", "APIs"];
 
 export default function TerminalAnimated() {
-  const words = ["Automation", "AI", "love 💚", "Apps", "Tools", "APIs"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);

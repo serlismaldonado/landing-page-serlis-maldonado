@@ -9,9 +9,9 @@ import ContactLinks from "./components/home/ContactLinks";
 export default function Home() {
   const chevronDown = `▼ ▼ ▼`;
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans">
+    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 font-sans">
       {/* Hero Section */}
-      <main className="flex flex-col lg:flex-row items-center justify-center min-h-screen px-6 gap-8 lg:gap-12">
+      <main className="flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12">
         {/* Terminal Animation with integrated message */}
         <div className="w-full max-w-2xl lg:max-w-lg xl:max-w-xl">
           <TerminalAnimated />

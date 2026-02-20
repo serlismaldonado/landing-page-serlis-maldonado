@@ -9,7 +9,7 @@ import ContactLinks from "./components/home/ContactLinks";
 export default function Home() {
   const chevronDown = `▼ ▼ ▼`;
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 font-sans">
+    <div className="min-h-[100dvh] bg-zinc-950 font-sans">
       {/* Hero Section */}
       <main className="flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12">
         {/* Terminal Animation with integrated message */}
@@ -34,7 +34,7 @@ export default function Home() {
               <span className="text-green-600 dark:text-green-500">$</span> ls
               -la proyectos/
             </h2>
-            <p className="font-mono text-sm text-zinc-500 dark:text-zinc-500 max-w-2xl mx-auto">
+            <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto">
               Explora mis proyectos y contribuciones técnicas
             </p>
           </div>
@@ -43,14 +43,14 @@ export default function Home() {
       </div>
 
       {/* Contributions Section */}
-      <div className="py-16 px-6 bg-zinc-50 dark:bg-zinc-900/30">
+      <div className="py-16 px-6 bg-zinc-900/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
               <span className="text-green-600 dark:text-green-500">$</span> git
               log --oneline
             </h2>
-            <p className="font-mono text-sm text-zinc-500 dark:text-zinc-500 max-w-2xl mx-auto">
+            <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto">
               Mi actividad y contribuciones recientes
             </p>
           </div>
@@ -66,7 +66,7 @@ export default function Home() {
               <span className="text-green-600 dark:text-green-500">$</span>{" "}
               ./connect.sh
             </h2>
-            <p className="font-mono text-sm text-zinc-500 dark:text-zinc-500 max-w-2xl mx-auto mb-8">
+            <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto mb-8">
               Conéctate conmigo a través de estos canales
             </p>
             <ContactLinks />

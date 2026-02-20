@@ -1,4 +1,10 @@
 import { ConvexError } from "convex/values";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const isAuthError = (error: unknown) => {
   // This broadly matches potentially auth related errors, can be rewritten to

@@ -91,9 +91,9 @@ const skills = [
 
 export default function ProfilePage() {
   return (
-    <div className="min-h-[100dvh] bg-white dark:bg-zinc-950 font-sans">
+    <div className="min-h-[100dvh] bg-zinc-950 font-sans">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
+      <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-sm border-b border-zinc-800">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
@@ -102,7 +102,7 @@ export default function ProfilePage() {
             <ArrowLeft className="w-4 h-4" />
             <span>cd ..</span>
           </Link>
-          <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+          <span className="font-mono text-xs text-zinc-600">
             ~/profile/serlis.md
           </span>
         </div>
@@ -111,7 +111,7 @@ export default function ProfilePage() {
       {/* Hero Section */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8">
+          <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-6 sm:p-8">
             {/* Terminal Header */}
             <div className="flex items-center gap-2 mb-6">
               <div className="flex gap-1.5">
@@ -190,7 +190,7 @@ export default function ProfilePage() {
       </section>
 
       {/* Current Focus */}
-      <section className="py-12 px-6 bg-zinc-50 dark:bg-zinc-900/30">
+      <section className="py-12 px-6 bg-zinc-900/30">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-mono text-lg sm:text-xl text-zinc-900 dark:text-white mb-2">
@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
           <div className="space-y-4">
             {/* Heskala */}
-            <div className="bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
+            <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-6">
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
                   <Building2 className="w-6 h-6 text-green-600 dark:text-green-500" />
@@ -241,7 +241,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Capacitaciones */}
-            <div className="bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
+            <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-6">
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
                   <Presentation className="w-6 h-6 text-green-600 dark:text-green-500" />
@@ -315,7 +315,7 @@ export default function ProfilePage() {
                   }`}
                 />
 
-                <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 ml-4">
+                <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-4 ml-4">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                     <div>
                       <h3 className="font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
@@ -355,7 +355,7 @@ export default function ProfilePage() {
       </section>
 
       {/* Skills */}
-      <section className="py-12 px-6 bg-zinc-50 dark:bg-zinc-900/30">
+      <section className="py-12 px-6 bg-zinc-900/30">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-mono text-lg sm:text-xl text-zinc-900 dark:text-white mb-2">
@@ -369,7 +369,7 @@ export default function ProfilePage() {
             {skills.map((skillGroup) => (
               <div
                 key={skillGroup.category}
-                className="bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-4"
+                className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-4"
               >
                 <div className="flex items-center gap-2 mb-3">
                   {skillGroup.category === "Automatización" && (
@@ -415,7 +415,7 @@ export default function ProfilePage() {
             </h2>
           </div>
 
-          <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
+          <div className="bg-zinc-900/50 rounded-lg border border-zinc-800 p-6">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
                 <GraduationCap className="w-6 h-6 text-green-600 dark:text-green-500" />
@@ -437,7 +437,7 @@ export default function ProfilePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-6 bg-zinc-50 dark:bg-zinc-900/30">
+      <section className="py-16 px-6 bg-zinc-900/30">
         <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-sm text-zinc-500 mb-4">
             <span className="text-green-600 dark:text-green-500">$</span>{" "}
@@ -460,7 +460,7 @@ export default function ProfilePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-zinc-200 dark:border-zinc-800">
+      <footer className="py-8 px-6 border-t border-zinc-800">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link
             href="/"

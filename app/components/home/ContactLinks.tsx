@@ -1,10 +1,17 @@
 "use client";
 
-import { Github, Linkedin, LogIn, Mail, Settings } from "lucide-react";
+import { Github, Linkedin, LogIn, Mail, Settings, User } from "lucide-react";
 
 export default function ContactLinks() {
   return (
     <div className="flex items-center justify-center gap-4 mt-4">
+      <a
+        href="/profile"
+        className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-green-600 dark:hover:text-green-500 transition-colors"
+        title="Perfil"
+      >
+        <User className="w-5 h-5" />
+      </a>
       <a
         href="https://github.com/serlismaldonado"
         target="_blank"

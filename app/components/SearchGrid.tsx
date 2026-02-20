@@ -32,7 +32,7 @@ export default function SearchGrid() {
     return projects.filter((item) => {
       const matchesQuery =
         item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.tags.some((tag) =>
+        item.tags.some((tag: string) =>
           tag.toLowerCase().includes(query.toLowerCase()),
         );
       const matchesFilter = filter === "all" || item.category === filter;

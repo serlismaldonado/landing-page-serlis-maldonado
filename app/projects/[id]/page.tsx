@@ -179,7 +179,7 @@ export default function ProjectDetailPage() {
                   technologies/skills
                 </h4>
                 <div className="flex flex-wrap gap-1.5 text-xs">
-                  {project.tags.map((tag, index) => (
+                  {project.tags.map((tag: string, index: number) => (
                     <span
                       key={index}
                       className="px-2 py-1 font-mono text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded"

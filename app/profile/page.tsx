@@ -10,8 +10,11 @@ import {
   ChevronRight,
   ArrowLeft,
   Presentation,
+  Download,
 } from "lucide-react";
 import Link from "next/link";
+import { useCallback, useState } from "react";
+import { pdf } from "@react-pdf/renderer";
 
 const experiences = [
   {
@@ -90,6 +93,8 @@ const skills = [
 ];
 
 export default function ProfilePage() {
+  const [isGenerating, setIsGenerating] = useState(false);
+
   return (
     <div className="min-h-[100dvh] bg-zinc-950 font-sans">
       {/* Header */}
@@ -97,14 +102,16 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400 hover:text-green-600 dark:hover:text-green-500 transition-colors font-mono text-sm"
+            className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400 hover:text-green-600 dark:hover:text-green-500 transition-colors font-mono text-sm print:hidden"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>cd ..</span>
           </Link>
-          <span className="font-mono text-xs text-zinc-600">
-            ~/profile/serlis.md
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-xs text-zinc-600">
+              ~/profile/serlis.md
+            </span>
+          </div>
         </div>
       </header>
 

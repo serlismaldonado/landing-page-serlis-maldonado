@@ -19,3 +19,57 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    background: #09090b !important;
+    color: #ededed !important;
+  }
+
+  .bg-zinc-950 {
+    background: #09090b !important;
+  }
+
+  .bg-zinc-900\/50,
+  .bg-zinc-900\/30 {
+    background: rgba(24, 24, 27, 0.5) !important;
+  }
+
+  .text-white {
+    color: #ffffff !important;
+  }
+
+  .text-zinc-400,
+  .text-zinc-500,
+  .text-zinc-600 {
+    color: #a1a1aa !important;
+  }
+
+  .text-green-500,
+  .text-green-600 {
+    color: #22c55e !important;
+  }
+
+  .border-zinc-800 {
+    border-color: #27272a !important;
+  }
+
+  header {
+    position: relative !important;
+    background: #09090b !important;
+  }
+
+  button {
+    display: none !important;
+  }
+
+  [class*="print:hidden"] {
+    display: none !important;
+  }
+}

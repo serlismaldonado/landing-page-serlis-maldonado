@@ -9,6 +9,7 @@ import {
   Building2,
   ChevronRight,
   ArrowLeft,
+  Presentation,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -37,11 +38,11 @@ const experiences = [
     title: "Profesor de Informática",
     company: "Instituto Notre Dame",
     type: "Jornada parcial",
-    period: "2021 - Presente",
+    period: "2021 - 2024",
     description:
       "Enseñanza de Diseño Web, Programación y Laboratorio de Informática.",
     skills: ["HTML5", "JavaScript", "Educación"],
-    current: true,
+    current: false,
   },
   {
     title: "Diseñador Web & Marketing",
@@ -58,17 +59,34 @@ const experiences = [
     company: "Luis Landa American School",
     type: "Jornada completa",
     period: "2017 - 2018",
-    description: "Enseñanza de Robótica e Informática a estudiantes de 4-17 años.",
+    description:
+      "Enseñanza de Robótica e Informática a estudiantes de 4-17 años.",
     skills: ["Robótica", "Educación", "Programación"],
     current: false,
   },
 ];
 
 const skills = [
-  { category: "Automatización", items: ["n8n", "Workflows", "APIs", "Integración de sistemas"] },
-  { category: "Desarrollo", items: ["TypeScript", "React", "Next.js", "Convex", "Prisma"] },
-  { category: "IA Aplicada", items: ["Generación de contenido", "Procesamiento de datos", "Pipelines de IA"] },
-  { category: "Diseño", items: ["Arquitectura de software", "Bases de datos", "UX/UI"] },
+  {
+    category: "Automatización",
+    items: ["n8n", "Workflows", "APIs", "Integración de sistemas"],
+  },
+  {
+    category: "Desarrollo",
+    items: ["TypeScript", "React", "Next.js", "Convex", "Prisma"],
+  },
+  {
+    category: "IA Aplicada",
+    items: [
+      "Generación de contenido",
+      "Procesamiento de datos",
+      "Pipelines de IA",
+    ],
+  },
+  {
+    category: "Diseño",
+    items: ["Arquitectura de software", "Bases de datos", "UX/UI"],
+  },
 ];
 
 export default function ProfilePage() {
@@ -111,7 +129,9 @@ export default function ProfilePage() {
               <div className="font-mono">
                 <span className="text-green-600 dark:text-green-500">$</span>
                 <span className="text-zinc-600 dark:text-zinc-400"> cat </span>
-                <span className="text-green-600 dark:text-green-500">profile.json</span>
+                <span className="text-green-600 dark:text-green-500">
+                  profile.json
+                </span>
               </div>
 
               <div className="font-mono text-sm sm:text-base pl-4 border-l-2 border-green-600/30 dark:border-green-500/30">
@@ -122,29 +142,46 @@ export default function ProfilePage() {
                   Ing. en Sistemas Computacionales | UNAH-VS
                 </p>
                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Automation Specialist & Systems Designer con enfoque en desarrollo de software,
-                  automatizaciones empresariales e integración de IA. +5 años creando soluciones
-                  tecnológicas que optimizan operaciones.
+                  Automation Specialist & Systems Designer con enfoque en
+                  desarrollo de software, automatizaciones empresariales e
+                  integración de IA. +5 años creando soluciones tecnológicas que
+                  optimizan operaciones.
                 </p>
               </div>
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
                 <div className="text-center p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800/50">
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">5+</div>
-                  <div className="text-xs text-zinc-500 font-mono">years_exp</div>
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">
+                    5+
+                  </div>
+                  <div className="text-xs text-zinc-500 font-mono">
+                    years_exp
+                  </div>
                 </div>
                 <div className="text-center p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800/50">
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">20+</div>
-                  <div className="text-xs text-zinc-500 font-mono">projects</div>
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">
+                    20+
+                  </div>
+                  <div className="text-xs text-zinc-500 font-mono">
+                    projects
+                  </div>
                 </div>
                 <div className="text-center p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800/50">
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">IA</div>
-                  <div className="text-xs text-zinc-500 font-mono">specialist</div>
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">
+                    IA
+                  </div>
+                  <div className="text-xs text-zinc-500 font-mono">
+                    specialist
+                  </div>
                 </div>
                 <div className="text-center p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800/50">
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">n8n</div>
-                  <div className="text-xs text-zinc-500 font-mono">automation</div>
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-500">
+                    n8n
+                  </div>
+                  <div className="text-xs text-zinc-500 font-mono">
+                    automation
+                  </div>
                 </div>
               </div>
             </div>
@@ -157,37 +194,88 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-mono text-lg sm:text-xl text-zinc-900 dark:text-white mb-2">
-              <span className="text-green-600 dark:text-green-500">$</span> cat current_focus.txt
+              <span className="text-green-600 dark:text-green-500">$</span> cat
+              current_focus.txt
             </h2>
           </div>
 
-          <div className="bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
-                <Building2 className="w-6 h-6 text-green-600 dark:text-green-500" />
+          <div className="space-y-4">
+            {/* Heskala */}
+            <div className="bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
+                  <Building2 className="w-6 h-6 text-green-600 dark:text-green-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
+                    Heskala
+                  </h3>
+                  <p className="text-sm text-green-600 dark:text-green-500 font-mono mb-3">
+                    Propietario & Lead Developer
+                  </p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                    Empresa de software especializada en automatizaciones
+                    empresariales, desarrollo de sistemas de operaciones, e
+                    integración de inteligencia artificial. Creamos soluciones
+                    que optimizan procesos y transforman la manera en que las
+                    empresas operan.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {[
+                      "Automatización",
+                      "ERP",
+                      "IA",
+                      "n8n",
+                      "Software a medida",
+                    ].map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Heskala
-                </h3>
-                <p className="text-sm text-green-600 dark:text-green-500 font-mono mb-3">
-                  Propietario & Lead Developer
-                </p>
-                <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
-                  Empresa de software especializada en automatizaciones empresariales,
-                  desarrollo de sistemas de operaciones, e integración de inteligencia artificial.
-                  Creamos soluciones que optimizan procesos y transforman la manera en que las
-                  empresas operan.
-                </p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {["Automatización", "ERP", "IA", "n8n", "Software a medida"].map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+            </div>
+
+            {/* Capacitaciones */}
+            <div className="bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
+                  <Presentation className="w-6 h-6 text-green-600 dark:text-green-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
+                    Capacitaciones & Formación
+                  </h3>
+                  <p className="text-sm text-green-600 dark:text-green-500 font-mono mb-3">
+                    Instructor & Consultor
+                  </p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                    Capacitaciones enfocadas en herramientas digitales modernas,
+                    inteligencia artificial aplicada a negocios, y
+                    automatización de procesos. Ayudo a equipos y empresas a
+                    adoptar tecnologías que aumentan su productividad y
+                    competitividad.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {[
+                      "Herramientas Digitales",
+                      "IA para Negocios",
+                      "Automatización",
+                      "Notion",
+                      "Productividad",
+                    ].map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -200,9 +288,12 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-mono text-lg sm:text-xl text-zinc-900 dark:text-white mb-2">
-              <span className="text-green-600 dark:text-green-500">$</span> git log --experience
+              <span className="text-green-600 dark:text-green-500">$</span> git
+              log --experience
             </h2>
-            <p className="font-mono text-sm text-zinc-500">Trayectoria profesional</p>
+            <p className="font-mono text-sm text-zinc-500">
+              Trayectoria profesional
+            </p>
           </div>
 
           <div className="space-y-4">
@@ -268,7 +359,8 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-mono text-lg sm:text-xl text-zinc-900 dark:text-white mb-2">
-              <span className="text-green-600 dark:text-green-500">$</span> ls skills/
+              <span className="text-green-600 dark:text-green-500">$</span> ls
+              skills/
             </h2>
             <p className="font-mono text-sm text-zinc-500">Stack tecnológico</p>
           </div>
@@ -318,7 +410,8 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-mono text-lg sm:text-xl text-zinc-900 dark:text-white mb-2">
-              <span className="text-green-600 dark:text-green-500">$</span> cat education.txt
+              <span className="text-green-600 dark:text-green-500">$</span> cat
+              education.txt
             </h2>
           </div>
 
@@ -347,14 +440,15 @@ export default function ProfilePage() {
       <section className="py-16 px-6 bg-zinc-50 dark:bg-zinc-900/30">
         <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-sm text-zinc-500 mb-4">
-            <span className="text-green-600 dark:text-green-500">$</span> ./contact --ready
+            <span className="text-green-600 dark:text-green-500">$</span>{" "}
+            ./contact --ready
           </div>
           <h2 className="text-xl sm:text-2xl font-semibold text-zinc-900 dark:text-white mb-4">
             Listo para colaborar
           </h2>
           <p className="text-zinc-600 dark:text-zinc-400 mb-6 max-w-md mx-auto">
-            Si buscas automatizar procesos, desarrollar software o integrar IA en tu negocio,
-            hablemos.
+            Si buscas automatizar procesos, desarrollar software o integrar IA
+            en tu negocio, hablemos.
           </p>
           <Link
             href="mailto:serlismaldonado@heskala.com"
@@ -372,7 +466,8 @@ export default function ProfilePage() {
             href="/"
             className="font-mono text-sm text-zinc-500 hover:text-green-600 dark:hover:text-green-500 transition-colors"
           >
-            <span className="text-green-600 dark:text-green-500">$</span> cd ~/home
+            <span className="text-green-600 dark:text-green-500">$</span> cd
+            ~/home
           </Link>
           <span className="font-mono text-xs text-zinc-400">
             El Progreso, Yoro, Honduras

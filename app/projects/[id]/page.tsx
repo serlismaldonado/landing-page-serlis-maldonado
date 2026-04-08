@@ -262,7 +262,7 @@ export default function ProjectDetailPage() {
                       </span>{" "}
                       About this project
                     </h4>
-                    <div className="prose prose-zinc dark:prose-invert max-w-none columns-3 gap-8">
+                    <div className="prose prose-zinc dark:prose-invert max-w-none columns-1 md:columns-2 lg:columns-3 gap-8">
                       <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-line leading-relaxed">
                         {project.description}
                       </p>

@@ -31,8 +31,8 @@ export default function ProjectCoversBackground() {
   }
 
   // Duplicar muchas veces para garantizar cobertura completa del hero
-  // Hero = 100vh, grid = 400% = 400vh, necesita mucho contenido
-  const DUPLICATION_COUNT = 32;
+  // Hero = 100vh, grid = 600% = 600vh, necesita mucho contenido
+  const DUPLICATION_COUNT = 48;
   
   const duplicatedImages = Array.from(
     { length: DUPLICATION_COUNT },
@@ -53,9 +53,9 @@ export default function ProjectCoversBackground() {
                 alt={`Project cover ${index + 1}`}
                 fill
                 className={styles.coverImage}
-                sizes="25vw"
+                sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 quality={50}
-                priority={index < 64}
+                priority={index < 96}
                 onLoadingComplete={() => {
                   setLoadedCount((prev) => prev + 1);
                 }}

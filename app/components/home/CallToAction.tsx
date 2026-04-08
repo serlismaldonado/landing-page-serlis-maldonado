@@ -25,7 +25,7 @@ export default function CallToAction() {
         role="button"
         tabIndex={0}
       >
-        <div className="flex items-center gap-3 px-4 py-2.5 bg-green-950/30 rounded-lg border border-green-700/30 hover:border-green-600/50 transition-all">
+        <div className="flex items-center gap-3 px-4 py-2.5 bg-black rounded-lg border border-green-700/30 hover:border-green-600/50 transition-all">
           <span className="font-mono text-sm">
             <span className="text-green-500">$</span>
             <span className="text-zinc-400"> npx </span>

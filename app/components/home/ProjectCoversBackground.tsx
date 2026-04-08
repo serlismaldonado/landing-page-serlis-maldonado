@@ -10,6 +10,7 @@ export default function ProjectCoversBackground() {
   const coverUrls = useQuery(api.projects.queries.getCoverImages);
   const [loadedCount, setLoadedCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -19,6 +20,14 @@ export default function ProjectCoversBackground() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Start animation immediately after 500ms
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasStarted(true);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!coverUrls) {
@@ -32,7 +41,7 @@ export default function ProjectCoversBackground() {
   if (coverUrls.length === 0) {
     return (
       <div className={styles.backgroundContainer}>
-        <div className={styles.placeholderGrid}>
+        <div className={`${styles.placeholderGrid} ${hasStarted ? styles.animated : ""}`}>
           {Array.from({ length: 40 }).map((_, i) => (
             <div key={i} className={styles.placeholderItem} />
           ))}
@@ -49,12 +58,9 @@ export default function ProjectCoversBackground() {
     () => coverUrls
   ).flat();
   
-  const totalImages = duplicatedImages.length;
-  const allLoaded = loadedCount >= totalImages;
-
   return (
     <div className={styles.backgroundContainer}>
-      <div className={`${styles.coversGrid} ${allLoaded ? styles.animated : ""}`}>
+      <div className={`${styles.coversGrid} ${hasStarted ? styles.animated : ""}`}>
         {duplicatedImages.map((url, index) => (
           <div key={`${url}-${index}`} className={styles.coverItem}>
             {url && (

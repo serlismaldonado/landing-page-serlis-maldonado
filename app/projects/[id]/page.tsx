@@ -128,8 +128,8 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      <div className={`py-12 px-4 font-sans ${coverUrl ? "" : "py-12"}`}>
-        <div className="max-w-4xl mx-auto">
+      <div className={`py-12 px-2 sm:px-4 font-sans ${coverUrl ? "" : "py-12"}`}>
+        <div className="max-w-7xl mx-auto">
           {!coverUrl && (
             <div className="font-mono text-sm sm:text-base text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-950 rounded-t-lg px-4 py-3 border border-zinc-200 dark:border-zinc-800 border-b-0 mb-0">
               <div className="flex items-center gap-2">
@@ -215,7 +215,7 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
               {/* Content (right on desktop, first on mobile) */}
               <div className="lg:col-span-2 order-2 lg:order-1">
                 <div className={coverUrl ? "" : "ml-4"}>
@@ -282,7 +282,7 @@ export default function ProjectDetailPage() {
 
           {/* Gallery (left on desktop, last on mobile) */}
           {project.imageUrls && project.imageUrls.length > 0 && (
-            <div className="lg:col-span-1 order-1 lg:order-2">
+            <div className="lg:col-span-2 order-1 lg:order-2">
               <ProjectGalleryCarousel
                 images={
                   project.imageUrls?.filter((url): url is string => !!url) ||

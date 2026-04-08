@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -9,6 +9,13 @@ import styles from "./ProjectCoversBackground.module.css";
 export default function ProjectCoversBackground() {
   const coverUrls = useQuery(api.projects.queries.getCoverImages);
   const [loadedCount, setLoadedCount] = useState(0);
+
+  useEffect(() => {
+    if (coverUrls) {
+      console.log("ProjectCoversBackground - coverUrls count:", coverUrls.length);
+      console.log("Desktop check - window.innerWidth:", typeof window !== 'undefined' ? window.innerWidth : 'N/A');
+    }
+  }, [coverUrls]);
 
   if (!coverUrls) {
     return (
@@ -30,14 +37,16 @@ export default function ProjectCoversBackground() {
     );
   }
 
-  const duplicatedImages = [...coverUrls, ...coverUrls, ...coverUrls];
-  const totalImages = duplicatedImages.length;
+  const triplicatedImages = [...coverUrls, ...coverUrls, ...coverUrls];
+  const totalImages = triplicatedImages.length;
   const allLoaded = loadedCount >= totalImages;
+
+  console.log("Grid state - totalImages:", totalImages, "loadedCount:", loadedCount, "allLoaded:", allLoaded);
 
   return (
     <div className={styles.backgroundContainer}>
       <div className={`${styles.coversGrid} ${allLoaded ? styles.animated : ""}`}>
-        {duplicatedImages.map((url, index) => (
+        {triplicatedImages.map((url, index) => (
           <div key={`${url}-${index}`} className={styles.coverItem}>
             {url && (
               <Image
@@ -47,7 +56,7 @@ export default function ProjectCoversBackground() {
                 className={styles.coverImage}
                 sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                 quality={50}
-                priority={index < 10}
+                priority={index < 15}
                 onLoadingComplete={() => {
                   setLoadedCount((prev) => prev + 1);
                 }}

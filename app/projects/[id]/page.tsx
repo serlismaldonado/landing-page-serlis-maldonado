@@ -128,7 +128,7 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      <div className={`py-12 px-2 sm:px-4 font-sans ${coverUrl ? "" : "py-12"}`}>
+      <div className={`py-12 px-4 font-sans ${coverUrl ? "" : "py-12"}`}>
         <div className="max-w-7xl mx-auto">
           {!coverUrl && (
             <div className="font-mono text-sm sm:text-base text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-950 rounded-t-lg px-4 py-3 border border-zinc-200 dark:border-zinc-800 border-b-0 mb-0">
@@ -158,7 +158,7 @@ export default function ProjectDetailPage() {
                 : "bg-zinc-50 dark:bg-zinc-950 rounded-b-lg px-6 py-6 border border-zinc-200 dark:border-zinc-800"
             }`}
           >
-            <div className={coverUrl ? "max-w-4xl mx-auto px-4" : "ml-4 mb-8"}>
+            <div className={coverUrl ? "px-4" : "ml-4 mb-8 mr-4"}>
               <div className="mb-4">
                 <h2 className="font-mono text-2xl md:text-3xl font-bold text-zinc-900 dark:text-gray-300 mb-3">
                   {project.title}
@@ -215,10 +215,23 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
-              {/* Content (right on desktop, first on mobile) */}
-              <div className="lg:col-span-2 order-2 lg:order-1">
-                <div className={coverUrl ? "" : "ml-4"}>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 px-4">
+              {/* Gallery (left on desktop) */}
+              <div className="lg:col-span-2 order-1 lg:order-1">
+                {project.imageUrls && project.imageUrls.length > 0 && (
+                  <ProjectGalleryCarousel
+                    images={
+                      project.imageUrls?.filter((url): url is string => !!url) ||
+                      []
+                    }
+                    projectTitle={project.title}
+                  />
+                )}
+              </div>
+
+              {/* Content (right on desktop) */}
+              <div className="lg:col-span-2 order-2 lg:order-2">
+                <div className="">
                   <div className="space-y-8">
                 {project.tags && project.tags.length > 0 && (
                   <div>
@@ -279,19 +292,6 @@ export default function ProjectDetailPage() {
               </div>
             </div>
           </div>
-
-          {/* Gallery (left on desktop, last on mobile) */}
-          {project.imageUrls && project.imageUrls.length > 0 && (
-            <div className="lg:col-span-2 order-1 lg:order-2">
-              <ProjectGalleryCarousel
-                images={
-                  project.imageUrls?.filter((url): url is string => !!url) ||
-                  []
-                }
-                projectTitle={project.title}
-              />
-            </div>
-          )}
         </div>
 
             {!coverUrl && (

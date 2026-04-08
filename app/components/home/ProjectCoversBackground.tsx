@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -8,20 +8,7 @@ import styles from "./ProjectCoversBackground.module.css";
 
 export default function ProjectCoversBackground() {
   const coverUrls = useQuery(api.projects.queries.getCoverImages);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedCount, setLoadedCount] = useState(0);
-
-  useEffect(() => {
-    if (!coverUrls || coverUrls.length === 0) {
-      setImagesLoaded(false);
-      return;
-    }
-
-    const totalImages = coverUrls.length * 2;
-    if (loadedCount >= totalImages) {
-      setImagesLoaded(true);
-    }
-  }, [loadedCount, coverUrls]);
 
   if (!coverUrls) {
     return (
@@ -44,10 +31,12 @@ export default function ProjectCoversBackground() {
   }
 
   const duplicatedImages = [...coverUrls, ...coverUrls];
+  const totalImages = duplicatedImages.length;
+  const allLoaded = loadedCount >= totalImages;
 
   return (
     <div className={styles.backgroundContainer}>
-      <div className={`${styles.coversGrid} ${imagesLoaded ? styles.animated : ""}`}>
+      <div className={`${styles.coversGrid} ${allLoaded ? styles.animated : ""}`}>
         {duplicatedImages.map((url, index) => (
           <div key={`${url}-${index}`} className={styles.coverItem}>
             {url && (

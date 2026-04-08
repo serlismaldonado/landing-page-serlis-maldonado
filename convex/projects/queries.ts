@@ -54,12 +54,11 @@ export const getProject = query({
     const project = await ctx.db.get(args.id);
     if (!project) return null;
 
-    let imageUrl: string | null = null;
-    if (project.imageId) {
-      imageUrl = await ctx.storage.getUrl(project.imageId);
-    }
+    const imageUrls = await Promise.all(
+      (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
+    );
 
-    return { ...project, imageUrl };
+    return { ...project, imageUrls };
   },
 });
 
@@ -69,12 +68,11 @@ export const getPublicProject = query({
     const project = await ctx.db.get(args.id);
     if (!project || project.visibility !== "public") return null;
 
-    let imageUrl: string | null = null;
-    if (project.imageId) {
-      imageUrl = await ctx.storage.getUrl(project.imageId);
-    }
+    const imageUrls = await Promise.all(
+      (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
+    );
 
-    return { ...project, imageUrl };
+    return { ...project, imageUrls };
   },
 });
 
@@ -88,11 +86,10 @@ export const getProjectsWithImages = query({
 
     return Promise.all(
       projects.map(async (project) => {
-        let imageUrl: string | null = null;
-        if (project.imageId) {
-          imageUrl = await ctx.storage.getUrl(project.imageId);
-        }
-        return { ...project, imageUrl };
+        const imageUrls = await Promise.all(
+          (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
+        );
+        return { ...project, imageUrls };
       }),
     );
   },
@@ -174,12 +171,11 @@ export const getProjectAdmin = query({
     const project = await ctx.db.get(args.id);
     if (!project) return null;
 
-    let imageUrl: string | null = null;
-    if (project.imageId) {
-      imageUrl = await ctx.storage.getUrl(project.imageId);
-    }
+    const imageUrls = await Promise.all(
+      (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
+    );
 
-    return { ...project, imageUrl };
+    return { ...project, imageUrls };
   },
 });
 

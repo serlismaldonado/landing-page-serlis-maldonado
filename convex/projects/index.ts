@@ -15,7 +15,7 @@ export const validatorProject = {
   title: v.string(),
   description: v.optional(v.string()),
   url: v.optional(v.string()),
-  imageId: v.optional(v.id("_storage")),
+  images: v.optional(v.array(v.id("_storage"))),
   category: projectCategory,
   tags: v.array(v.string()),
   intensity: v.optional(v.float64()),

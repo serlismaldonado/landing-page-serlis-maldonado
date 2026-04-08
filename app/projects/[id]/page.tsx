@@ -93,11 +93,13 @@ export default function ProjectDetailPage() {
             </div>
           )}
 
-          <div className={`font-mono text-sm sm:text-base text-zinc-700 dark:text-zinc-300 ${
-            coverUrl
-              ? "bg-transparent"
-              : "bg-zinc-50 dark:bg-zinc-950 rounded-b-lg px-6 py-6 border border-zinc-200 dark:border-zinc-800"
-          }`}>
+          <div
+            className={`font-mono text-sm sm:text-base text-zinc-700 dark:text-zinc-300 ${
+              coverUrl
+                ? "bg-transparent"
+                : "bg-zinc-50 dark:bg-zinc-950 rounded-b-lg px-6 py-6 border border-zinc-200 dark:border-zinc-800"
+            }`}
+          >
             <div className={coverUrl ? "max-w-4xl mx-auto px-4" : "ml-4 mb-8"}>
               <div className="mb-4">
                 <h2 className="font-mono text-2xl md:text-3xl font-bold text-zinc-900 dark:text-gray-300 mb-3">
@@ -121,7 +123,9 @@ export default function ProjectDetailPage() {
                   {project.visibility}
                 </span>
 
-                <span className={`px-2.5 py-1 text-xs font-mono rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300`}>
+                <span
+                  className={`px-2.5 py-1 text-xs font-mono rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300`}
+                >
                   {project.category}
                 </span>
               </div>
@@ -143,7 +147,7 @@ export default function ProjectDetailPage() {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-zinc-500 hover:text-green-600 dark:hover:text-green-500 transition-colors text-xs"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-green-500 text-black hover:bg-green-600 transition-colors text-xs font-medium"
                   >
                     <Globe className="w-3.5 h-3.5" />
                     <span>Visit project</span>
@@ -156,22 +160,29 @@ export default function ProjectDetailPage() {
             {project.imageUrls && project.imageUrls.length > 0 && (
               <div className={coverUrl ? "px-4" : ""}>
                 <ProjectGalleryCarousel
-                  images={project.imageUrls?.filter((url): url is string => !!url) || []}
+                  images={
+                    project.imageUrls?.filter((url): url is string => !!url) ||
+                    []
+                  }
                   projectTitle={project.title}
                 />
               </div>
             )}
 
-            {!coverUrl && <div className="my-6">
-              <div className="border-t border-dashed border-zinc-300 dark:border-zinc-700 w-full" />
-            </div>}
+            {!coverUrl && (
+              <div className="my-6">
+                <div className="border-t border-dashed border-zinc-300 dark:border-zinc-700 w-full" />
+              </div>
+            )}
 
             <div className={coverUrl ? "px-4" : "ml-4"}>
               <div className="space-y-8">
                 {project.tags && project.tags.length > 0 && (
                   <div>
                     <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
-                      <span className="text-green-600 dark:text-green-500">→</span>{" "}
+                      <span className="text-green-600 dark:text-green-500">
+                        →
+                      </span>{" "}
                       technologies/skills
                     </h4>
                     <div className="flex flex-wrap gap-1.5 text-xs">
@@ -190,7 +201,9 @@ export default function ProjectDetailPage() {
                 {project.description && (
                   <div>
                     <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
-                      <span className="text-green-600 dark:text-green-500">→</span>{" "}
+                      <span className="text-green-600 dark:text-green-500">
+                        →
+                      </span>{" "}
                       About this project
                     </h4>
                     <div className="prose prose-zinc dark:prose-invert max-w-none">
@@ -223,17 +236,21 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            {!coverUrl && <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex items-center min-w-0 ml-4">
-                <span className="text-green-600 dark:text-green-500 text-sm truncate block">
-                  serlis@heskala:~/projects/{projectId}$
-                </span>
-                <span className="inline-block w-2 h-1 pb-0 mb-0 ml-1 bg-green-600 dark:bg-green-500 animate-pulse flex-shrink-0" />
+            {!coverUrl && (
+              <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+                <div className="flex items-center min-w-0 ml-4">
+                  <span className="text-green-600 dark:text-green-500 text-sm truncate block">
+                    serlis@heskala:~/projects/{projectId}$
+                  </span>
+                  <span className="inline-block w-2 h-1 pb-0 mb-0 ml-1 bg-green-600 dark:bg-green-500 animate-pulse flex-shrink-0" />
+                </div>
               </div>
-            </div>}
+            )}
           </div>
 
-          <div className={`mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 ${coverUrl ? "pb-8" : ""}`}>
+          <div
+            className={`mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 ${coverUrl ? "pb-8" : ""}`}
+          >
             <div className="text-center">
               <h3 className="font-mono text-sm text-zinc-600 dark:text-zinc-400 mb-6">
                 Conéctate conmigo

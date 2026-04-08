@@ -33,7 +33,7 @@ export const getAllProjects = query({
     return await ctx.db
       .query("projects")
       .withIndex("by_visibility", (q) => q.eq("visibility", "public"))
-      .order("asc")
+      .order("desc")
       .collect();
   },
 });

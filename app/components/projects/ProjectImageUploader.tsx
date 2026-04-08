@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -28,6 +28,11 @@ export default function ProjectImageUploader({
     api.projects.mutations.generateUploadUrl,
   );
 
+  // Sincronizar currentImages cuando cambien (e.g., cuando se edita un proyecto)
+  useEffect(() => {
+    setImages(currentImages);
+  }, [currentImages]);
+
   const handleFileSelect = useCallback(
     async (files: FileList | null) => {
       if (!files || !projectId) {
@@ -42,6 +47,8 @@ export default function ProjectImageUploader({
 
       setUploading(true);
       setError(null);
+
+      const newImages: { id: Id<"_storage"> }[] = [];
 
       try {
         for (let i = 0; i < files.length; i++) {
@@ -88,8 +95,14 @@ export default function ProjectImageUploader({
           };
           reader.readAsDataURL(file);
 
-          setImages((prev) => [...prev, { id: storageId }]);
-          onImagesChange([...images, { id: storageId }].map((img) => img.id));
+          newImages.push({ id: storageId });
+        }
+
+        // Actualizar estado y callback con todas las imágenes (antiguas + nuevas)
+        if (newImages.length > 0) {
+          const updatedImages = [...images, ...newImages];
+          setImages(updatedImages);
+          onImagesChange(updatedImages.map((img) => img.id));
         }
       } catch (err) {
         const message =

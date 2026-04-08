@@ -229,12 +229,10 @@ export default function ProjectDetailPage() {
                 )}
               </div>
 
-              {/* Content */}
-              <div>
-                <div className="">
-                  <div className="space-y-8">
+              {/* Content - 3 column layout */}
+              <div className="columns-3 gap-8">
                 {project.tags && project.tags.length > 0 && (
-                  <div>
+                  <div className="break-inside-avoid mb-8">
                     <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
                       <span className="text-green-600 dark:text-green-500">
                         →
@@ -255,7 +253,7 @@ export default function ProjectDetailPage() {
                 )}
 
                 {project.description && (
-                  <div>
+                  <div className="break-inside-avoid mb-8">
                     <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
                       <span className="text-green-600 dark:text-green-500">
                         →
@@ -271,7 +269,7 @@ export default function ProjectDetailPage() {
                 )}
 
                 {project.intensity && project.intensity > 0 && (
-                  <div>
+                  <div className="break-inside-avoid">
                     <div className="flex items-center gap-2">
                       {[1, 2, 3, 4].map((level) => (
                         <div
@@ -290,8 +288,6 @@ export default function ProjectDetailPage() {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
         </div>
 
             {!coverUrl && (

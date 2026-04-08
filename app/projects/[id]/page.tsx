@@ -24,10 +24,7 @@ export default function ProjectDetailPage() {
     id: projectId,
   });
 
-  // Calculate imageUrl directly from project data
-  const imageUrl =
-    project?.imageUrl ||
-    (project?.imageId?.startsWith("http") ? project.imageId : null);
+  const imageUrl = project?.imageUrls?.[0] || null;
 
   if (!project) {
     return (

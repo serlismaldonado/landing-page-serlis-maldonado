@@ -2,20 +2,20 @@
 
 import { X } from "lucide-react";
 import type { Id } from "@/convex/_generated/dataModel";
+import ProjectImageUploader from "./ProjectImageUploader";
 
-// Tipo para los datos del formulario (sin _id, _creationTime, etc.)
 export interface ProjectFormData {
   title: string;
   description: string;
   url: string;
+  images?: Id<"_storage">[];
   category: "proyecto" | "blog";
-  tags: string; // string para el formulario, se convierte a array después
+  tags: string;
   intensity: number;
   date: string;
-  visibility: "public" | "private";
+  visibility?: "public" | "private";
 }
 
-// Tipo para proyecto completo (incluye campos de la base de datos)
 export interface Project {
   _id: Id<"projects">;
   title: string;
@@ -25,7 +25,7 @@ export interface Project {
   tags: string[];
   intensity?: number;
   date?: string;
-  visibility: "public" | "private";
+  visibility?: "public" | "private";
   order: number;
 }
 
@@ -37,6 +37,7 @@ interface ProjectFormModalProps {
   onSubmit: (e: React.FormEvent) => Promise<void>;
   onFormDataChange: (data: Partial<ProjectFormData>) => void;
   onResetForm: () => void;
+  projectId?: Id<"projects"> | null;
 }
 
 export default function ProjectFormModal({
@@ -47,6 +48,7 @@ export default function ProjectFormModal({
   onSubmit,
   onFormDataChange,
   onResetForm,
+  projectId,
 }: ProjectFormModalProps) {
   if (!isOpen) return null;
 
@@ -220,6 +222,19 @@ export default function ProjectFormModal({
                   <span className="font-mono text-sm">Private</span>
                 </label>
               </div>
+            </div>
+
+            <div>
+              <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
+                Project Images
+              </label>
+              <ProjectImageUploader
+                projectId={editingProject?._id || projectId || null}
+                onImagesChange={(imageIds) =>
+                  onFormDataChange({ images: imageIds })
+                }
+                currentImages={formData.images?.map((id) => ({ id })) || []}
+              />
             </div>
 
             <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">

@@ -18,16 +18,29 @@ import {
 import { Loader2 } from "lucide-react";
 import ProjectFormModal from "@/app/components/projects/ProjectFormModal";
 
+interface FormData {
+  title: string;
+  description: string;
+  url: string;
+  images?: Id<"_storage">[];
+  category: "proyecto" | "blog";
+  tags: string;
+  intensity: number;
+  date: string;
+  visibility: "public" | "private";
+}
+
 interface Project {
   _id: Id<"projects">;
   title: string;
   description?: string;
   url?: string;
+  images?: Id<"_storage">[];
   category: "proyecto" | "blog";
   tags: string[];
   intensity?: number;
   date?: string;
-  visibility: "public" | "private";
+  visibility?: "public" | "private";
   order: number;
 }
 
@@ -41,17 +54,16 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
-
-  // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
     url: "",
-    category: "proyecto" as "proyecto" | "blog",
+    images: [],
+    category: "proyecto",
     tags: "",
     intensity: 0,
     date: "",
-    visibility: "public" as "public" | "private",
+    visibility: "public",
   });
 
   const checkAuth = useCallback(async () => {
@@ -74,7 +86,6 @@ export default function AdminPage() {
     }
   }, [router]);
 
-  // Solo ejecutar queries si el usuario está autenticado
   const shouldFetchProjects = !!user;
 
   const projects = useQuery(
@@ -103,18 +114,20 @@ export default function AdminPage() {
         .map((t) => t.trim())
         .filter(Boolean);
 
+      const { tags, images, ...restFormData } = formData;
+
       if (editingProject) {
-        const { tags, ...formDataWithoutTags } = formData;
         await updateProject({
           id: editingProject._id,
-          ...formDataWithoutTags,
+          ...restFormData,
           tags: tagsArray,
+          ...(images && images.length > 0 && { images }),
         });
       } else {
-        const { tags, ...formDataWithoutTags } = formData;
         await createProject({
-          ...formDataWithoutTags,
+          ...restFormData,
           tags: tagsArray,
+          ...(images && images.length > 0 && { images }),
         });
       }
 
@@ -128,22 +141,13 @@ export default function AdminPage() {
     }
   };
 
-  const handleEdit = (project: {
-    _id: Id<"projects">;
-    title: string;
-    description?: string;
-    url?: string;
-    category: "proyecto" | "blog";
-    tags: string[];
-    intensity?: number;
-    date?: string;
-    visibility?: "public" | "private";
-  }) => {
-    setEditingProject(project as Project);
+  const handleEdit = (project: Project) => {
+    setEditingProject(project);
     setFormData({
       title: project.title,
       description: project.description || "",
       url: project.url || "",
+      images: project.images || [],
       category: project.category,
       tags: project.tags.join(", "),
       intensity: project.intensity || 0,
@@ -176,6 +180,7 @@ export default function AdminPage() {
       title: "",
       description: "",
       url: "",
+      images: [],
       category: "proyecto",
       tags: "",
       intensity: 0,
@@ -242,6 +247,7 @@ export default function AdminPage() {
           isOpen={showForm}
           editingProject={editingProject}
           formData={formData}
+          projectId={editingProject?._id || null}
           onClose={() => {
             setShowForm(false);
             setEditingProject(null);
@@ -326,7 +332,7 @@ export default function AdminPage() {
                             : "bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300"
                         }`}
                       >
-                        {project.visibility}
+                        {project.visibility || "public"}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -348,7 +354,7 @@ export default function AdminPage() {
                           )}
                         </button>
                         <button
-                          onClick={() => handleEdit(project)}
+                          onClick={() => handleEdit(project as Project)}
                           className="p-1.5 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                           title="Edit"
                         >
@@ -361,7 +367,6 @@ export default function AdminPage() {
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
-                        {/* Detail view icon */}
                         <a
                           href={`/projects/${project._id}`}
                           target="_blank"
@@ -372,7 +377,6 @@ export default function AdminPage() {
                           <Eye className="w-4 h-4" />
                         </a>
 
-                        {/* External link icon (only if URL exists) */}
                         {project.url && project.url !== "#" && (
                           <a
                             href={

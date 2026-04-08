@@ -17,6 +17,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import ContactLinks from "@/app/components/home/ContactLinks";
 import ProjectGalleryCarousel from "@/app/components/projects/ProjectGalleryCarousel";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -265,10 +266,12 @@ export default function ProjectDetailPage() {
                     </h4>
                     <div className="prose prose-zinc dark:prose-invert max-w-none columns-1 md:columns-2 lg:columns-3 gap-8">
                       <ReactMarkdown
+                        remarkPlugins={[remarkBreaks]}
                         components={{
                           p: ({node, ...props}) => (
                             <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed" {...props} />
                           ),
+                          br: () => <br />,
                           strong: ({node, ...props}) => (
                             <strong className="font-bold text-zinc-800 dark:text-zinc-300" {...props} />
                           ),

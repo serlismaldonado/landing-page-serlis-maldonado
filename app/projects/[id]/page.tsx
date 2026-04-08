@@ -215,26 +215,11 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            {project.imageUrls && project.imageUrls.length > 0 && (
-              <div className={coverUrl ? "px-4" : ""}>
-                <ProjectGalleryCarousel
-                  images={
-                    project.imageUrls?.filter((url): url is string => !!url) ||
-                    []
-                  }
-                  projectTitle={project.title}
-                />
-              </div>
-            )}
-
-            {!coverUrl && (
-              <div className="my-6">
-                <div className="border-t border-dashed border-zinc-300 dark:border-zinc-700 w-full" />
-              </div>
-            )}
-
-            <div className={coverUrl ? "px-4" : "ml-4"}>
-              <div className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-6xl mx-auto">
+              {/* Content (right on desktop, first on mobile) */}
+              <div className="lg:col-span-2 order-2 lg:order-1">
+                <div className={coverUrl ? "" : "ml-4"}>
+                  <div className="space-y-8">
                 {project.tags && project.tags.length > 0 && (
                   <div>
                     <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
@@ -293,6 +278,21 @@ export default function ProjectDetailPage() {
                 )}
               </div>
             </div>
+          </div>
+
+          {/* Gallery (left on desktop, last on mobile) */}
+          {project.imageUrls && project.imageUrls.length > 0 && (
+            <div className="lg:col-span-1 order-1 lg:order-2">
+              <ProjectGalleryCarousel
+                images={
+                  project.imageUrls?.filter((url): url is string => !!url) ||
+                  []
+                }
+                projectTitle={project.title}
+              />
+            </div>
+          )}
+        </div>
 
             {!coverUrl && (
               <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800">

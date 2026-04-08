@@ -31,14 +31,72 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="min-h-screen bg-white dark:bg-zinc-950 py-12 px-4 font-sans">
-        <div className="max-w-4xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 w-48 bg-zinc-200 dark:bg-zinc-800 rounded mb-8" />
-            <div className="h-64 bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-6" />
-            <div className="space-y-3">
-              <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-3/4" />
-              <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/2" />
-              <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3" />
+        <div className="max-w-4xl mx-auto animate-pulse">
+          {/* Cover image skeleton */}
+          <div className="w-full h-64 md:h-96 lg:h-[32rem] bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-8" />
+
+          <div className="font-mono">
+            {/* Title skeleton */}
+            <div className="h-8 w-2/3 bg-zinc-200 dark:bg-zinc-800 rounded mb-6" />
+
+            {/* Badges skeleton */}
+            <div className="flex flex-wrap gap-3 mb-4">
+              <div className="h-6 w-20 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+              <div className="h-6 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+            </div>
+
+            {/* Meta info skeleton (date, button) */}
+            <div className="flex flex-wrap gap-4 mb-8">
+              <div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-800 rounded" />
+              <div className="h-8 w-40 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+            </div>
+
+            {/* Gallery skeleton */}
+            <div className="mb-8">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-48 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                <div className="h-48 bg-zinc-200 dark:bg-zinc-800 rounded" />
+              </div>
+            </div>
+
+            {/* Sections skeleton */}
+            <div className="space-y-12">
+              {/* Technologies section */}
+              <div>
+                <div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-800 rounded mb-4" />
+                <div className="flex flex-wrap gap-2">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="h-6 w-20 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                  ))}
+                </div>
+              </div>
+
+              {/* About section */}
+              <div>
+                <div className="h-6 w-48 bg-zinc-200 dark:bg-zinc-800 rounded mb-4" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-full" />
+                  <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-5/6" />
+                  <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-4/6" />
+                </div>
+              </div>
+
+              {/* Intensity section */}
+              <div>
+                <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-800 rounded" />
+              </div>
+            </div>
+          </div>
+
+          {/* Contact section */}
+          <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="text-center space-y-4">
+              <div className="h-4 w-48 bg-zinc-200 dark:bg-zinc-800 rounded mx-auto" />
+              <div className="flex justify-center gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-10 w-10 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+                ))}
+              </div>
             </div>
           </div>
         </div>

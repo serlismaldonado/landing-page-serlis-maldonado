@@ -269,9 +269,9 @@ export default function ProjectDetailPage() {
                         remarkPlugins={[remarkBreaks]}
                         components={{
                           p: ({node, ...props}) => (
-                            <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed" {...props} />
+                            <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3" {...props} />
                           ),
-                          br: () => <br />,
+                          br: () => <div className="h-2" />,
                           strong: ({node, ...props}) => (
                             <strong className="font-bold text-zinc-800 dark:text-zinc-300" {...props} />
                           ),

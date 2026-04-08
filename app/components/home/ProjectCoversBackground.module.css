@@ -6,7 +6,7 @@
   height: 100%;
   overflow: hidden;
   z-index: 0;
-  background: linear-gradient(135deg, #000000 0%, #0f0f12 100%);
+  background: linear-gradient(135deg, #000000 0%, #05050a 100%);
 }
 
 .loadingGrid {
@@ -14,9 +14,9 @@
   height: 100%;
   background: linear-gradient(
     90deg,
-    #0f0f12 0%,
-    #1a1a1e 50%,
-    #0f0f12 100%
+    #000000 0%,
+    #0a0a0d 50%,
+    #000000 100%
   );
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
@@ -51,9 +51,9 @@
   border-radius: 0;
   background: linear-gradient(
     90deg,
-    #0f0f12 0%,
-    #1a1a1e 50%,
-    #0f0f12 100%
+    #000000 0%,
+    #0a0a0d 50%,
+    #000000 100%
   );
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
@@ -101,13 +101,13 @@
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
-  background: #1a1a1e;
+  background: #000000;
 }
 
 .coverImage {
   object-fit: cover;
   object-position: center;
-  filter: grayscale(100%) brightness(0.8) contrast(1.5);
+  filter: grayscale(100%) brightness(0.55) contrast(1.6);
 }
 
 .coverOverlay {
@@ -115,8 +115,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.65) 100%
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.75) 100%
   );
   pointer-events: none;
 }

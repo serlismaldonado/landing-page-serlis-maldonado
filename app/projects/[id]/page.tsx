@@ -14,6 +14,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
+import ContactLinks from "@/app/components/home/ContactLinks";
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -153,16 +154,6 @@ export default function ProjectDetailPage() {
 
             {project.imageUrls && project.imageUrls.length > 0 && (
               <div className={coverUrl ? "px-4" : ""}>
-                <div className={coverUrl ? "" : "mb-6"}>
-                  <span className="text-green-600 dark:text-green-500">$</span>
-                  <span className="text-zinc-600 dark:text-zinc-400 ml-2">
-                    open
-                  </span>
-                  <span className="text-green-600 dark:text-green-500 ml-1">
-                    gallery.png
-                  </span>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                   {project.imageUrls?.filter((url): url is string => !!url).map((imageUrl, index) => (
                     <div
@@ -255,9 +246,12 @@ export default function ProjectDetailPage() {
             </div>}
           </div>
 
-          <div className={`mt-6 font-mono text-xs text-zinc-400 text-center ${coverUrl ? "pb-8" : ""}`}>
-            <div className="truncate max-w-[300px] mx-auto">
-              Project ID: {project._id}
+          <div className={`mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 ${coverUrl ? "pb-8" : ""}`}>
+            <div className="text-center">
+              <h3 className="font-mono text-sm text-zinc-600 dark:text-zinc-400 mb-6">
+                Conéctate conmigo
+              </h3>
+              <ContactLinks />
             </div>
           </div>
         </div>

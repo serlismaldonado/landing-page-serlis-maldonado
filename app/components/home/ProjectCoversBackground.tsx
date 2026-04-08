@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import styles from "./ProjectCoversBackground.module.css";
@@ -13,7 +14,19 @@ export default function ProjectCoversBackground() {
     return (
       <div className={styles.backgroundContainer}>
         <div className={styles.loadingGrid} />
-        <div style={{ position: "fixed", top: "10px", left: "10px", color: "white", zIndex: 1000 }}>
+        <div
+          style={{
+            position: "fixed",
+            top: "10px",
+            left: "10px",
+            color: "white",
+            zIndex: 1000,
+            fontSize: "12px",
+            background: "rgba(0,0,0,0.5)",
+            padding: "8px",
+            borderRadius: "4px",
+          }}
+        >
           Loading covers...
         </div>
       </div>
@@ -29,7 +42,19 @@ export default function ProjectCoversBackground() {
             <div key={i} className={styles.placeholderItem} />
           ))}
         </div>
-        <div style={{ position: "fixed", top: "10px", left: "10px", color: "white", zIndex: 1000 }}>
+        <div
+          style={{
+            position: "fixed",
+            top: "10px",
+            left: "10px",
+            color: "white",
+            zIndex: 1000,
+            fontSize: "12px",
+            background: "rgba(0,0,0,0.5)",
+            padding: "8px",
+            borderRadius: "4px",
+          }}
+        >
           No covers available
         </div>
       </div>
@@ -42,18 +67,36 @@ export default function ProjectCoversBackground() {
 
   return (
     <div className={styles.backgroundContainer}>
-      <div style={{ position: "fixed", top: "10px", left: "10px", color: "white", zIndex: 1000, fontSize: "12px" }}>
+      <div
+        style={{
+          position: "fixed",
+          top: "10px",
+          left: "10px",
+          color: "white",
+          zIndex: 1000,
+          fontSize: "12px",
+          background: "rgba(0,0,0,0.5)",
+          padding: "8px",
+          borderRadius: "4px",
+        }}
+      >
         {coverUrls.length} covers loaded
       </div>
       <div className={styles.coversGrid}>
         {duplicatedImages.map((url, index) => (
           <div key={`${url}-${index}`} className={styles.coverItem}>
             {url && (
-              <img
+              <Image
                 src={url}
                 alt={`Project cover ${index + 1}`}
+                fill
                 className={styles.coverImage}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                quality={50}
+                priority={index < 5}
+                onLoadingComplete={() => {
+                  console.log(`Image ${index} loaded successfully`);
+                }}
               />
             )}
             <div className={styles.coverOverlay} />

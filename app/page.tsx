@@ -1,4 +1,4 @@
-"use client";
+export const dynamic = "force-dynamic";
 
 import SearchGrid from "./components/SearchGrid";
 import ContributionGraph from "./components/ContributionGraph";

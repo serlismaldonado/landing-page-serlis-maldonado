@@ -48,6 +48,14 @@ export default function ProjectDetailPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans">
+      <button
+        onClick={() => router.push("/")}
+        className="fixed top-4 left-4 z-50 p-2 bg-white/90 dark:bg-zinc-900/90 rounded-full hover:bg-white dark:hover:bg-zinc-800 transition-colors backdrop-blur-sm shadow-lg"
+        title="Go back to home"
+      >
+        <ArrowLeft className="w-5 h-5 text-zinc-900 dark:text-white" />
+      </button>
+
       {coverUrl && (
         <div className="relative w-full h-64 md:h-96 lg:h-[32rem] bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
           <Image
@@ -59,14 +67,6 @@ export default function ProjectDetailPage() {
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-white dark:to-zinc-950" />
-          
-          <button
-            onClick={() => router.back()}
-            className="absolute top-4 left-4 p-2 bg-white/90 dark:bg-zinc-900/90 rounded-full hover:bg-white dark:hover:bg-zinc-800 transition-colors backdrop-blur-sm"
-            title="Go back"
-          >
-            <ArrowLeft className="w-5 h-5 text-zinc-900 dark:text-white" />
-          </button>
         </div>
       )}
 

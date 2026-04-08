@@ -85,6 +85,15 @@
   }
 }
 
+@keyframes slideDownMobile {
+  0% {
+    transform: translateY(-77.8%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
 .coverItem {
   position: relative;
   width: 100%;
@@ -117,7 +126,25 @@
   .coversGrid,
   .placeholderGrid {
     grid-template-columns: repeat(4, 1fr);
+    min-height: 650%;
     gap: 0;
+  }
+  
+  .coversGrid.animated {
+    animation: slideDownTablet 75s linear infinite;
+  }
+  
+  .placeholderGrid {
+    animation: slideDownTablet 75s linear infinite;
+  }
+}
+
+@keyframes slideDownTablet {
+  0% {
+    transform: translateY(-84.6%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }
 
@@ -126,8 +153,17 @@
   .coversGrid,
   .placeholderGrid {
     grid-template-columns: repeat(2, 1fr);
+    min-height: 450%;
     gap: 0;
     padding: 0;
+  }
+  
+  .coversGrid.animated {
+    animation: slideDownMobile 75s linear infinite;
+  }
+  
+  .placeholderGrid {
+    animation: slideDownMobile 75s linear infinite;
   }
 }
 
@@ -136,6 +172,24 @@
   .coversGrid,
   .placeholderGrid {
     grid-template-columns: repeat(2, 1fr);
+    min-height: 400%;
     gap: 0;
+  }
+  
+  .coversGrid.animated {
+    animation: slideDown75 75s linear infinite;
+  }
+  
+  .placeholderGrid {
+    animation: slideDown75 75s linear infinite;
+  }
+}
+
+@keyframes slideDown75 {
+  0% {
+    transform: translateY(-75%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }

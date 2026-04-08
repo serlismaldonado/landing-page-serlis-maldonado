@@ -235,35 +235,8 @@ export default function ProjectDetailPage() {
               <div>
                 <div className="">
                   <div className="space-y-8">
-                {project.tags && project.tags.length > 0 && (
-                  <div>
-                    <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
-                      <span className="text-green-600 dark:text-green-500">
-                        →
-                      </span>{" "}
-                      technologies/skills
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5 text-xs">
-                      {project.tags.map((tag: string, index: number) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 font-mono text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {project.description && (
                   <div>
-                    <h4 className="font-mono text-base font-bold text-zinc-900 dark:text-gray-300 mb-3">
-                      <span className="text-green-600 dark:text-green-500">
-                        →
-                      </span>{" "}
-                      About this project
-                    </h4>
                     <div className="prose prose-zinc dark:prose-invert max-w-none columns-1 md:columns-2 lg:columns-3 gap-8">
                       <ReactMarkdown
                         remarkPlugins={[remarkBreaks]}
@@ -298,10 +271,25 @@ export default function ProjectDetailPage() {
                   </div>
                 )}
 
+                {project.tags && project.tags.length > 0 && (
+                  <div>
+                    <div className="flex flex-wrap gap-1.5 text-xs">
+                      {project.tags.map((tag: string, index: number) => (
+                        <span
+                          key={index}
+                          className="px-2.5 py-1.5 font-mono text-xs bg-black text-white rounded border border-zinc-700 hover:border-zinc-500 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {project.intensity && project.intensity > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      {[1, 2, 3, 4].map((level) => (
+                      {[1, 2, 3, 4, 5].map((level) => (
                         <div
                           key={level}
                           className={`w-2 h-2 rounded-xs ${
@@ -312,7 +300,7 @@ export default function ProjectDetailPage() {
                         />
                       ))}
                       <span className="font-mono text-xs text-zinc-700 dark:text-zinc-300 ml-2">
-                        Level {project.intensity}/4
+                        Level {project.intensity}/5
                       </span>
                     </div>
                   </div>

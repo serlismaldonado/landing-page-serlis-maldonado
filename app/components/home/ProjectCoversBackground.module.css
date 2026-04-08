@@ -107,7 +107,7 @@
 .coverImage {
   object-fit: cover;
   object-position: center;
-  filter: grayscale(100%) brightness(0.55) contrast(1.6);
+  filter: grayscale(100%) brightness(0.7) contrast(1.6);
 }
 
 .coverOverlay {
@@ -115,8 +115,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.75) 100%
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.5) 100%
   );
   pointer-events: none;
 }

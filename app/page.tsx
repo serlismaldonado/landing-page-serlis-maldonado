@@ -10,24 +10,30 @@ import ProjectCoversBackground from "./components/home/ProjectCoversBackground";
 export default function Home() {
   const chevronDown = `▼ ▼ ▼`;
   return (
-    <div className="relative min-h-[100dvh] bg-zinc-950 font-sans">
-      <ProjectCoversBackground />
-      <div className="relative z-10">
+    <div className="bg-zinc-950 font-sans">
+      <div className="relative">
       {/* Hero Section */}
-      <main className="flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12 bg-gradient-to-b from-zinc-950/50 to-zinc-950/40">
-        {/* Terminal Animation with integrated message */}
-        <div className="w-full max-w-2xl lg:max-w-lg xl:max-w-xl">
-          <TerminalAnimated />
-        </div>
-
-        {/* Call to Action */}
-        <div className="w-full max-w-md lg:max-w-sm xl:max-w-md gap-2 flex flex-col">
-          <div className="font-mono text-sm leading-tight whitespace-pre flex justify-center">
-            {chevronDown}
+      <main className="relative flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12 overflow-hidden">
+        <ProjectCoversBackground />
+        
+        <div className="relative z-10">
+          {/* Terminal Animation with integrated message */}
+          <div className="w-full max-w-2xl lg:max-w-lg xl:max-w-xl">
+            <TerminalAnimated />
           </div>
-          <CallToAction />
+
+          {/* Call to Action */}
+          <div className="w-full max-w-md lg:max-w-sm xl:max-w-md gap-2 flex flex-col">
+            <div className="font-mono text-sm leading-tight whitespace-pre flex justify-center">
+              {chevronDown}
+            </div>
+            <CallToAction />
+          </div>
         </div>
       </main>
+      </div>
+
+      <div>
 
       {/* Projects Section */}
       <div className="py-16 px-6 bg-gradient-to-b from-zinc-950/40 to-zinc-950/30">

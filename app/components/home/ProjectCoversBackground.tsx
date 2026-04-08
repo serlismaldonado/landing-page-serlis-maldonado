@@ -22,7 +22,7 @@ export default function ProjectCoversBackground() {
     return (
       <div className={styles.backgroundContainer}>
         <div className={styles.placeholderGrid}>
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 32 }).map((_, i) => (
             <div key={i} className={styles.placeholderItem} />
           ))}
         </div>
@@ -30,10 +30,15 @@ export default function ProjectCoversBackground() {
     );
   }
 
+  // Calcular duplicaciones dinámicamente para llenar el espacio
+  const GRID_CELLS = 16; // 4 columnas * 4 altura
+  const duplications = Math.max(16, Math.ceil(GRID_CELLS / coverUrls.length));
+  
   const duplicatedImages = Array.from(
-    { length: 8 },
+    { length: duplications },
     () => coverUrls
   ).flat();
+  
   const totalImages = duplicatedImages.length;
   const allLoaded = loadedCount >= totalImages;
 
@@ -48,7 +53,7 @@ export default function ProjectCoversBackground() {
                 alt={`Project cover ${index + 1}`}
                 fill
                 className={styles.coverImage}
-                sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 quality={50}
                 priority={index < 32}
                 onLoadingComplete={() => {

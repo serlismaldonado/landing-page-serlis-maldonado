@@ -31,7 +31,7 @@ export default function ProjectCoversBackground() {
   }
 
   const duplicatedImages = Array.from(
-    { length: 5 },
+    { length: 8 },
     () => coverUrls
   ).flat();
   const totalImages = duplicatedImages.length;
@@ -50,7 +50,7 @@ export default function ProjectCoversBackground() {
                 className={styles.coverImage}
                 sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                 quality={50}
-                priority={index < 20}
+                priority={index < 32}
                 onLoadingComplete={() => {
                   setLoadedCount((prev) => prev + 1);
                 }}

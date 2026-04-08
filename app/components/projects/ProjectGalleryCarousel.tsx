@@ -41,10 +41,10 @@ export default function ProjectGalleryCarousel({
         <CarouselContent>
           {validImages.map((imageUrl, index) => (
             <CarouselItem key={index} className="basis-1/2">
-              <div className="bg-white dark:bg-zinc-900 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800">
+              <div className="bg-black rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800">
                 <button
                   onClick={() => handleImageClick(imageUrl)}
-                  className="relative w-full aspect-video bg-zinc-100 dark:bg-zinc-800 hover:opacity-90 transition-opacity cursor-pointer group"
+                  className="relative w-full aspect-video bg-black hover:opacity-90 transition-opacity cursor-pointer group"
                 >
                   <Image
                     src={imageUrl}

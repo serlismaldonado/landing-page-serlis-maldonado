@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-const words = ["Films", "Design", "Photos", "Documentary", "AI", "love 💚"];
+const words = ["Films", "Design", "Photos", "Docs", "AI", "love 💚"];
 
 export default function TerminalAnimated() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);

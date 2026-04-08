@@ -84,12 +84,6 @@ export default function ProjectGalleryCarousel({
         )}
       </Carousel>
 
-      <div className="flex justify-center gap-2 mt-4">
-        <div className="font-mono text-xs text-zinc-500">
-          {validImages.length} images - Click to view fullscreen
-        </div>
-      </div>
-
       {selectedImage && (
         <ImageLightbox
           imageUrl={selectedImage}

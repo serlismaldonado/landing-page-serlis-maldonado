@@ -195,7 +195,7 @@ const CarouselPrevious = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "absolute left-12 top-1/2 -translate-y-1/2 z-40 rounded-full p-2 transition-all",
+        "absolute left-12 top-3/4 -translate-y-1/2 z-40 rounded-full p-2 transition-all",
         canScrollPrev
           ? "bg-zinc-900/80 text-white hover:bg-zinc-900 cursor-pointer"
           : "bg-zinc-900/40 text-zinc-400 cursor-not-allowed",
@@ -221,7 +221,7 @@ const CarouselNext = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "absolute right-12 top-1/2 -translate-y-1/2 z-40 rounded-full p-2 transition-all",
+        "absolute right-12 top-3/4 -translate-y-1/2 z-40 rounded-full p-2 transition-all",
         canScrollNext
           ? "bg-zinc-900/80 text-white hover:bg-zinc-900 cursor-pointer"
           : "bg-zinc-900/40 text-zinc-400 cursor-not-allowed",

@@ -24,6 +24,7 @@ export const updateProject = mutation({
     description: v.optional(v.string()),
     url: v.optional(v.string()),
     images: v.optional(v.array(v.id("_storage"))),
+    cover: v.optional(v.id("_storage")),
     category: v.optional(v.union(v.literal("proyecto"), v.literal("blog"))),
     tags: v.optional(v.array(v.string())),
     intensity: v.optional(v.float64()),
@@ -185,5 +186,48 @@ export const generateUploadUrl = mutation({
   args: {},
   handler: async (ctx) => {
     return await ctx.storage.generateUploadUrl();
+  },
+});
+
+export const uploadCover = mutation({
+  args: {
+    projectId: v.id("projects"),
+    file: v.id("_storage"),
+  },
+  handler: async (ctx, args) => {
+    const project = await ctx.db.get(args.projectId);
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    if (project.cover) {
+      await ctx.storage.delete(project.cover);
+    }
+
+    await ctx.db.patch(args.projectId, {
+      cover: args.file,
+    });
+
+    return args.file;
+  },
+});
+
+export const deleteCover = mutation({
+  args: {
+    projectId: v.id("projects"),
+    coverId: v.id("_storage"),
+  },
+  handler: async (ctx, args) => {
+    const project = await ctx.db.get(args.projectId);
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    await ctx.storage.delete(args.coverId);
+    await ctx.db.patch(args.projectId, {
+      cover: undefined,
+    });
+
+    return { success: true };
   },
 });

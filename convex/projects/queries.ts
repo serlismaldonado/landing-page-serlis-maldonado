@@ -54,11 +54,16 @@ export const getProject = query({
     const project = await ctx.db.get(args.id);
     if (!project) return null;
 
+    let coverUrl: string | null = null;
+    if (project.cover) {
+      coverUrl = await ctx.storage.getUrl(project.cover);
+    }
+
     const imageUrls = await Promise.all(
       (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
     );
 
-    return { ...project, imageUrls };
+    return { ...project, coverUrl, imageUrls };
   },
 });
 
@@ -68,11 +73,16 @@ export const getPublicProject = query({
     const project = await ctx.db.get(args.id);
     if (!project || project.visibility !== "public") return null;
 
+    let coverUrl: string | null = null;
+    if (project.cover) {
+      coverUrl = await ctx.storage.getUrl(project.cover);
+    }
+
     const imageUrls = await Promise.all(
       (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
     );
 
-    return { ...project, imageUrls };
+    return { ...project, coverUrl, imageUrls };
   },
 });
 
@@ -86,10 +96,15 @@ export const getProjectsWithImages = query({
 
     return Promise.all(
       projects.map(async (project) => {
+        let coverUrl: string | null = null;
+        if (project.cover) {
+          coverUrl = await ctx.storage.getUrl(project.cover);
+        }
+
         const imageUrls = await Promise.all(
           (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
         );
-        return { ...project, imageUrls };
+        return { ...project, coverUrl, imageUrls };
       }),
     );
   },
@@ -171,11 +186,16 @@ export const getProjectAdmin = query({
     const project = await ctx.db.get(args.id);
     if (!project) return null;
 
+    let coverUrl: string | null = null;
+    if (project.cover) {
+      coverUrl = await ctx.storage.getUrl(project.cover);
+    }
+
     const imageUrls = await Promise.all(
       (project.images || []).map((imageId) => ctx.storage.getUrl(imageId)),
     );
 
-    return { ...project, imageUrls };
+    return { ...project, coverUrl, imageUrls };
   },
 });
 

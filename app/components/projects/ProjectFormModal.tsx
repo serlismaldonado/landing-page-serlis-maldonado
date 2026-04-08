@@ -3,11 +3,13 @@
 import { X } from "lucide-react";
 import type { Id } from "@/convex/_generated/dataModel";
 import ProjectImageUploader from "./ProjectImageUploader";
+import ProjectCoverUploader from "./ProjectCoverUploader";
 
 export interface ProjectFormData {
   title: string;
   description: string;
   url: string;
+  cover?: Id<"_storage"> | null;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
   tags: string;
@@ -21,6 +23,8 @@ export interface Project {
   title: string;
   description?: string;
   url?: string;
+  cover?: Id<"_storage">;
+  images?: Id<"_storage">[];
   category: "proyecto" | "blog";
   tags: string[];
   intensity?: number;
@@ -222,6 +226,23 @@ export default function ProjectFormModal({
                   <span className="font-mono text-sm">Private</span>
                 </label>
               </div>
+            </div>
+
+            <div>
+              <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
+                Project Cover
+              </label>
+              <ProjectCoverUploader
+                projectId={editingProject?._id || projectId || null}
+                onCoverChange={(coverId) =>
+                  onFormDataChange({ cover: coverId })
+                }
+                currentCover={
+                  formData.cover
+                    ? { id: formData.cover as Id<"_storage"> }
+                    : null
+                }
+              />
             </div>
 
             <div>

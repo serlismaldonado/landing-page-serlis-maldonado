@@ -22,6 +22,7 @@ interface FormData {
   title: string;
   description: string;
   url: string;
+  cover?: Id<"_storage"> | null;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
   tags: string;
@@ -35,6 +36,7 @@ interface Project {
   title: string;
   description?: string;
   url?: string;
+  cover?: Id<"_storage">;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
   tags: string[];
@@ -58,6 +60,7 @@ export default function AdminPage() {
     title: "",
     description: "",
     url: "",
+    cover: null,
     images: [],
     category: "proyecto",
     tags: "",
@@ -114,19 +117,21 @@ export default function AdminPage() {
         .map((t) => t.trim())
         .filter(Boolean);
 
-      const { tags, images, ...restFormData } = formData;
+      const { tags, cover, images, ...restFormData } = formData;
 
       if (editingProject) {
         await updateProject({
           id: editingProject._id,
           ...restFormData,
           tags: tagsArray,
+          ...(cover && { cover }),
           ...(images && images.length > 0 && { images }),
         });
       } else {
         await createProject({
           ...restFormData,
           tags: tagsArray,
+          ...(cover && { cover }),
           ...(images && images.length > 0 && { images }),
         });
       }
@@ -147,6 +152,7 @@ export default function AdminPage() {
       title: project.title,
       description: project.description || "",
       url: project.url || "",
+      cover: project.cover || null,
       images: project.images || [],
       category: project.category,
       tags: project.tags.join(", "),
@@ -180,6 +186,7 @@ export default function AdminPage() {
       title: "",
       description: "",
       url: "",
+      cover: null,
       images: [],
       category: "proyecto",
       tags: "",
@@ -203,7 +210,6 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      {/* Header */}
       <header className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="font-mono text-xl font-bold text-zinc-900 dark:text-white">
@@ -224,7 +230,6 @@ export default function AdminPage() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Actions */}
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => {
@@ -242,7 +247,6 @@ export default function AdminPage() {
           </span>
         </div>
 
-        {/* Modal para formulario */}
         <ProjectFormModal
           isOpen={showForm}
           editingProject={editingProject}
@@ -257,7 +261,6 @@ export default function AdminPage() {
           onResetForm={resetForm}
         />
 
-        {/* Projects List */}
         {projects === undefined ? (
           <div className="text-center py-12">
             <Loader2 className="w-6 h-6 animate-spin text-zinc-500 mx-auto" />

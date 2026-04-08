@@ -24,8 +24,8 @@ export default function ProjectCoverUploader({
     currentCover?.preview || null,
   );
 
-  const uploadCover = useMutation(api.projects.mutations.uploadCover || (() => Promise.reject("Not available")) as any);
-  const deleteCover = useMutation(api.projects.mutations.deleteCover || (() => Promise.reject("Not available")) as any);
+  const uploadCover = useMutation(api.projects.mutations.uploadCover);
+  const deleteCover = useMutation(api.projects.mutations.deleteCover);
   const generateUploadUrl = useMutation(
     api.projects.mutations.generateUploadUrl,
   );

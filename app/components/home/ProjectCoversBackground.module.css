@@ -101,7 +101,7 @@
 
 @keyframes slideDownMobile {
   0% {
-    transform: translateY(-80%);
+    transform: translateY(-81.8%);
   }
   100% {
     transform: translateY(0%);
@@ -167,7 +167,7 @@
   .coversGrid,
   .placeholderGrid {
     grid-template-columns: repeat(2, 1fr);
-    min-height: 500%;
+    min-height: 550%;
     gap: 0;
     padding: 0;
   }
@@ -186,7 +186,7 @@
   .coversGrid,
   .placeholderGrid {
     grid-template-columns: repeat(2, 1fr);
-    min-height: 500%;
+    min-height: 550%;
     gap: 0;
   }
   
@@ -201,7 +201,7 @@
 
 @keyframes slideDown75 {
   0% {
-    transform: translateY(-80%);
+    transform: translateY(-81.8%);
   }
   100% {
     transform: translateY(0%);

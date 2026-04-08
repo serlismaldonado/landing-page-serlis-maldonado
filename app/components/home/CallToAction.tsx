@@ -40,9 +40,6 @@ export default function CallToAction() {
             <Send className="w-4 h-4" />
           </div>
         </div>
-        <div className="mt-2 font-mono text-xs text-zinc-400 text-center">
-          Click anywhere to open your email client
-        </div>
       </div>
     </div>
   );

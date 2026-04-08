@@ -51,8 +51,8 @@ export default function ProjectCoversBackground() {
   }
 
   // Duplicaciones adaptables al tamaño de pantalla
-  // Desktop (4 cols): 40x, Mobile (2 cols): 30x
-  const DUPLICATION_COUNT = isMobile ? 30 : 40;
+  // Desktop (4 cols): 40x, Mobile (2 cols): 12x (40/2 ≈ 20, ajustado a 12 para mejor proporción)
+  const DUPLICATION_COUNT = isMobile ? 12 : 40;
   
   const duplicatedImages = Array.from(
     { length: DUPLICATION_COUNT },

@@ -16,6 +16,7 @@ import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import ContactLinks from "@/app/components/home/ContactLinks";
 import ProjectGalleryCarousel from "@/app/components/projects/ProjectGalleryCarousel";
+import ReactMarkdown from "react-markdown";
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -263,9 +264,33 @@ export default function ProjectDetailPage() {
                       About this project
                     </h4>
                     <div className="prose prose-zinc dark:prose-invert max-w-none columns-1 md:columns-2 lg:columns-3 gap-8">
-                      <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-line leading-relaxed">
+                      <ReactMarkdown
+                        components={{
+                          p: ({node, ...props}) => (
+                            <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed" {...props} />
+                          ),
+                          strong: ({node, ...props}) => (
+                            <strong className="font-bold text-zinc-800 dark:text-zinc-300" {...props} />
+                          ),
+                          em: ({node, ...props}) => (
+                            <em className="italic" {...props} />
+                          ),
+                          code: ({node, ...props}) => (
+                            <code className="bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded text-xs" {...props} />
+                          ),
+                          ul: ({node, ...props}) => (
+                            <ul className="list-disc list-inside font-mono text-xs text-zinc-600 dark:text-zinc-400" {...props} />
+                          ),
+                          ol: ({node, ...props}) => (
+                            <ol className="list-decimal list-inside font-mono text-xs text-zinc-600 dark:text-zinc-400" {...props} />
+                          ),
+                          li: ({node, ...props}) => (
+                            <li className="mb-1" {...props} />
+                          ),
+                        }}
+                      >
                         {project.description}
-                      </p>
+                      </ReactMarkdown>
                     </div>
                   </div>
                 )}

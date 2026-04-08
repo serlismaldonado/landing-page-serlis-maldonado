@@ -211,3 +211,24 @@ export const getProjectsCountAdmin = query({
     };
   },
 });
+
+export const getCoverImages = query({
+  args: {},
+  handler: async (ctx) => {
+    const projects = await ctx.db
+      .query("projects")
+      .withIndex("by_visibility", (q) => q.eq("visibility", "public"))
+      .collect();
+
+    const coverUrls = await Promise.all(
+      projects
+        .filter((p) => p.cover)
+        .map(async (project) => {
+          const url = await ctx.storage.getUrl(project.cover!);
+          return url;
+        }),
+    );
+
+    return coverUrls.filter((url): url is string => !!url);
+  },
+});

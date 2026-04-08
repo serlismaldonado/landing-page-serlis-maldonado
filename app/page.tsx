@@ -5,13 +5,16 @@ import ContributionGraph from "./components/ContributionGraph";
 import CallToAction from "./components/home/CallToAction";
 import TerminalAnimated from "./components/home/AnimatedTerminal";
 import ContactLinks from "./components/home/ContactLinks";
+import ProjectCoversBackground from "./components/home/ProjectCoversBackground";
 
 export default function Home() {
   const chevronDown = `▼ ▼ ▼`;
   return (
-    <div className="min-h-[100dvh] bg-zinc-950 font-sans">
+    <div className="relative min-h-[100dvh] bg-zinc-950 font-sans">
+      <ProjectCoversBackground />
+      <div className="relative z-10">
       {/* Hero Section */}
-      <main className="flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12">
+      <main className="flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12 bg-gradient-to-b from-zinc-950/95 to-zinc-950/90">
         {/* Terminal Animation with integrated message */}
         <div className="w-full max-w-2xl lg:max-w-lg xl:max-w-xl">
           <TerminalAnimated />
@@ -27,7 +30,7 @@ export default function Home() {
       </main>
 
       {/* Projects Section */}
-      <div className="py-16 px-6">
+      <div className="py-16 px-6 bg-gradient-to-b from-zinc-950/90 to-zinc-950/85">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
@@ -43,7 +46,7 @@ export default function Home() {
       </div>
 
       {/* Contributions Section */}
-      <div className="py-16 px-6 bg-zinc-900/30">
+      <div className="py-16 px-6 bg-gradient-to-b from-zinc-900/50 to-zinc-900/40">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
@@ -59,7 +62,7 @@ export default function Home() {
       </div>
 
       {/* Contact Section */}
-      <div className="py-16 px-6">
+      <div className="py-16 px-6 bg-gradient-to-b from-zinc-950/85 to-zinc-950/95">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
@@ -72,6 +75,7 @@ export default function Home() {
             <ContactLinks />
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

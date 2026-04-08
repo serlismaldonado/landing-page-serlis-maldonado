@@ -30,7 +30,7 @@ export default function ProjectCoversBackground() {
     );
   }
 
-  const duplicatedImages = [...coverUrls, ...coverUrls];
+  const duplicatedImages = [...coverUrls, ...coverUrls, ...coverUrls];
   const totalImages = duplicatedImages.length;
   const allLoaded = loadedCount >= totalImages;
 

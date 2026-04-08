@@ -8,8 +8,24 @@ import styles from "./ProjectCoversBackground.module.css";
 export default function ProjectCoversBackground() {
   const coverUrls = useQuery(api.projects.queries.getCoverImages);
 
-  if (!coverUrls || coverUrls.length === 0) {
-    return null;
+  if (!coverUrls) {
+    return (
+      <div className={styles.backgroundContainer}>
+        <div className={styles.loadingGrid} />
+      </div>
+    );
+  }
+
+  if (coverUrls.length === 0) {
+    return (
+      <div className={styles.backgroundContainer}>
+        <div className={styles.placeholderGrid}>
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div key={i} className={styles.placeholderItem} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   const duplicatedImages = [...coverUrls, ...coverUrls];

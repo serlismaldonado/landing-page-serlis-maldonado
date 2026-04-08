@@ -51,7 +51,8 @@ export default function ProjectCoversBackground() {
   }
 
   // Duplicaciones adaptables al tamaño de pantalla
-  const DUPLICATION_COUNT = isMobile ? 20 : 40;
+  // Desktop (4 cols): 40x, Mobile (2 cols): 30x
+  const DUPLICATION_COUNT = isMobile ? 30 : 40;
   
   const duplicatedImages = Array.from(
     { length: DUPLICATION_COUNT },
@@ -69,7 +70,7 @@ export default function ProjectCoversBackground() {
                 alt={`Project cover ${index + 1}`}
                 fill
                 className={styles.coverImage}
-                sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                sizes="(max-width: 768px) 50vw, 25vw"
                 quality={50}
                 priority={index < 80}
                 onLoadingComplete={() => {

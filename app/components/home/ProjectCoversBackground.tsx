@@ -22,7 +22,7 @@ export default function ProjectCoversBackground() {
     return (
       <div className={styles.backgroundContainer}>
         <div className={styles.placeholderGrid}>
-          {Array.from({ length: 32 }).map((_, i) => (
+          {Array.from({ length: 40 }).map((_, i) => (
             <div key={i} className={styles.placeholderItem} />
           ))}
         </div>
@@ -33,7 +33,7 @@ export default function ProjectCoversBackground() {
   // Duplicar para garantizar cobertura completa del hero
   // Con más columnas (5) las imágenes son más grandes
   // Menos duplicaciones evitan repetición excesiva
-  const DUPLICATION_COUNT = 35;
+  const DUPLICATION_COUNT = 40;
   
   const duplicatedImages = Array.from(
     { length: DUPLICATION_COUNT },
@@ -56,7 +56,7 @@ export default function ProjectCoversBackground() {
                 className={styles.coverImage}
                 sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
                 quality={50}
-                priority={index < 70}
+                priority={index < 80}
                 onLoadingComplete={() => {
                   setLoadedCount((prev) => prev + 1);
                 }}

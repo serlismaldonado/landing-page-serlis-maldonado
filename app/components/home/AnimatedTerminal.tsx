@@ -47,7 +47,7 @@ export default function TerminalAnimated() {
 ░░  ░░  ░░`;
 
   return (
-    <div className="max-w-2xl mb-8">
+    <div className="max-w-2xl mb-8 min-w-92">
       <div className="font-mono text-sm sm:text-base text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-950 rounded-lg px-4 py-4 border border-zinc-200 dark:border-zinc-800">
         {/* Terminal Header */}
         <div className="flex items-center gap-2 mb-6">

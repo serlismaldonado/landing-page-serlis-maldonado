@@ -15,6 +15,7 @@ import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import ContactLinks from "@/app/components/home/ContactLinks";
+import ProjectGalleryCarousel from "@/app/components/projects/ProjectGalleryCarousel";
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -154,24 +155,10 @@ export default function ProjectDetailPage() {
 
             {project.imageUrls && project.imageUrls.length > 0 && (
               <div className={coverUrl ? "px-4" : ""}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                  {project.imageUrls?.filter((url): url is string => !!url).map((imageUrl, index) => (
-                    <div
-                      key={index}
-                      className="bg-white dark:bg-zinc-900 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800"
-                    >
-                      <div className="relative w-full aspect-video">
-                        <Image
-                          src={imageUrl}
-                          alt={`${project.title} - Image ${index + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <ProjectGalleryCarousel
+                  images={project.imageUrls?.filter((url): url is string => !!url) || []}
+                  projectTitle={project.title}
+                />
               </div>
             )}
 

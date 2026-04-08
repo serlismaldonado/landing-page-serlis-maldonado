@@ -37,7 +37,7 @@
   gap: 0;
   padding: 0;
   width: 100%;
-  min-height: 400%;
+  min-height: 500%;
   animation: slideDown 45s linear infinite;
   will-change: transform;
 }
@@ -64,7 +64,7 @@
   gap: 0;
   padding: 0;
   width: 100%;
-  min-height: 400%;
+  min-height: 500%;
 }
 
 .coversGrid.animated {
@@ -74,7 +74,7 @@
 
 @keyframes slideDown {
   0% {
-    transform: translateY(-66%);
+    transform: translateY(-80%);
   }
   100% {
     transform: translateY(0%);

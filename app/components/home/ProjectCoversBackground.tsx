@@ -30,12 +30,12 @@ export default function ProjectCoversBackground() {
     );
   }
 
-  // Calcular duplicaciones dinámicamente para llenar el espacio
-  const GRID_CELLS = 16; // 4 columnas * 4 altura
-  const duplications = Math.max(16, Math.ceil(GRID_CELLS / coverUrls.length));
+  // Duplicar muchas veces para garantizar cobertura completa del hero
+  // Hero = 100vh, grid = 400% = 400vh, necesita mucho contenido
+  const DUPLICATION_COUNT = 32;
   
   const duplicatedImages = Array.from(
-    { length: duplications },
+    { length: DUPLICATION_COUNT },
     () => coverUrls
   ).flat();
   
@@ -53,9 +53,9 @@ export default function ProjectCoversBackground() {
                 alt={`Project cover ${index + 1}`}
                 fill
                 className={styles.coverImage}
-                sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                sizes="25vw"
                 quality={50}
-                priority={index < 32}
+                priority={index < 64}
                 onLoadingComplete={() => {
                   setLoadedCount((prev) => prev + 1);
                 }}

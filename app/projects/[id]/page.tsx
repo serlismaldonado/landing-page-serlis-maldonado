@@ -119,7 +119,7 @@ export default function ProjectDetailPage() {
       </button>
 
       {coverUrl && (
-        <div className="relative w-full h-48 md:h-64 lg:h-80 bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+        <div className="relative w-full h-40 md:h-48 lg:h-56 bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
           <Image
             src={coverUrl}
             alt={project.title}

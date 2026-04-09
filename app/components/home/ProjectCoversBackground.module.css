@@ -26,12 +26,7 @@
 .loadingGrid {
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    #000000 0%,
-    #0a0a0d 50%,
-    #000000 100%
-  );
+  background: linear-gradient(90deg, #000000 0%, #0a0a0d 50%, #000000 100%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
@@ -63,12 +58,7 @@
   width: 100%;
   height: 100%;
   border-radius: 0;
-  background: linear-gradient(
-    90deg,
-    #000000 0%,
-    #0a0a0d 50%,
-    #000000 100%
-  );
+  background: linear-gradient(90deg, #000000 0%, #0a0a0d 50%, #000000 100%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
   box-shadow: none;
@@ -121,7 +111,7 @@
 .coverImage {
   object-fit: cover;
   object-position: center;
-  filter: grayscale(100%) brightness(0.7) contrast(1.6);
+  filter: grayscale(100%) brightness(0.6) contrast(1.6) blur(2.5px);
 }
 
 .coverOverlay {
@@ -143,11 +133,11 @@
     min-height: 650%;
     gap: 0;
   }
-  
+
   .coversGrid.animated {
     animation: slideDownTablet 75s linear infinite;
   }
-  
+
   .placeholderGrid {
     animation: slideDownTablet 75s linear infinite;
   }
@@ -171,11 +161,11 @@
     gap: 0;
     padding: 0;
   }
-  
+
   .coversGrid.animated {
     animation: slideDownMobile 75s linear infinite;
   }
-  
+
   .placeholderGrid {
     animation: slideDownMobile 75s linear infinite;
   }
@@ -189,11 +179,11 @@
     min-height: 550%;
     gap: 0;
   }
-  
+
   .coversGrid.animated {
     animation: slideDown75 75s linear infinite;
   }
-  
+
   .placeholderGrid {
     animation: slideDown75 75s linear infinite;
   }

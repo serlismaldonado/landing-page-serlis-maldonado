@@ -125,6 +125,9 @@ export default function ProjectDetailPage() {
             alt={project.title}
             fill
             className="object-cover"
+            style={{
+              filter: 'grayscale(100%) brightness(0.7) contrast(1.6)'
+            }}
             priority
             sizes="100vw"
           />
@@ -132,7 +135,7 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      <div className={`relative -mt-12 py-12 px-4 sm:px-6 font-sans z-10 ${coverUrl ? "" : "py-12"}`}>
+      <div className={`relative -mt-20 py-12 px-4 sm:px-6 font-sans z-10 ${coverUrl ? "" : "py-12"}`}>
         <div className="max-w-7xl mx-auto">
           {!coverUrl && (
             <div className="font-mono text-sm sm:text-base text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-950 rounded-t-lg px-4 py-3 border border-zinc-200 dark:border-zinc-800 border-b-0 mb-0">
@@ -163,41 +166,18 @@ export default function ProjectDetailPage() {
             }`}
           >
             <div className={coverUrl ? "px-4 sm:px-6" : "ml-4 sm:ml-6 mb-8 mr-4 sm:mr-6"}>
-              <div className="mb-4">
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 px-4 sm:px-6">
+              {/* Title */}
+              <div className="lg:col-span-3">
                 <h2 className="font-mono text-2xl md:text-3xl font-bold text-zinc-900 dark:text-gray-300 mb-3">
                   {project.title}
                 </h2>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 font-mono text-sm text-zinc-500 mb-6">
-                {project.date && (
-                  <div className="flex items-center gap-1.5 text-xs">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>{project.date}</span>
-                  </div>
-                )}
-
-                {project.url && project.url !== "#" && (
-                  <a
-                    href={
-                      project.url.startsWith("http")
-                        ? project.url
-                        : `https://${project.url}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-black hover:bg-green-600 transition-colors"
-                    title="Visit project"
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                  </a>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:gap-6 px-4 sm:px-6">
               {/* Gallery */}
-              <div>
+              <div className="">
                 {project.imageUrls && project.imageUrls.length > 0 && (
                   <ProjectGalleryCarousel
                     images={
@@ -210,7 +190,7 @@ export default function ProjectDetailPage() {
               </div>
 
               {/* Content */}
-              <div>
+              <div className="lg:col-span-2">
                 <div className="">
                   <div className="space-y-8">
                 {project.description && (
@@ -265,7 +245,7 @@ export default function ProjectDetailPage() {
                 )}
 
                 {project.intensity && project.intensity > 0 && (
-                  <div>
+                  <div className="flex items-center justify-end gap-4">
                     <div className="flex items-center gap-2">
                       {[1, 2, 3, 4, 5].map((level) => (
                         <div
@@ -281,6 +261,29 @@ export default function ProjectDetailPage() {
                         Level {project.intensity}/5
                       </span>
                     </div>
+
+                    {project.date && (
+                      <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-mono">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{project.date}</span>
+                      </div>
+                    )}
+
+                    {project.url && project.url !== "#" && (
+                      <a
+                        href={
+                          project.url.startsWith("http")
+                            ? project.url
+                            : `https://${project.url}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-black hover:bg-green-600 transition-colors"
+                        title="Visit project"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                   </div>
                 )}
               </div>

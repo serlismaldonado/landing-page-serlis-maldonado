@@ -34,27 +34,52 @@ export default function ProjectGalleryCarousel({
         opts={{
           align: "start",
           loop: true,
-          slidesToScroll: 2,
+          slidesToScroll: 1,
         }}
         className="w-full"
       >
         <CarouselContent>
           {validImages.map((imageUrl, index) => (
-            <CarouselItem key={index} className="basis-1/2">
-              <div className="bg-black rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800">
+            <CarouselItem key={index}>
+              <div className="bg-black overflow-hidden">
                 <button
                   onClick={() => handleImageClick(imageUrl)}
-                  className="relative w-full aspect-video bg-black hover:opacity-90 transition-opacity cursor-pointer group"
+                  className="relative w-full h-96 bg-black hover:opacity-100 opacity-75 transition-opacity cursor-pointer group"
                 >
-                  <Image
-                    src={imageUrl}
-                    alt={`${projectTitle} - Image ${index + 1}`}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 50vw, 25vw"
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      backgroundImage: `url("${imageUrl}")`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      filter: 'blur(40px)',
+                      opacity: 0.4
+                    }}
+                  />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: 'radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 1) 100%)'
+                    }}
+                  />
+                  <div className="absolute inset-0 pointer-events-none">
+                    <Image
+                      src={imageUrl}
+                      alt={`${projectTitle} - Image ${index + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                  </div>
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: 'radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 1) 100%)'
+                    }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                       <svg
                         className="w-8 h-8"
                         fill="none"

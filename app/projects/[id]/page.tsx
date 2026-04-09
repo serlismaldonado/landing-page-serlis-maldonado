@@ -28,78 +28,68 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-white dark:bg-zinc-950 py-12 px-4 sm:px-6 font-sans">
-        <div className="max-w-7xl mx-auto animate-pulse">
-          {/* Cover image skeleton */}
-          <div className="w-full h-48 md:h-64 lg:h-80 bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-0" />
+      <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans">
+        {/* Back button skeleton */}
+        <div className="fixed top-4 left-4 z-50 w-9 h-9 bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse" />
 
-          <div className="relative -mt-12 py-12 px-4 sm:px-6 z-10">
-            <div className="max-w-7xl mx-auto">
-              {/* Header section */}
-              <div className="bg-white dark:bg-zinc-950 rounded-lg px-4 sm:px-6 py-6 mb-4 sm:mb-6">
-                <div className="font-mono">
-                  {/* Title skeleton */}
-                  <div className="h-8 w-2/3 bg-zinc-200 dark:bg-zinc-800 rounded mb-6" />
+        {/* Cover image skeleton */}
+        <div className="w-full h-40 md:h-48 lg:h-56 bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
 
-                  {/* Meta info skeleton (date, eye button) */}
-                  <div className="flex items-center gap-4">
-                    <div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-800 rounded" />
+        <div className="relative -mt-20 py-12 px-4 sm:px-6 z-10 animate-pulse">
+          <div className="max-w-7xl mx-auto">
+            <div className="bg-white dark:bg-zinc-950 rounded-lg px-4 sm:px-6 py-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 px-4 sm:px-6">
+                {/* Title skeleton - full width */}
+                <div className="lg:col-span-3">
+                  <div className="h-8 w-2/3 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                </div>
+
+                {/* Gallery skeleton - carousel */}
+                <div>
+                  <div className="h-48 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                </div>
+
+                {/* Content skeleton */}
+                <div className="lg:col-span-2 space-y-8">
+                  {/* Description lines */}
+                  <div className="space-y-2">
+                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-full" />
+                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-5/6" />
+                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-4/6" />
+                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-full" />
+                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-3/4" />
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="h-6 w-20 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                    ))}
+                  </div>
+
+                  {/* Bottom row: intensity + date + eye button */}
+                  <div className="flex items-center justify-end gap-4">
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <div key={i} className="h-2 w-2 bg-zinc-200 dark:bg-zinc-800 rounded-xs" />
+                      ))}
+                    </div>
+                    <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-800 rounded" />
                     <div className="h-8 w-8 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
                   </div>
                 </div>
               </div>
-
-              {/* Gallery and Content */}
-              <div className="grid grid-cols-1 gap-4 lg:gap-6 px-4 sm:px-6">
-                {/* Gallery skeleton */}
-                <div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="h-48 bg-zinc-200 dark:bg-zinc-800 rounded" />
-                    <div className="h-48 bg-zinc-200 dark:bg-zinc-800 rounded" />
-                  </div>
-                </div>
-
-                {/* Content skeleton */}
-                <div className="space-y-6">
-                  {/* Tags section */}
-                  <div>
-                    <div className="flex flex-wrap gap-2">
-                      {Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} className="h-6 w-20 bg-zinc-200 dark:bg-zinc-800 rounded" />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* About section */}
-                  <div>
-                    <div className="space-y-2">
-                      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-full" />
-                      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-5/6" />
-                      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-4/6" />
-                    </div>
-                  </div>
-
-                  {/* Intensity section */}
-                  <div>
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="h-2 w-2 bg-zinc-200 dark:bg-zinc-800 rounded" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
 
-          {/* Contact section */}
-          <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="text-center space-y-4">
-              <div className="h-4 w-48 bg-zinc-200 dark:bg-zinc-800 rounded mx-auto" />
-              <div className="flex justify-center gap-4">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-10 w-10 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
-                ))}
+            {/* Contact section */}
+            <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="text-center space-y-4">
+                <div className="h-4 w-36 bg-zinc-200 dark:bg-zinc-800 rounded mx-auto" />
+                <div className="flex justify-center gap-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="h-10 w-10 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+                  ))}
+                </div>
               </div>
             </div>
           </div>

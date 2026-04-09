@@ -40,8 +40,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
-              <span className="text-green-600 dark:text-green-500">$</span> ls
-              -la proyectos/
+              Proyectos
             </h2>
             <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto">
               Explora mis proyectos y contribuciones técnicas

@@ -111,7 +111,7 @@
 .coverImage {
   object-fit: cover;
   object-position: center;
-  filter: grayscale(100%) brightness(0.6) contrast(1.6) blur(2.5px);
+  filter: grayscale(100%) brightness(0.6) contrast(1.6);
 }
 
 .coverOverlay {

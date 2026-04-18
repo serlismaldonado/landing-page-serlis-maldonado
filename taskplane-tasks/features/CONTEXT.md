@@ -1,7 +1,7 @@
 # Features Area Context
 
 **Prefix:** FEAT
-**Next Task ID:** 002
+**Next Task ID:** 003
 
 ## Guidelines
 - Tasks should follow the SDD workflow when applicable

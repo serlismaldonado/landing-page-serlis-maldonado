@@ -1,0 +1,77 @@
+export const metadata = {
+  title: 'Cómo combinar Next.js MDX con Convex',
+  description: 'Posts estáticos en MDX + datos dinámicos en Convex: cómo conviven sin conflictos en un portfolio.',
+  date: '2026-05-15',
+  tags: ['nextjs', 'convex', 'mdx'],
+  author: 'Serlis Maldonado',
+}
+
+# Cómo combinar Next.js MDX con Convex
+
+MDX maneja el contenido estático. Convex maneja todo lo dinámico. No se pisan.
+
+## La idea central
+
+Los archivos `.mdx` viven en el repositorio como texto plano. No necesitan una base de datos para existir. Convex entra cuando quieres añadir comportamiento real-time encima:
+
+| Qué necesitas | Cómo hacerlo |
+|---|---|
+| Contenido del post | Archivo `.mdx` en `content/blog/` |
+| Contador de vistas | Mutation en Convex al cargar la página |
+| Comentarios | Tabla `comments` en Convex con `slug` como FK |
+| Autores | Relacionar `metadata.author` con tabla `users` |
+
+## Estructura de archivos
+
+```
+content/
+  blog/
+    mi-post.mdx       ← contenido + metadata estático
+lib/
+  blog.ts             ← lee archivos MDX con dynamic import
+app/
+  blog/
+    page.tsx          ← lista de posts (Server Component)
+    [slug]/
+      page.tsx        ← post individual + componentes Convex
+```
+
+## Dynamic imports para metadata
+
+La clave está en cómo se leen los posts. En lugar de parsear frontmatter con `gray-matter`, exportamos `metadata` directamente desde cada `.mdx`:
+
+```ts
+// lib/blog.ts
+const { metadata } = await import(`@/content/blog/${slug}.mdx`)
+```
+
+Esto funciona porque Next.js compila los `.mdx` como módulos JavaScript normales. El `export const metadata` se convierte en una exportación estándar que puedes importar.
+
+## Añadir vistas con Convex
+
+Un Client Component dentro del Server Component del post:
+
+```tsx
+// components/PostViews.tsx
+'use client'
+import { useMutation, useQuery } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { useEffect } from 'react'
+
+export function PostViews({ slug }: { slug: string }) {
+  const views = useQuery(api.blog.getViews, { slug })
+  const incrementViews = useMutation(api.blog.incrementViews)
+
+  useEffect(() => {
+    incrementViews({ slug })
+  }, [slug])
+
+  return (
+    <span className="font-mono text-xs text-zinc-500">
+      {views ?? '—'} vistas
+    </span>
+  )
+}
+```
+
+Sin fricción. El contenido es estático, los datos son reactivos.

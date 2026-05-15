@@ -1,4 +1,5 @@
 {
+  "nodeModules": ["resend"],
   "compiler": "tsc",
   "project": "convex",
   "typeCheck": true,

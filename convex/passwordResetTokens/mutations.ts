@@ -1,41 +1,35 @@
-import { mutation } from "./_generated/server";
-import { v } from "convex/values";
-import { passwordResetTokens } from "./schema";
-import { Resend } from "resend";
-import { randomBytes } from "crypto";
+"use node";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { action } from "../_generated/server";
+import { v } from "convex/values";
+import { Resend } from "resend";
+import { ConvexError } from "convex/values";
+import { internal } from "../_generated/api";
+import { hashPassword } from "better-auth/crypto";
 
 function generateOTP(): string {
-  return randomBytes(3).toString("hex").toUpperCase();
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
-export const requestReset = mutation({
+export const requestReset = action({
   args: { email: v.string() },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+  }),
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("accounts")
-      .filter((q) => q.eq(q.field("email"), args.email))
-      .first();
-
-    if (!user) {
-      return { success: true, message: "Si el email existe, recibirás un código" };
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error("[requestReset] RESEND_API_KEY is undefined");
+      throw new ConvexError("No se pudo enviar el email. Intentá más tarde.");
     }
 
-    const existingTokens = await ctx.db
-      .query("passwordResetTokens")
-      .withIndex("by_email", (q) => q.eq("email", args.email))
-      .filter((q) => q.eq(q.field("usedAt"), undefined))
-      .collect();
-
-    for (const token of existingTokens) {
-      await ctx.db.delete(token._id);
-    }
+    const resend = new Resend(apiKey);
 
     const otp = generateOTP();
     const expiresAt = Date.now() + 10 * 60 * 1000;
 
-    await ctx.db.insert("passwordResetTokens", {
+    await ctx.runMutation(internal.passwordResetTokens.internal._createToken, {
       email: args.email,
       token: otp,
       expiresAt,
@@ -52,61 +46,135 @@ export const requestReset = mutation({
       </div>
     `;
 
-    await resend.emails.send({
+    const emailResult = await resend.emails.send({
       from: "Serlis <hola@serlismaldonado.com>",
       to: args.email,
       subject: "Código para restablecer contraseña",
       html,
     });
 
-    return { success: true, message: "Si el email existe, recibirás un código" };
+    console.log("[requestReset] Email result:", JSON.stringify(emailResult));
+
+    if (emailResult.error || !emailResult.data) {
+      console.error("[requestReset] Email send failed:", emailResult.error);
+      throw new ConvexError("No se pudo enviar el email. Intentá más tarde.");
+    }
+
+    return {
+      success: true,
+      message: "Si el email existe, recibirás un código",
+    };
   },
 });
 
-export const verifyAndReset = mutation({
+export const verifyCode = action({
+  args: {
+    email: v.string(),
+    token: v.string(),
+  },
+  returns: v.object({
+    valid: v.boolean(),
+    error: v.optional(v.string()),
+  }),
+  handler: async (ctx, args) => {
+    const tokens = await ctx.runQuery(
+      internal.passwordResetTokens.internal._listTokens,
+      {
+        email: args.email,
+      },
+    );
+
+    const resetToken = tokens.find((t) => t.token === args.token && !t.usedAt);
+
+    if (!resetToken) {
+      return { valid: false, error: "Código inválido o expirado" };
+    }
+
+    if (resetToken.expiresAt < Date.now()) {
+      await ctx.runMutation(internal.passwordResetTokens.internal._markUsed, {
+        id: resetToken._id,
+      });
+      return { valid: false, error: "El código ha expirado" };
+    }
+
+    return { valid: true };
+  },
+});
+
+export const verifyAndReset = action({
   args: {
     email: v.string(),
     token: v.string(),
     newPassword: v.string(),
   },
+  returns: v.object({
+    success: v.boolean(),
+    error: v.optional(v.string()),
+    message: v.optional(v.string()),
+  }),
   handler: async (ctx, args) => {
     if (args.newPassword.length < 8) {
-      return { success: false, error: "La contraseña debe tener al menos 8 caracteres" };
+      return {
+        success: false,
+        error: "La contraseña debe tener al menos 8 caracteres",
+      };
     }
 
-    const resetToken = await ctx.db
-      .query("passwordResetTokens")
-      .withIndex("by_email", (q) => q.eq("email", args.email))
-      .filter((q) => q.eq(q.field("token"), args.token))
-      .filter((q) => q.eq(q.field("usedAt"), undefined))
-      .first();
+    const tokens = await ctx.runQuery(
+      internal.passwordResetTokens.internal._listTokens,
+      {
+        email: args.email,
+      },
+    );
+
+    const resetToken = tokens.find((t) => t.token === args.token && !t.usedAt);
 
     if (!resetToken) {
       return { success: false, error: "Código inválido o expirado" };
     }
 
     if (resetToken.expiresAt < Date.now()) {
-      await ctx.db.delete(resetToken._id);
+      await ctx.runMutation(internal.passwordResetTokens.internal._markUsed, {
+        id: resetToken._id,
+      });
       return { success: false, error: "El código ha expirado" };
     }
 
-    const account = await ctx.db
-      .query("accounts")
-      .filter((q) => q.eq(q.field("email"), args.email))
-      .first();
+    // Find the user's credential account
+    const account: {
+      _id: string;
+      userId: string;
+      password?: string | null;
+      providerId: string;
+    } | null = await ctx.runQuery(
+      internal.passwordResetTokens.internal._findAccountByEmail,
+      { email: args.email },
+    );
 
     if (!account) {
-      return { success: false, error: "Usuario no encontrado" };
+      return {
+        success: false,
+        error: "No se encontró una cuenta para este email",
+      };
     }
 
-    await ctx.db.patch(account._id, {
-      password: args.newPassword,
+    // Hash the new password using Better Auth's hashing
+    const hashedPassword = await hashPassword(args.newPassword);
+
+    // Update the account password via the auth component adapter
+    await ctx.runMutation(
+      internal.passwordResetTokens.internal._updateAccountPassword,
+      {
+        accountId: account._id,
+        password: hashedPassword,
+      },
+    );
+
+    // Mark token as used
+    await ctx.runMutation(internal.passwordResetTokens.internal._markUsed, {
+      id: resetToken._id,
     });
 
-    await ctx.db.patch(resetToken._id, {
-      usedAt: Date.now(),
-    });
-
-    return { success: true };
+    return { success: true, message: "Contraseña actualizada" };
   },
 });

@@ -1,41 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { EmailEditor } from "@react-email/editor";
 import "@react-email/editor/themes/default.css";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-interface TemplateData {
-  id?: string;
-  name: string;
-  subject: string;
-  content: string;
-  type: "newsletter" | "confirmation" | "custom";
-}
+type TemplateType = "newsletter" | "confirmation" | "custom";
 
 export default function EmailEditorPage() {
   const [content, setContent] = useState("");
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
-  const [type, setType] = useState<"newsletter" | "confirmation" | "custom">("custom");
-  const [templates, setTemplates] = useState<TemplateData[]>([]);
+  const [type, setType] = useState<TemplateType>("custom");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetchTemplates();
-  }, []);
-
-  const fetchTemplates = async () => {
-    try {
-      const res = await fetch("/api/email-templates");
-      const data = await res.json();
-      if (data.templates) {
-        setTemplates(data.templates);
-      }
-    } catch (error) {
-      console.error("Error fetching templates:", error);
-    }
-  };
+  const templates = useQuery(api.emailTemplates.queries.list, {}) ?? [];
+  const createTemplate = useMutation(api.emailTemplates.mutations.create);
 
   const handleSave = async () => {
     if (!name || !subject || !content) {
@@ -45,28 +28,24 @@ export default function EmailEditorPage() {
 
     setSaving(true);
     try {
-      const res = await fetch("/api/email-templates", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, subject, content, type }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("Guardado!");
-        setName("");
-        setSubject("");
-        setContent("");
-        fetchTemplates();
-      } else {
-        setMessage(data.error || "Error al guardar");
-      }
-    } catch (error) {
-      setMessage("Error de conexión");
+      await createTemplate({ name, subject, content, type });
+      setMessage("Guardado!");
+      setName("");
+      setSubject("");
+      setContent("");
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Error al guardar";
+      setMessage(msg);
     }
     setSaving(false);
   };
 
-  const loadTemplate = (template: TemplateData) => {
+  const loadTemplate = (template: {
+    name: string;
+    subject: string;
+    content: string;
+    type: TemplateType;
+  }) => {
     setName(template.name);
     setSubject(template.subject);
     setContent(template.content);
@@ -74,199 +53,94 @@ export default function EmailEditorPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>Email Editor</h1>
-        <a href="/" style={styles.backLink}>← Volver</a>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
+      <header className="flex justify-between items-center px-6 py-4 border-b border-zinc-800">
+        <h1 className="font-mono text-xl font-bold text-green-500">
+          Email Editor
+        </h1>
+        <Link
+          href="/"
+          className="font-mono text-sm text-zinc-500 hover:text-zinc-300"
+        >
+          ← Volver
+        </Link>
       </header>
 
-      <div style={styles.layout}>
-        <aside style={styles.sidebar}>
-          <div style={styles.sidebarSection}>
-            <h2 style={styles.sectionTitle}>Nuevo / Editar</h2>
+      <div className="flex flex-1 min-h-0">
+        <aside className="w-[300px] border-r border-zinc-800 overflow-y-auto p-4">
+          <div className="mb-6">
+            <h2 className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">
+              Nuevo / Editar
+            </h2>
             <input
               type="text"
               placeholder="Nombre del template"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              style={styles.input}
+              className="w-full px-3 py-2.5 bg-zinc-900 border border-zinc-800 rounded-md text-zinc-100 font-mono text-sm mb-2 outline-none focus:ring-2 focus:ring-green-500"
             />
             <input
               type="text"
               placeholder="Subject del email"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              style={styles.input}
+              className="w-full px-3 py-2.5 bg-zinc-900 border border-zinc-800 rounded-md text-zinc-100 font-mono text-sm mb-2 outline-none focus:ring-2 focus:ring-green-500"
             />
             <select
               value={type}
-              onChange={(e) => setType(e.target.value as any)}
-              style={styles.select}
+              onChange={(e) => setType(e.target.value as TemplateType)}
+              className="w-full px-3 py-2.5 bg-zinc-900 border border-zinc-800 rounded-md text-zinc-100 font-mono text-sm mb-2 outline-none focus:ring-2 focus:ring-green-500"
             >
               <option value="newsletter">Newsletter</option>
-              <option value="confirmation">Confirmación</option>
+              <option value="confirmation">Confirmacion</option>
               <option value="custom">Custom</option>
             </select>
             <button
               onClick={handleSave}
               disabled={saving}
-              style={styles.saveButton}
+              className="w-full py-3 bg-green-500 border-0 rounded-md text-zinc-950 font-mono text-sm font-bold cursor-pointer hover:bg-green-400 transition-colors disabled:opacity-50"
             >
               {saving ? "Guardando..." : "Guardar Template"}
             </button>
-            {message && <p style={styles.message}>{message}</p>}
+            {message && (
+              <p className="font-mono text-xs text-green-500 mt-2">{message}</p>
+            )}
           </div>
 
-          <div style={styles.sidebarSection}>
-            <h2 style={styles.sectionTitle}>Templates</h2>
-            <div style={styles.templateList}>
+          <div>
+            <h2 className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">
+              Templates
+            </h2>
+            <div className="flex flex-col gap-2">
               {templates.map((t) => (
                 <button
-                  key={t.id}
+                  key={t._id}
                   onClick={() => loadTemplate(t)}
-                  style={styles.templateItem}
+                  className="px-3 py-2.5 bg-zinc-900 border border-zinc-800 rounded-md text-zinc-100 font-mono text-sm text-left cursor-pointer hover:bg-zinc-800 transition-colors"
                 >
                   {t.name}
                 </button>
               ))}
               {templates.length === 0 && (
-                <p style={styles.emptyText}>No hay templates aún</p>
+                <p className="font-mono text-xs text-zinc-600">
+                  No hay templates aun
+                </p>
               )}
             </div>
           </div>
         </aside>
 
-        <main style={styles.editorContainer}>
+        <main className="flex-1 overflow-hidden min-h-0">
           <EmailEditor
-            appearance={{
-              theme: "dark",
-              panels: {
-                tools: {
-                  panel: ["Text", "Image", "Button", "Divider", "Spacer"],
-                },
-              },
-            }}
+            theme="minimal"
+            className="w-full h-full"
             content={content}
-            onChange={(c) => setContent(c)}
+            onUpdate={(ref) => {
+              ref.getEmailHTML().then(setContent);
+            }}
           />
         </main>
       </div>
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    minHeight: "100vh",
-    backgroundColor: "#0a0a0a",
-    color: "#ededed",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "16px 24px",
-    borderBottom: "1px solid #27272a",
-  },
-  title: {
-    fontSize: "20px",
-    fontWeight: "bold",
-    fontFamily: "monospace",
-    color: "#22c55e",
-    margin: 0,
-  },
-  backLink: {
-    color: "#71717a",
-    textDecoration: "none",
-    fontFamily: "monospace",
-    fontSize: "14px",
-  },
-  layout: {
-    display: "flex",
-    height: "calc(100vh - 65px)",
-  },
-  sidebar: {
-    width: "300px",
-    borderRight: "1px solid #27272a",
-    overflowY: "auto",
-    padding: "16px",
-  },
-  sidebarSection: {
-    marginBottom: "24px",
-  },
-  sectionTitle: {
-    fontSize: "12px",
-    fontWeight: "bold",
-    color: "#71717a",
-    textTransform: "uppercase",
-    letterSpacing: "0.05em",
-    marginBottom: "12px",
-  },
-  input: {
-    width: "100%",
-    padding: "10px 12px",
-    backgroundColor: "#18181b",
-    border: "1px solid #27272a",
-    borderRadius: "6px",
-    color: "#ededed",
-    fontSize: "14px",
-    fontFamily: "monospace",
-    marginBottom: "8px",
-    boxSizing: "border-box",
-  },
-  select: {
-    width: "100%",
-    padding: "10px 12px",
-    backgroundColor: "#18181b",
-    border: "1px solid #27272a",
-    borderRadius: "6px",
-    color: "#ededed",
-    fontSize: "14px",
-    fontFamily: "monospace",
-    marginBottom: "8px",
-    boxSizing: "border-box",
-  },
-  saveButton: {
-    width: "100%",
-    padding: "12px",
-    backgroundColor: "#22c55e",
-    border: "none",
-    borderRadius: "6px",
-    color: "#0a0a0a",
-    fontSize: "14px",
-    fontWeight: "bold",
-    fontFamily: "monospace",
-    cursor: "pointer",
-  },
-  message: {
-    fontSize: "12px",
-    color: "#22c55e",
-    marginTop: "8px",
-    fontFamily: "monospace",
-  },
-  templateList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-  },
-  templateItem: {
-    padding: "10px 12px",
-    backgroundColor: "#18181b",
-    border: "1px solid #27272a",
-    borderRadius: "6px",
-    color: "#ededed",
-    fontSize: "14px",
-    fontFamily: "monospace",
-    textAlign: "left",
-    cursor: "pointer",
-  },
-  emptyText: {
-    fontSize: "12px",
-    color: "#52525b",
-    fontFamily: "monospace",
-  },
-  editorContainer: {
-    flex: 1,
-    overflow: "hidden",
-  },
-};

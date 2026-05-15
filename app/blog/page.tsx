@@ -2,6 +2,8 @@ import { getAllPosts } from '@/lib/blog'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Blog — Serlis Maldonado',
   description: 'Notas técnicas, proceso y herramientas.',

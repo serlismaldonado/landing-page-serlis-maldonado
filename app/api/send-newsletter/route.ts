@@ -15,10 +15,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Slug requerido' }, { status: 400 })
   }
 
-  const segmentId = process.env.RESEND_SEGMENT_ID || process.env.RESEND_AUDIENCE_ID
-  console.log('[send-newsletter] segmentId:', segmentId ? 'set' : 'MISSING')
-  if (!segmentId) {
-    return NextResponse.json({ error: 'RESEND_SEGMENT_ID no configurado' }, { status: 500 })
+  const audienceId = process.env.RESEND_AUDIENCE_ID || process.env.RESEND_SEGMENT_ID
+  console.log('[send-newsletter] audienceId:', audienceId ? 'set' : 'MISSING')
+  if (!audienceId) {
+    return NextResponse.json({ error: 'RESEND_AUDIENCE_ID no configurado' }, { status: 500 })
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://serlismaldonado.com'
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   console.log('[send-newsletter] html rendered, length:', html.length)
 
   const { data: created, error: createError } = await resend.broadcasts.create({
-    segmentId,
+    audienceId,
     from: 'Serlis Maldonado <blog@serlismaldonado.com>',
     subject: metadata.title,
     html,

@@ -9,12 +9,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Email inválido' }, { status: 400 })
   }
 
-  const segmentId = process.env.RESEND_SEGMENT_ID || process.env.RESEND_AUDIENCE_ID
+  const audienceId = process.env.RESEND_AUDIENCE_ID || process.env.RESEND_SEGMENT_ID
 
   const { error } = await resend.contacts.create({
     email,
     unsubscribed: false,
-    ...(segmentId ? { segments: [{ id: segmentId }] } : {}),
+    ...(audienceId ? { audienceId } : {}),
   })
 
   if (error) {

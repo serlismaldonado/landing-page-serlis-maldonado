@@ -16,6 +16,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import ProjectFormModal from "@/app/components/projects/ProjectFormModal";
 
 interface FormData {
@@ -216,6 +217,18 @@ export default function AdminPage() {
             Admin Dashboard
           </h1>
           <div className="flex items-center gap-4">
+            <Link
+              href="/admin/newsletter"
+              className="font-mono text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              newsletter
+            </Link>
+            <Link
+              href="/admin/email-editor"
+              className="font-mono text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              email editor
+            </Link>
             <span className="font-mono text-sm text-zinc-500">
               {user.name || user.email}
             </span>

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import Image from 'next/image'
+import { NewsletterForm } from '@/app/components/blog/NewsletterForm'
 
 export const revalidate = 60
 
@@ -42,7 +43,22 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      <article className="max-w-[680px] mx-auto px-6 pt-12 pb-20">
+      {metadata.coverImage && (
+        <div className="relative w-full h-48 md:h-64 bg-zinc-900 overflow-hidden">
+          <Image
+            src={metadata.coverImage}
+            alt={metadata.title}
+            fill
+            className="object-cover"
+            style={{ filter: 'grayscale(100%) brightness(0.7) contrast(1.6)' }}
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-zinc-950" />
+        </div>
+      )}
+
+      <article className={`max-w-[680px] mx-auto px-6 pb-20 ${metadata.coverImage ? '-mt-16 relative z-10' : 'pt-12'}`}>
         <Link
           href="/blog"
           className="font-mono text-xs text-zinc-600 hover:text-zinc-400 transition-colors mb-8 inline-block"
@@ -114,7 +130,9 @@ export default async function PostPage({ params }: Props) {
           </ReactMarkdown>
         </div>
 
-        <hr className="border-zinc-800/60 mt-16 mb-8" />
+        <NewsletterForm />
+
+        <hr className="border-zinc-800/60 mt-12 mb-8" />
 
         <Link
           href="/blog"

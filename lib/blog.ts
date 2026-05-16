@@ -11,6 +11,7 @@ export type PostMetadata = {
   date: string
   tags?: string[]
   author?: string
+  coverImage?: string
 }
 
 export type Post = {
@@ -59,7 +60,15 @@ function pageToPost(page: PageObjectResponse): Post {
       ? extractText(authorProp.rich_text)
       : undefined
 
-  return { slug, metadata: { title, description, date, tags, author } }
+  const cover = page.cover
+  const coverImage =
+    cover?.type === 'external'
+      ? cover.external.url
+      : cover?.type === 'file'
+        ? cover.file.url
+        : undefined
+
+  return { slug, metadata: { title, description, date, tags, author, coverImage } }
 }
 
 export async function getAllPosts(): Promise<Post[]> {

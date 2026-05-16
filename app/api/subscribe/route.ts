@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   })
 
   if (error) {
+    console.error('[subscribe] Resend error:', JSON.stringify(error))
     return NextResponse.json({ error: 'Error al suscribirse' }, { status: 500 })
   }
 

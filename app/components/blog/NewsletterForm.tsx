@@ -42,7 +42,7 @@ export function NewsletterForm() {
           Suscrito correctamente.
         </p>
       ) : (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
           <input
             type="email"
             required
@@ -55,7 +55,7 @@ export function NewsletterForm() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="bg-white text-zinc-900 text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="bg-white text-zinc-900 text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 whitespace-nowrap sm:w-auto w-full"
           >
             {status === 'loading' ? 'Enviando...' : 'Suscribirme'}
           </button>

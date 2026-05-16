@@ -8,15 +8,21 @@ export function NewsletterForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
     setStatus('loading')
 
-    const res = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    })
-
-    setStatus(res.ok ? 'success' : 'error')
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      setStatus(res.ok ? 'success' : 'error')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (

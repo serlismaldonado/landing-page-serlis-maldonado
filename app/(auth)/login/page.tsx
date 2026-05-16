@@ -1,245 +1,146 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
-import type { ErrorContext } from "better-auth/react";
 
-export default function AuthPage() {
+export default function LoginPage() {
   const router = useRouter();
+  const [step, setStep] = useState<"email" | "otp">("email");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [allowPublicUser, setAllowPublicUser] = useState(false);
 
-  useEffect(() => {
-    // Check if registration is allowed via API
-    const checkRegistrationStatus = async () => {
-      try {
-        const response = await fetch("/api/auth/registration-status");
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setAllowPublicUser(data.allowPublicUser || false);
-        } else {
-          console.error(
-            "Failed to fetch registration status:",
-            response.status,
-          );
-          setAllowPublicUser(false);
-        }
-      } catch (err) {
-        console.error("Error checking registration status:", err);
-        setAllowPublicUser(false);
-      }
-    };
-
-    checkRegistrationStatus();
-  }, []);
-
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    await authClient.signIn.email(
-      { email, password },
-      {
-        onRequest: () => {
-          setLoading(true);
-        },
-        onSuccess: () => {
-          router.push("/admin");
-        },
-        onError: (ctx: ErrorContext) => {
-          setLoading(false);
-          setError(ctx.error.message);
-        },
-      },
-    );
-  };
+    const { error } = await authClient.emailOtp.sendVerificationOtp({
+      email,
+      type: "sign-in",
+    });
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    // Validate name field for registration
-    if (isRegistering && (!name || name.trim().length === 0)) {
+    if (error) {
+      setError(error.message ?? "Error al enviar el código");
       setLoading(false);
-      setError("Name is required for registration");
       return;
     }
 
-    try {
-      const result = await authClient.signUp.email({
-        email,
-        password,
-        name: name.trim(),
-      });
+    setStep("otp");
+    setLoading(false);
+  };
 
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-      // After successful registration, automatically sign in
-      await authClient.signIn.email(
-        { email, password },
-        {
-          onRequest: () => {
-            setLoading(true);
-          },
-          onSuccess: () => {
-            router.push("/admin");
-          },
-          onError: (ctx: ErrorContext) => {
-            setLoading(false);
-            setError(
-              "Registration successful but login failed: " + ctx.error.message,
-            );
-          },
-        },
-      );
-    } catch (error) {
+    const { error } = await authClient.signIn.emailOtp(
+      { email, otp },
+      { onSuccess: () => router.push("/admin") },
+    );
+
+    if (error) {
+      setError(error.message ?? "Código incorrecto o expirado");
       setLoading(false);
-      setError(error instanceof Error ? error.message : "Registration failed");
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center px-4">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <h1 className="font-mono text-2xl font-bold text-zinc-900 dark:text-white">
-            {isRegistering ? "Create Account" : "Sign In"}
-          </h1>
-          <p className="font-mono text-sm text-zinc-500 mt-2">
-            {isRegistering
-              ? "Create a new admin account"
-              : "Sign in to access the admin panel"}
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
+      <div className="max-w-sm w-full">
+        <div className="mb-8">
+          <p className="font-mono text-xs text-zinc-600 mb-4">
+            serlismaldonado.com
           </p>
-
-          {allowPublicUser && (
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-              <p className="font-mono text-xs text-blue-700 dark:text-blue-300">
-                {isRegistering
-                  ? "Registration is enabled. Create your admin account below."
-                  : "Registration is enabled. Need an account?"}
-              </p>
-              {!isRegistering && (
-                <button
-                  type="button"
-                  onClick={() => setIsRegistering(true)}
-                  className="mt-2 font-mono text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
-                >
-                  Create new account
-                </button>
-              )}
-            </div>
-          )}
-
-          {isRegistering && (
-            <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-              <p className="font-mono text-xs text-amber-700 dark:text-amber-300">
-                Already have an account?
-              </p>
-              <button
-                type="button"
-                onClick={() => setIsRegistering(false)}
-                className="mt-2 font-mono text-xs text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 underline"
-              >
-                Sign in instead
-              </button>
-            </div>
-          )}
+          <h1 className="font-mono text-xl font-bold text-white">
+            {step === "email" ? "Iniciar sesión" : "Revisá tu email"}
+          </h1>
+          <p className="font-mono text-sm text-zinc-500 mt-1">
+            {step === "email"
+              ? "Te enviamos un código de acceso."
+              : `Código enviado a ${email}`}
+          </p>
         </div>
 
-        <form
-          onSubmit={isRegistering ? handleRegister : handleSignIn}
-          className="bg-white dark:bg-zinc-900 rounded-xl p-6 border border-zinc-200 dark:border-zinc-800"
-        >
+        <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
           {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-sm text-red-600 dark:text-red-400 font-mono">
-                {error}
-              </p>
+            <div className="mb-4 p-3 bg-red-900/20 border border-red-800 rounded-lg">
+              <p className="text-sm text-red-400 font-mono">{error}</p>
             </div>
           )}
 
-          <div className="mb-4">
-            <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="email@example.com"
-              required
-            />
-          </div>
+          {step === "email" ? (
+            <form onSubmit={handleSendOtp}>
+              <div className="mb-4">
+                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-wide mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-2.5 font-mono text-sm bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors"
+                  placeholder="tu@email.com"
+                  required
+                  autoFocus
+                />
+              </div>
 
-          {isRegistering && (
-            <div className="mb-4">
-              <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Your Name"
-                required
-                minLength={1}
-              />
-            </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2.5 px-4 bg-white text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                {loading ? "Enviando..." : "Enviar código"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp}>
+              <div className="mb-4">
+                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-wide mb-2">
+                  Código de 6 dígitos
+                </label>
+                <input
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  className="w-full px-4 py-2.5 font-mono text-2xl bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors text-center tracking-[0.5em]"
+                  placeholder="——————"
+                  maxLength={6}
+                  required
+                  autoFocus
+                  inputMode="numeric"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || otp.length < 6}
+                className="w-full py-2.5 px-4 bg-white text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                {loading ? "Verificando..." : "Ingresar"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("email");
+                  setOtp("");
+                  setError("");
+                }}
+                className="w-full mt-3 py-2 font-mono text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+              >
+                Cambiar email
+              </button>
+            </form>
           )}
-
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300">
-                Password
-              </label>
-              {!isRegistering && (
-                <Link
-                  href="/forgot-password"
-                  className="font-mono text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                >
-                  Olvidaste tu contraseña?
-                </Link>
-              )}
-            </div>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="••••••••"
-              required
-              minLength={8}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 px-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading
-              ? "Loading..."
-              : isRegistering
-                ? "Create Account"
-                : "Sign In"}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

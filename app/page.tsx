@@ -6,6 +6,7 @@ import CallToAction from "./components/home/CallToAction";
 import TerminalAnimated from "./components/home/AnimatedTerminal";
 import ContactLinks from "./components/home/ContactLinks";
 import ProjectCoversBackground from "./components/home/ProjectCoversBackground";
+import { BlogSection } from "./components/home/BlogSection";
 
 export default function Home() {
   const chevronDown = `▼ ▼ ▼`;
@@ -49,6 +50,9 @@ export default function Home() {
           <SearchGrid />
         </div>
       </div>
+
+      {/* Blog Section */}
+      <BlogSection />
 
       {/* Contributions Section */}
       <div className="py-16 px-6 bg-gradient-to-b from-zinc-900/30 to-zinc-900/20">

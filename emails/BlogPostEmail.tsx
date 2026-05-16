@@ -1,6 +1,7 @@
 import {
   Body,
   Button,
+  Column,
   Container,
   Head,
   Heading,
@@ -8,6 +9,7 @@ import {
   Html,
   Img,
   Preview,
+  Row,
   Section,
   Text,
   Link,
@@ -67,16 +69,20 @@ export function BlogPostEmail({
             <Heading style={titleStyle}>{title}</Heading>
 
             {/* Author */}
-            <Section style={authorSection}>
-              <Img
-                src={`${siteUrl}/avatar.jpg`}
-                alt="Serlis Maldonado"
-                width="28"
-                height="28"
-                style={avatarStyle}
-              />
-              <Text style={authorName}>Serlis Maldonado</Text>
-            </Section>
+            <Row style={authorSection}>
+              <Column style={{ width: '38px' }}>
+                <Img
+                  src={`${siteUrl}/avatar.jpg`}
+                  alt="Serlis Maldonado"
+                  width="28"
+                  height="28"
+                  style={avatarStyle}
+                />
+              </Column>
+              <Column>
+                <Text style={authorName}>Serlis Maldonado</Text>
+              </Column>
+            </Row>
 
             {/* Description */}
             <Text style={descriptionStyle}>{description}</Text>
@@ -244,23 +250,18 @@ const unsubscribeLink = {
 }
 
 const authorSection = {
-  display: 'flex',
-  alignItems: 'center',
   marginBottom: '24px',
 }
 
 const avatarStyle = {
   borderRadius: '50%',
-  display: 'inline-block',
-  verticalAlign: 'middle',
-  marginRight: '10px',
+  display: 'block',
 }
 
 const authorName = {
-  display: 'inline-block',
-  verticalAlign: 'middle',
   fontSize: '13px',
   color: '#a1a1aa',
   margin: '0',
   fontWeight: '500' as const,
+  lineHeight: '28px',
 }

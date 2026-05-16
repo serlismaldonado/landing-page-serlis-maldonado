@@ -12,7 +12,7 @@ export async function BlogSection() {
 
   return (
     <div className="py-16 px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-end justify-between mb-8">
           <div>
             <p className="font-mono text-xs text-zinc-600 uppercase tracking-wide mb-2">

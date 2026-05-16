@@ -4,9 +4,8 @@ import { getPost } from '@/lib/blog'
 import { render } from '@react-email/components'
 import { BlogPostEmail } from '@/emails/BlogPostEmail'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const { slug } = await request.json()
 
   if (!slug || typeof slug !== 'string') {

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Slug requerido' }, { status: 400 })
   }
 
-  const segmentId = process.env.RESEND_SEGMENT_ID
+  const segmentId = process.env.RESEND_SEGMENT_ID || process.env.RESEND_AUDIENCE_ID
   console.log('[send-newsletter] segmentId:', segmentId ? 'set' : 'MISSING')
   if (!segmentId) {
     return NextResponse.json({ error: 'RESEND_SEGMENT_ID no configurado' }, { status: 500 })

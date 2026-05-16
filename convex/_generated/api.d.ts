@@ -9,7 +9,14 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as emailTemplates_index from "../emailTemplates/index.js";
+import type * as emailTemplates_mutations from "../emailTemplates/mutations.js";
+import type * as emailTemplates_queries from "../emailTemplates/queries.js";
 import type * as http from "../http.js";
+import type * as passwordResetTokens_index from "../passwordResetTokens/index.js";
+import type * as passwordResetTokens_internal from "../passwordResetTokens/internal.js";
+import type * as passwordResetTokens_mutations from "../passwordResetTokens/mutations.js";
+import type * as passwordResetTokens_queries from "../passwordResetTokens/queries.js";
 import type * as projects_index from "../projects/index.js";
 import type * as projects_mutations from "../projects/mutations.js";
 import type * as projects_queries from "../projects/queries.js";
@@ -22,7 +29,14 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  "emailTemplates/index": typeof emailTemplates_index;
+  "emailTemplates/mutations": typeof emailTemplates_mutations;
+  "emailTemplates/queries": typeof emailTemplates_queries;
   http: typeof http;
+  "passwordResetTokens/index": typeof passwordResetTokens_index;
+  "passwordResetTokens/internal": typeof passwordResetTokens_internal;
+  "passwordResetTokens/mutations": typeof passwordResetTokens_mutations;
+  "passwordResetTokens/queries": typeof passwordResetTokens_queries;
   "projects/index": typeof projects_index;
   "projects/mutations": typeof projects_mutations;
   "projects/queries": typeof projects_queries;

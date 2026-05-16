@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import type { ErrorContext } from "better-auth/react";
 
 export default function AuthPage() {
@@ -202,9 +203,19 @@ export default function AuthPage() {
           )}
 
           <div className="mb-6">
-            <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300">
+                Password
+              </label>
+              {!isRegistering && (
+                <Link
+                  href="/forgot-password"
+                  className="font-mono text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                >
+                  Olvidaste tu contraseña?
+                </Link>
+              )}
+            </div>
             <input
               type="password"
               value={password}

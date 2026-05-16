@@ -21,12 +21,12 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
       enabled: true,
       requireEmailVerification: false,
     },
-    // trustedOrigins: [
-    //   "https://www.serlismaldonado.com",
-    //   "https://serlismaldonado.com",
-    //   "http://localhost:3000",
-    //   "http://localhost:3001",
-    // ],
+    trustedOrigins: [
+      "https://www.serlismaldonado.com",
+      "https://serlismaldonado.com",
+      "http://localhost:3000",
+      "http://localhost:3001",
+    ],
     plugins: [
       // The Convex plugin is required for Convex compatibility
       convex({ authConfig }),

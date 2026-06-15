@@ -1,18 +1,18 @@
-import { getAllPosts } from '@/lib/blog'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import { NewsletterForm } from '@/app/components/blog/NewsletterForm'
+import { getAllPosts } from "@/lib/blog";
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { NewsletterForm } from "@/app/components/blog/NewsletterForm";
 
-export const revalidate = 60
+export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Blog — Serlis Maldonado',
-  description: 'Notas técnicas, proceso y herramientas.',
-}
+  title: "Blog — Serlis Maldonado",
+  description: "Notas técnicas, proceso y herramientas.",
+};
 
 export default async function BlogPage() {
-  const posts = await getAllPosts()
+  const posts = await getAllPosts();
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -33,14 +33,15 @@ export default async function BlogPage() {
         </div>
 
         {posts.length === 0 ? (
-          <p className="font-mono text-sm text-zinc-600">
-            // No hay posts todavía.
-          </p>
+          <p className="font-mono text-sm text-zinc-600"></p>
         ) : (
           <ul className="divide-y divide-zinc-900">
             {posts.map(({ slug, metadata }) => (
               <li key={slug} className="py-8 first:pt-0">
-                <Link href={`/blog/${slug}`} className="group flex gap-4 items-center">
+                <Link
+                  href={`/blog/${slug}`}
+                  className="group flex gap-4 items-center"
+                >
                   <div className="flex-1 min-w-0">
                     <p className="font-mono text-[11px] text-zinc-600 mb-2 tracking-wide uppercase">
                       {metadata.date}
@@ -84,5 +85,5 @@ export default async function BlogPage() {
         <NewsletterForm />
       </main>
     </div>
-  )
+  );
 }

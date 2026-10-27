@@ -1,0 +1,7 @@
+{
+  "compiler": "tsc",
+  "project": "convex",
+  "typeCheck": true,
+  "schema": "convex/schema.ts",
+  "format": "typescript"
+}

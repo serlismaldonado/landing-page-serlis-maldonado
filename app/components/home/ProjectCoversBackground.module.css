@@ -1,0 +1,199 @@
+.backgroundContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  background: linear-gradient(135deg, #000000 0%, #05050a 100%);
+}
+
+.backgroundContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.35) 50%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+.loadingGrid {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #000000 0%, #0a0a0d 50%, #000000 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.placeholderGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 700%;
+  animation: slideDown 75s linear infinite;
+  will-change: transform;
+}
+
+.placeholderItem {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: linear-gradient(90deg, #000000 0%, #0a0a0d 50%, #000000 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+  box-shadow: none;
+}
+
+.coversGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 700%;
+}
+
+.coversGrid.animated {
+  animation: slideDown 75s linear infinite;
+  will-change: transform;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-85.7%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slideDownMobile {
+  0% {
+    transform: translateY(-81.8%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.coverItem {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  background: #000000;
+}
+
+.coverImage {
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%) brightness(0.6) contrast(1.6);
+}
+
+.coverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  pointer-events: none;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .coversGrid,
+  .placeholderGrid {
+    grid-template-columns: repeat(4, 1fr);
+    min-height: 650%;
+    gap: 0;
+  }
+
+  .coversGrid.animated {
+    animation: slideDownTablet 75s linear infinite;
+  }
+
+  .placeholderGrid {
+    animation: slideDownTablet 75s linear infinite;
+  }
+}
+
+@keyframes slideDownTablet {
+  0% {
+    transform: translateY(-84.6%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .coversGrid,
+  .placeholderGrid {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 550%;
+    gap: 0;
+    padding: 0;
+  }
+
+  .coversGrid.animated {
+    animation: slideDownMobile 75s linear infinite;
+  }
+
+  .placeholderGrid {
+    animation: slideDownMobile 75s linear infinite;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .coversGrid,
+  .placeholderGrid {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 550%;
+    gap: 0;
+  }
+
+  .coversGrid.animated {
+    animation: slideDown75 75s linear infinite;
+  }
+
+  .placeholderGrid {
+    animation: slideDown75 75s linear infinite;
+  }
+}
+
+@keyframes slideDown75 {
+  0% {
+    transform: translateY(-81.8%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}

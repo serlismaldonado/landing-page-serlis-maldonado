@@ -1,0 +1,25 @@
+{
+  "project": "landing-page-serlis-maldonado",
+  "mode": "repo",
+  "version": "1.0.0",
+  "areas": [
+    {
+      "name": "features",
+      "path": "taskplane-tasks/features",
+      "prefix": "FEAT",
+      "description": "New features and enhancements"
+    },
+    {
+      "name": "fixes",
+      "path": "taskplane-tasks/fixes",
+      "prefix": "FIX",
+      "description": "Bug fixes and patches"
+    },
+    {
+      "name": "infra",
+      "path": "taskplane-tasks/infra",
+      "prefix": "INF",
+      "description": "Infrastructure and configuration"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+export const metadata = {
+  title: 'Bienvenido al blog',
+  description: 'Por qué decidí empezar a escribir y qué puedes esperar encontrar aquí.',
+  date: '2026-05-15',
+  tags: ['personal', 'meta'],
+  author: 'Serlis Maldonado',
+}
+
+# Bienvenido al blog
+
+Después de tiempo con el portfolio en modo "solo proyectos", decidí añadir un espacio para escribir.
+
+## ¿Por qué un blog?
+
+Los proyectos muestran *qué* construí. El blog muestra *cómo* pienso mientras lo construyo — las decisiones, los errores, las cosas que aprendí en el camino.
+
+## Qué voy a escribir
+
+- **Notas técnicas** — problemas concretos que resolví y cómo
+- **Proceso** — decisiones de arquitectura, tradeoffs, postmortems
+- **Herramientas** — lo que uso, por qué, y cuándo lo cambio
+
+## El stack de este blog
+
+Este blog está construido con **Next.js App Router** y archivos **MDX** estáticos. Sin CMS externo, sin base de datos para los posts — solo archivos en el repositorio.
+
+Para cosas dinámicas como vistas o comentarios, uso **Convex** directamente desde los Server Components.
+
+```ts
+// Así de simple es añadir un nuevo post
+export const metadata = {
+  title: 'Mi nuevo post',
+  date: '2026-05-15',
+}
+```
+
+---
+
+Nos vemos en el próximo post.

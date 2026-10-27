@@ -1,77 +1,91 @@
-import Image from "next/image";
-import { Github, Linkedin, Mail, MapPin } from "lucide-react";
+export const dynamic = "force-dynamic";
+
 import SearchGrid from "./components/SearchGrid";
+import ContributionGraph from "./components/ContributionGraph";
+import CallToAction from "./components/home/CallToAction";
+import TerminalAnimated from "./components/home/AnimatedTerminal";
+import ContactLinks from "./components/home/ContactLinks";
+import ProjectCoversBackground from "./components/home/ProjectCoversBackground";
+import { BlogSection } from "./components/home/BlogSection";
 
 export default function Home() {
+  const chevronDown = `▼ ▼ ▼`;
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans">
+    <div className="bg-zinc-950 font-sans">
+      <div className="relative">
       {/* Hero Section */}
-      <main className="flex flex-col items-center justify-center py-20 px-6 sm:py-32">
-        {/* Profile Image */}
-        <div className="relative mb-8">
-          <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-zinc-200 dark:border-zinc-800">
-            <Image
-              src="/profile.jpg"
-              alt="Serlis Maldonado"
-              width={160}
-              height={160}
-              className="object-cover w-full h-full"
-              priority
-            />
-          </div>
-        </div>
-
-        {/* Profile Info */}
-        <div className="text-center max-w-2xl">
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
-            Serlis Maldonado
-          </h1>
-
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-2">
-            Full Stack Developer & System Architect
-          </p>
-
-          <div className="flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-500 mb-6">
-            <MapPin className="w-4 h-4" />
-            <span className="text-sm">El Progreso, Yoro, Honduras</span>
+      <main className="relative flex flex-col lg:flex-row items-center justify-center min-h-[100dvh] px-6 gap-8 lg:gap-12 overflow-hidden">
+        <ProjectCoversBackground />
+        
+        <div className="relative z-10">
+          {/* Terminal Animation with integrated message */}
+          <div className="w-full max-w-2xl lg:max-w-lg xl:max-w-xl">
+            <TerminalAnimated />
           </div>
 
-          <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
-            Desarrollador Full Stack con experiencia en JavaScript/TypeScript,
-            React, Node.js y arquitecturas de sistemas. Enfocado en crear
-            soluciones escalables y automatizaciones que impulsan negocios.
-            Apasionado por la tecnología y el desarrollo de software de calidad.
-          </p>
-
-          {/* Social Links */}
-          <div className="flex items-center justify-center gap-4">
-            <a
-              href="https://github.com/serlismaldonado"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <a
-              href="https://linkedin.com/in/serlismaldonado"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            >
-              <Linkedin className="w-5 h-5" />
-            </a>
-            <a
-              href="mailto:serlismaldonado@email.com"
-              className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            >
-              <Mail className="w-5 h-5" />
-            </a>
+          {/* Call to Action */}
+          <div className="w-full max-w-md lg:max-w-sm xl:max-w-md gap-2 flex flex-col">
+            <div className="font-mono text-sm leading-tight whitespace-pre flex justify-center">
+              {chevronDown}
+            </div>
+            <CallToAction />
           </div>
         </div>
       </main>
+      </div>
 
-      <SearchGrid />
+      <div>
+
+      {/* Projects Section */}
+      <div className="py-16 px-6 bg-gradient-to-b from-zinc-950/40 to-zinc-950/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
+              Proyectos
+            </h2>
+            <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto">
+              Explora mis proyectos y contribuciones técnicas
+            </p>
+          </div>
+          <SearchGrid />
+        </div>
+      </div>
+
+      {/* Blog Section */}
+      <BlogSection />
+
+      {/* Contributions Section */}
+      <div className="py-16 px-6 bg-gradient-to-b from-zinc-900/30 to-zinc-900/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
+              <span className="text-green-600 dark:text-green-500">$</span> git
+              log --oneline
+            </h2>
+            <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto">
+              Mi actividad y contribuciones recientes
+            </p>
+          </div>
+          <ContributionGraph />
+        </div>
+      </div>
+
+      {/* Contact Section */}
+      <div className="py-16 px-6 bg-gradient-to-b from-zinc-950/30 to-zinc-950/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-mono text-xl sm:text-2xl text-zinc-900 dark:text-white mb-4">
+              <span className="text-green-600 dark:text-green-500">$</span>{" "}
+              ./connect.sh
+            </h2>
+            <p className="font-mono text-sm text-zinc-500 max-w-2xl mx-auto mb-8">
+              Conéctate conmigo a través de estos canales
+            </p>
+            <ContactLinks />
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   );
 }

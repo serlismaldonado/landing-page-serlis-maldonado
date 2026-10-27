@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Serlis Maldonado - Portfolio",
   description: "Sitio web personal de Serlis Maldonado",
+  openGraph: {
+    title: "Serlis Maldonado - Portfolio",
+    description: "Sitio web personal de Serlis Maldonado",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -25,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

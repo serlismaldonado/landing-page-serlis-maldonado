@@ -33,16 +33,16 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
       "https://serlismaldonado.com",
       "http://localhost:3000",
       "http://localhost:3001",
+      "http://localhost:4321",
     ],
     plugins: [
       convex({ authConfig }),
       emailOTP({
         otpLength: 6,
         expiresIn: 300,
-        // Solo cuentas existentes pueden iniciar sesión; nadie puede registrarse.
-        disableSignUp: true,
         async sendVerificationOTP({ email, otp }) {
-          // No mandamos códigos a emails que no son admin (evita spam desde el login).
+          // Solo los emails de ADMIN_EMAILS reciben código. Sin código no hay login
+          // ni registro, así que nadie más puede crear cuenta (y no se usa el login para spam).
           if (!isAdminEmail(email)) return;
           const resend = new Resend(process.env.RESEND_API_KEY);
           await resend.emails.send({

@@ -7,6 +7,8 @@ export const emailTemplateType = v.union(
   v.literal("custom"),
 );
 
+// El editor de emails se eliminó. La tabla se mantiene solo para no romper el deploy
+// si quedan documentos; cuando esté vacía en producción se puede quitar del schema.
 export const emailTemplates = defineTable({
   name: v.string(),
   subject: v.string(),

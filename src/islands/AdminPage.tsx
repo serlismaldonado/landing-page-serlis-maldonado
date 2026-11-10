@@ -223,12 +223,6 @@ function AdminPage() {
             >
               newsletter
             </Link>
-            <Link
-              href="/admin/email-editor"
-              className="font-mono text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
-            >
-              email editor
-            </Link>
             <span className="font-mono text-sm text-zinc-500">
               {user.name || user.email}
             </span>

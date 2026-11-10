@@ -29,7 +29,7 @@ npx convex env set ADMIN_EMAILS tu@email.com
 ## Estructura
 
 - `src/pages/` — rutas (`.astro`) y APIs (`src/pages/api/*.ts`).
-- `src/islands/` — páginas interactivas de React montadas como islas (admin, login, proyecto…).
+- `src/islands/` — páginas interactivas de React montadas como islas (admin, login, proyecto, perfil).
 - `src/components/Hero.astro` — hero de la home.
 - `components/` — componentes de React compartidos.
 - `lib/` — Notion, auth en servidor, utilidades.

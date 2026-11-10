@@ -457,7 +457,7 @@ export default function ProfilePage() {
           </p>
           <Link
             href="mailto:serlismaldonado@heskala.com"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-mono text-sm rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-accent-ink font-mono text-sm rounded-lg transition-colors"
           >
             <span>npx contact serlis --now</span>
           </Link>

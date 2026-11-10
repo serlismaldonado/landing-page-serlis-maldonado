@@ -44,7 +44,7 @@ export function BlogSection({ posts }: { posts: Post[] }) {
                       className="h-full w-full opacity-60 transition-opacity group-hover:opacity-100"
                       style={{
                         backgroundImage:
-                          "radial-gradient(rgba(0,0,0,.85) 1.2px, transparent 1.6px), linear-gradient(120deg, #c9d72b33, #3db34a40, #4aa3c833)",
+                          "radial-gradient(rgba(0,0,0,.85) 1.2px, transparent 1.6px), linear-gradient(120deg, #8fbcbb33, #88c0d040, #81a1c133)",
                         backgroundSize: "6px 6px, 100% 100%",
                       }}
                     />

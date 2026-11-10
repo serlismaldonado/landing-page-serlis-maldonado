@@ -92,7 +92,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 px-4 bg-white text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-4 bg-accent text-accent-ink font-mono text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                 {loading ? "Enviando..." : "Enviar código"}
@@ -120,7 +120,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || otp.length < 6}
-                className="w-full py-2.5 px-4 bg-white text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-4 bg-accent text-accent-ink font-mono text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                 {loading ? "Verificando..." : "Ingresar"}

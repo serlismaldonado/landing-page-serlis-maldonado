@@ -53,7 +53,7 @@ export function NewsletterForm() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="bg-white text-zinc-900 text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 whitespace-nowrap sm:w-auto w-full"
+            className="bg-accent text-accent-ink text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-accent-hover transition-colors disabled:opacity-50 whitespace-nowrap sm:w-auto w-full"
           >
             {status === 'loading' ? 'Enviando...' : 'Suscribirme'}
           </button>

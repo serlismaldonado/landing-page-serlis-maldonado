@@ -40,7 +40,7 @@ export function SendButton({ slug, title }: { slug: string; title: string }) {
     <button
       onClick={handleSend}
       disabled={status === 'loading'}
-      className="shrink-0 text-[12px] font-medium bg-white text-zinc-900 px-3 py-1.5 rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50"
+      className="shrink-0 text-[12px] font-medium bg-accent text-accent-ink px-3 py-1.5 rounded-lg hover:bg-accent-hover transition-colors disabled:opacity-50"
     >
       {status === 'loading' ? 'Enviando...' : 'Enviar'}
     </button>

@@ -1,12 +1,17 @@
 import { useEffect, useRef } from "react";
 
 // Fondo pixel art: pixeles que titilan y una estela de chispas que deja el cursor.
-// Colores de la marca: lima -> verde -> azul verdoso.
+// Pixeles de fondo en los azules hielo de Fjord; la estela en los tonos cálidos de Ember.
 const CELL = 10;
 const STOPS: [number, number, number][] = [
-  [201, 215, 43],
-  [61, 179, 74],
-  [74, 163, 200],
+  [143, 188, 187],
+  [136, 192, 208],
+  [129, 161, 193],
+];
+const EMBER: [number, number, number][] = [
+  [235, 203, 139],
+  [232, 135, 91],
+  [208, 112, 92],
 ];
 const MAX_PARTICLES = 600;
 
@@ -17,10 +22,12 @@ function mix(a: Rgb, b: Rgb, t: number): Rgb {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 }
 
-function brand(u: number): Rgb {
+function gradient(stops: Rgb[], u: number): Rgb {
   const t = Math.max(0, Math.min(1, u));
-  return t < 0.5 ? mix(STOPS[0], STOPS[1], t * 2) : mix(STOPS[1], STOPS[2], (t - 0.5) * 2);
+  return t < 0.5 ? mix(stops[0], stops[1], t * 2) : mix(stops[1], stops[2], (t - 0.5) * 2);
 }
+const brand = (u: number) => gradient(STOPS, u);
+const ember = (u: number) => gradient(EMBER, u);
 
 function hash(a: number, b: number) {
   const n = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
@@ -94,7 +101,7 @@ export default function PixelTrail({ className }: { className?: string }) {
             vx: (Math.random() - 0.5) * 1.4,
             vy: Math.random() * 0.8,
             life: 1,
-            col: brand(pointer.x / width),
+            col: ember(pointer.x / width),
           });
         }
         pointer.speed *= 0.6;

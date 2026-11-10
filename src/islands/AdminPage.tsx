@@ -259,7 +259,7 @@ function AdminPage() {
               setEditingProject(null);
               resetForm();
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-mono text-sm font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-accent text-accent-ink font-mono text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors"
           >
             <Plus className="w-4 h-4" />
             New Project

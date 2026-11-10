@@ -55,7 +55,7 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-re
 
     <div class="mx-auto grid max-w-[1120px] gap-10 px-6 py-14 sm:px-8 lg:grid-cols-[280px_1fr] lg:gap-16">
       <aside class="lg:sticky lg:top-6 lg:self-start">
-        <dl class="rounded-xl border border-zinc-800 bg-zinc-950 px-6 pb-6 pt-1.5">
+        <dl class="rounded-xl border border-zinc-800 bg-zinc-900 px-6 pb-6 pt-1.5">
           {ficha.map(([k, v]) => (
             <>
               <dt class="mt-[18px] font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-500">{k}</dt>
@@ -66,7 +66,7 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-re
             <>
               <dt class="mt-[18px] font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-500">Nivel</dt>
               <dd class="mt-2 flex gap-[3px]" aria-label={`Nivel ${level} de 5`}>
-                {[1, 2, 3, 4, 5].map((n) => <span class:list={["h-2 w-2", n <= level ? "bg-[#3db34a]" : "bg-zinc-800"]} />)}
+                {[1, 2, 3, 4, 5].map((n) => <span class:list={["h-2 w-2", n <= level ? "bg-green-500" : "bg-zinc-800"]} />)}
               </dd>
             </>
           )}
@@ -76,7 +76,7 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-re
             </div>
           )}
           {link && (
-            <a href={link} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex rounded-full border-2 border-[#D8E64A] bg-black px-5 py-2.5 font-mono text-[13px] text-white transition-colors hover:bg-[#D8E64A] hover:text-black">
+            <a href={link} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex rounded-full bg-accent px-5 py-2.5 font-mono text-[13px] font-medium text-accent-ink transition-colors hover:bg-accent-hover">
               {linkLabel} →
             </a>
           )}

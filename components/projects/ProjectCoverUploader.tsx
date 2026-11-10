@@ -213,7 +213,7 @@ export default function ProjectCoverUploader({
               <button
                 onClick={() => document.getElementById("cover-upload-change")?.click()}
                 disabled={uploading}
-                className="px-4 py-2 bg-blue-500 text-white text-sm font-mono rounded-lg hover:bg-blue-600 transition-colors"
+                className="px-4 py-2 bg-accent text-accent-ink text-sm font-mono rounded-lg hover:bg-accent-hover transition-colors"
                 title="Change cover"
               >
                 Change

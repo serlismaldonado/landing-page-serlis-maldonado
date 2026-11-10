@@ -6,8 +6,55 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #232933;
+  --foreground: #d8dee9;
+}
+
+/*
+ * Tema: Fjord Dark (Threadbear) para fondos, superficies, bordes, texto y acentos,
+ * con el naranja de Ember Dark para los botones principales.
+ * Se redefinen las escalas de Tailwind que usa el sitio (zinc, green, blue, black, white),
+ * así cada componente toma el tema sin cambiar sus clases.
+ */
+@theme {
+  --color-black: #232933;   /* fondo de Fjord */
+  --color-white: #eceff4;   /* texto principal (nieve) */
+
+  --color-zinc-50: #f4f6f9;
+  --color-zinc-100: #eceff4;
+  --color-zinc-200: #e5e9f0;
+  --color-zinc-300: #d8dee9;
+  --color-zinc-400: #aeb7c4;
+  --color-zinc-500: #8892a2;
+  --color-zinc-600: #677183;
+  --color-zinc-700: #4c566a;
+  --color-zinc-800: #3b4452;  /* bordes */
+  --color-zinc-900: #2b313b;  /* superficies (fondo + 4 % de blanco) */
+  --color-zinc-950: #232933;  /* fondo */
+
+  /* Acentos (antes verde): el azul hielo de Fjord. */
+  --color-green-100: #e1f1f5;
+  --color-green-200: #c4e2ea;
+  --color-green-300: #a7d3df;
+  --color-green-400: #93c9d6;
+  --color-green-500: #88c0d0;
+  --color-green-600: #6fa9ba;
+  --color-green-700: #5e8fa0;
+  --color-green-800: #4a6f7d;
+  --color-green-900: #35505b;
+
+  --color-blue-100: #dbe5f0;
+  --color-blue-300: #a3bbd5;
+  --color-blue-400: #8fa9c9;
+  --color-blue-500: #81a1c1;
+  --color-blue-600: #5e81ac;
+  --color-blue-700: #4c6d94;
+  --color-blue-900: #2f4157;
+
+  /* Botones principales: el acento de Ember. */
+  --color-accent: #e8875b;
+  --color-accent-hover: #f09a72;
+  --color-accent-ink: #1f1b18;
 }
 
 @theme inline {

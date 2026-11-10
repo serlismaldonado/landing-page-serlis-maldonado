@@ -15,6 +15,10 @@ export const validatorProject = {
   title: v.string(),
   description: v.optional(v.string()),
   url: v.optional(v.string()),
+  // Ficha del caso de estudio (vista de detalle): cliente, tipo de trabajo y lugar.
+  client: v.optional(v.string()),
+  projectType: v.optional(v.string()),
+  location: v.optional(v.string()),
   cover: v.optional(v.id("_storage")),
   images: v.optional(v.array(v.id("_storage"))),
   category: projectCategory,

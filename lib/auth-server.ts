@@ -39,3 +39,8 @@ export async function fetchAuthQuery<Q extends FunctionReference<"query">>(
   if (token) client.setAuth(token);
   return client.query(query, args);
 }
+
+// Consultas públicas desde el servidor (sin sesión).
+export function publicQuery<Q extends FunctionReference<"query">>(query: Q, args: FunctionArgs<Q>) {
+  return new ConvexHttpClient(convexUrl()).query(query, args);
+}

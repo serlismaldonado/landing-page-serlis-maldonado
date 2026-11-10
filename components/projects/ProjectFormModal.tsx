@@ -7,6 +7,9 @@ export interface ProjectFormData {
   title: string;
   description: string;
   url: string;
+  client: string;
+  projectType: string;
+  location: string;
   cover?: Id<"_storage"> | null;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
@@ -21,6 +24,9 @@ export interface Project {
   title: string;
   description?: string;
   url?: string;
+  client?: string;
+  projectType?: string;
+  location?: string;
   cover?: Id<"_storage">;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
@@ -121,6 +127,48 @@ export default function ProjectFormModal({
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="https://github.com/..."
+                />
+              </div>
+
+              <div>
+                <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
+                  Cliente
+                </label>
+                <input
+                  type="text"
+                  name="client"
+                  value={formData.client}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Helvetas Honduras"
+                />
+              </div>
+
+              <div>
+                <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
+                  Tipo de trabajo
+                </label>
+                <input
+                  type="text"
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Diseño editorial"
+                />
+              </div>
+
+              <div>
+                <label className="block font-mono text-sm text-zinc-700 dark:text-zinc-300 mb-2">
+                  Lugar
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 font-mono bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Cuenca del Río Goascorán"
                 />
               </div>
 

@@ -23,6 +23,9 @@ interface FormData {
   title: string;
   description: string;
   url: string;
+  client: string;
+  projectType: string;
+  location: string;
   cover?: Id<"_storage"> | null;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
@@ -37,6 +40,9 @@ interface Project {
   title: string;
   description?: string;
   url?: string;
+  client?: string;
+  projectType?: string;
+  location?: string;
   cover?: Id<"_storage">;
   images?: Id<"_storage">[];
   category: "proyecto" | "blog";
@@ -61,6 +67,9 @@ function AdminPage() {
     title: "",
     description: "",
     url: "",
+    client: "",
+    projectType: "",
+    location: "",
     cover: null,
     images: [],
     category: "proyecto",
@@ -153,6 +162,9 @@ function AdminPage() {
       title: project.title,
       description: project.description || "",
       url: project.url || "",
+      client: project.client || "",
+      projectType: project.projectType || "",
+      location: project.location || "",
       cover: project.cover || null,
       images: project.images || [],
       category: project.category,
@@ -187,6 +199,9 @@ function AdminPage() {
       title: "",
       description: "",
       url: "",
+      client: "",
+      projectType: "",
+      location: "",
       cover: null,
       images: [],
       category: "proyecto",

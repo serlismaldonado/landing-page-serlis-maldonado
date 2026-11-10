@@ -1,11 +1,110 @@
 ---
 import Base from "@/src/layouts/Base.astro";
-import ProjectPage from "@/src/islands/ProjectPage";
+import ProjectBody from "@/components/projects/ProjectBody";
+import CaseGallery from "@/components/projects/CaseGallery";
+import ContactLinks from "@/components/home/ContactLinks";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
+import { publicQuery } from "@/lib/auth-server";
+import { optimizedImage } from "@/lib/image";
 
-const { id } = Astro.params;
-if (!id) return Astro.redirect("/");
+const id = Astro.params.id as Id<"projects">;
+const [project, all] = await Promise.all([
+  publicQuery(api.projects.queries.getPublicProject, { id }).catch(() => null),
+  publicQuery(api.projects.queries.getAllProjects, {}).catch(() => []),
+]);
+if (!project) return new Response(null, { status: 404, statusText: "Not found" });
+
+// Mismo orden que la lista de la home, para "siguiente proyecto".
+const index = all.findIndex((p) => p._id === project._id);
+const next = all.length > 1 ? all[(index + 1) % all.length] : null;
+
+const title = project.title.trim();
+const images = (project.imageUrls ?? []).filter((u): u is string => !!u && u !== project.coverUrl);
+const year = project.date?.slice(0, 4);
+const link = project.url && project.url !== "#" ? (project.url.startsWith("http") ? project.url : `https://${project.url}`) : null;
+const linkLabel = link?.includes("figma.com") ? "Ver en Figma" : link?.includes("github.com") ? "Ver en GitHub" : "Ver proyecto";
+const ficha = [
+  ["Cliente", project.client],
+  ["Año", year],
+  ["Tipo", project.projectType],
+  ["Lugar", project.location],
+].filter((f): f is [string, string] => !!f[1]?.trim());
+const level = project.intensity && project.intensity > 0 ? Math.round(project.intensity) : 0;
+const firstLine = (project.description ?? "").replace(/[*#_>`]/g, "").split("\n").find((l) => l.trim()) ?? "";
+
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
 ---
 
-<Base title="Proyecto — Serlis Maldonado">
-  <ProjectPage client:only="react" id={id} />
+<Base title={`${title} — Serlis Maldonado`} description={firstLine.slice(0, 160)} image={project.coverUrl ?? undefined}>
+  <main class="min-h-screen bg-black text-zinc-200">
+    <header class:list={["relative flex items-end", project.coverUrl ? "h-[72vh] min-h-[460px]" : "min-h-[320px]"]}>
+      {project.coverUrl && (
+        <>
+          <img src={optimizedImage(project.coverUrl, 1920, 70)} alt="" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black" />
+        </>
+      )}
+      <div class="relative z-10 mx-auto w-full max-w-[1120px] px-6 pb-12 sm:px-8">
+        <a href="/#proyectos" class="font-mono text-[13px] text-zinc-300 transition-colors hover:text-white">← proyectos</a>
+        <h1 class="mt-4 max-w-[900px] font-dot text-[44px] font-black leading-[1.02] tracking-[-0.04em] text-white sm:text-[64px] lg:text-[72px]">
+          {title}
+        </h1>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-[1120px] gap-10 px-6 py-14 sm:px-8 lg:grid-cols-[280px_1fr] lg:gap-16">
+      <aside class="lg:sticky lg:top-6 lg:self-start">
+        <dl class="rounded-xl border border-zinc-800 bg-zinc-950 px-6 pb-6 pt-1.5">
+          {ficha.map(([k, v]) => (
+            <>
+              <dt class="mt-[18px] font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-500">{k}</dt>
+              <dd class="mt-1 text-[15px] text-white">{v}</dd>
+            </>
+          ))}
+          {level > 0 && (
+            <>
+              <dt class="mt-[18px] font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-500">Nivel</dt>
+              <dd class="mt-2 flex gap-[3px]" aria-label={`Nivel ${level} de 5`}>
+                {[1, 2, 3, 4, 5].map((n) => <span class:list={["h-2 w-2", n <= level ? "bg-[#3db34a]" : "bg-zinc-800"]} />)}
+              </dd>
+            </>
+          )}
+          {project.tags.length > 0 && (
+            <div class="mt-5 flex flex-wrap gap-1.5">
+              {project.tags.map((t) => <span class="rounded-full border border-zinc-800 px-2.5 py-1 font-mono text-[11px] text-zinc-400">{t}</span>)}
+            </div>
+          )}
+          {link && (
+            <a href={link} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex rounded-full border-2 border-[#D8E64A] bg-black px-5 py-2.5 font-mono text-[13px] text-white transition-colors hover:bg-[#D8E64A] hover:text-black">
+              {linkLabel} →
+            </a>
+          )}
+        </dl>
+      </aside>
+
+      <article>{project.description && <ProjectBody markdown={project.description} />}</article>
+    </div>
+
+    {images.length > 0 && (
+      <section class="mx-auto max-w-[1120px] px-6 pb-16 sm:px-8">
+        <CaseGallery client:visible images={images} title={title} />
+      </section>
+    )}
+
+    <footer class="mx-auto max-w-[1120px] border-t border-zinc-900 px-6 py-12 sm:px-8">
+      {next && (
+        <a href={`/projects/${next._id}`} class="group mb-12 block">
+          <p class="font-mono text-[12px] uppercase tracking-[0.08em] text-zinc-500">Siguiente proyecto</p>
+          <p class="mt-2 font-dot text-[30px] font-black leading-tight tracking-[-0.04em] text-zinc-300 transition-colors group-hover:text-white sm:text-[40px]">
+            {next.title.trim()} →
+          </p>
+        </a>
+      )}
+      <div class="text-center">
+        <p class="mb-5 font-mono text-sm text-zinc-500">Conéctate conmigo</p>
+        <ContactLinks />
+      </div>
+    </footer>
+  </main>
 </Base>

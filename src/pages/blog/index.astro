@@ -1,0 +1,83 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import { NewsletterForm } from "@/components/blog/NewsletterForm";
+import { getAllPosts } from "@/lib/blog";
+
+const posts = await getAllPosts();
+// Antes era ISR de 60 s en Next; aquí lo mismo con caché de CDN.
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
+---
+
+<Base title="Blog — Serlis Maldonado" description="Notas técnicas, proceso y herramientas.">
+
+    <div class="bg-zinc-950 min-h-screen">
+      <main class="max-w-[680px] mx-auto px-6 py-20">
+        <div class="mb-16">
+          <a
+            href="/"
+            class="font-mono text-xs text-zinc-600 hover:text-zinc-400 transition-colors mb-12 inline-block"
+          >
+            ← volver
+          </a>
+          <h1 class="text-[40px] font-bold text-white tracking-[-0.02em] leading-tight mb-3">
+            Blog
+          </h1>
+          <p class="text-[17px] text-zinc-500 leading-relaxed">
+            Notas técnicas, proceso y herramientas.
+          </p>
+        </div>
+
+        {posts.length === 0 ? (
+          <p class="font-mono text-sm text-zinc-600"></p>
+        ) : (
+          <ul class="divide-y divide-zinc-900">
+            {posts.map(({ slug, metadata }) => (
+              <li class="py-8 first:pt-0">
+                <a
+                  href={`/blog/${slug}`}
+                  class="group flex gap-4 items-center"
+                >
+                  <div class="flex-1 min-w-0">
+                    <p class="font-mono text-[11px] text-zinc-600 mb-2 tracking-wide uppercase">
+                      {metadata.date}
+                    </p>
+                    <h2 class="text-[18px] font-semibold text-zinc-200 group-hover:text-white transition-colors mb-2 leading-snug tracking-[-0.01em]">
+                      {metadata.title}
+                    </h2>
+                    <p class="text-[15px] text-zinc-500 leading-relaxed line-clamp-2">
+                      {metadata.description}
+                    </p>
+                    {metadata.tags && metadata.tags.length > 0 && (
+                      <div class="flex gap-2 mt-3">
+                        {metadata.tags.map((tag) => (
+                          <span
+                            class="font-mono text-[11px] text-zinc-600 border border-zinc-800 px-2 py-0.5 rounded"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {metadata.coverImage && (
+                    <div class="shrink-0 w-24 h-16 sm:w-32 sm:h-20 rounded-lg overflow-hidden bg-zinc-900">
+                      <img
+                        src={metadata.coverImage}
+                        alt={metadata.title}
+                        width="128"
+                        height="80"
+                        loading="lazy"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        <NewsletterForm client:visible />
+      </main>
+    </div>
+</Base>

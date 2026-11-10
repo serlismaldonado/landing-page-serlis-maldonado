@@ -1,0 +1,13 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import LoginPage from "@/src/islands/LoginPage";
+import { getToken } from "@/lib/auth-server";
+
+// Con sesión iniciada no tiene sentido ver el login.
+if (await getToken(Astro.request).catch(() => undefined)) return Astro.redirect("/admin");
+---
+
+<Base title="Iniciar sesión — Serlis Maldonado">
+  <meta name="robots" content="noindex" slot="head" />
+  <LoginPage client:only="react" />
+</Base>

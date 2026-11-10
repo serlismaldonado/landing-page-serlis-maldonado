@@ -1,12 +1,12 @@
 import { api } from "@/convex/_generated/api";
-import { fetchAuthQuery, isAuthenticated } from "@/lib/auth-server";
+import { fetchAuthQuery, getToken } from "@/lib/auth-server";
 
-// Verifica en el servidor que la sesión actual pertenece a un admin
+// Verifica en el servidor que la sesión de la petición pertenece a un admin
 // (lista ADMIN_EMAILS en las variables de entorno de Convex).
-export async function isAdminRequest(): Promise<boolean> {
+export async function isAdminRequest(request: Request): Promise<boolean> {
   try {
-    if (!(await isAuthenticated())) return false;
-    return await fetchAuthQuery(api.auth.isAdmin, {});
+    if (!(await getToken(request))) return false;
+    return await fetchAuthQuery(request, api.auth.isAdmin, {});
   } catch {
     return false;
   }

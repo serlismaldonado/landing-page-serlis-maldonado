@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# serlismaldonado.com
 
-## Getting Started
+Landing personal de Serlis Maldonado: proyectos, blog (Notion), newsletter (Resend) y panel de admin.
 
-First, run the development server:
+- **Astro 7** con render en servidor (adaptador de Vercel) e islas de **React** para lo interactivo.
+- **Convex** como backend (`convex/`) y **Better Auth** con login por código (emailOTP), corriendo dentro de Convex.
+- **Tailwind CSS 4**.
+
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npx convex dev      # backend de Convex (otra terminal)
+npm run dev         # http://localhost:4321
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requiere Node 22.23+ y un `.env.local` con `NEXT_PUBLIC_CONVEX_URL`, `NEXT_PUBLIC_CONVEX_SITE_URL`,
+`NOTION_API_KEY`, `NOTION_DATABASE_ID`, `RESEND_API_KEY`, `RESEND_AUDIENCE_ID` y `GITHUB_TOKEN`.
+Los nombres `NEXT_PUBLIC_*` se mantienen de la versión anterior (Astro los expone al cliente vía `envPrefix`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Solo entran los emails de `ADMIN_EMAILS` (variable de entorno **de Convex**, separados por coma):
 
-## Learn More
+```bash
+npx convex env set ADMIN_EMAILS tu@email.com
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/pages/` — rutas (`.astro`) y APIs (`src/pages/api/*.ts`).
+- `src/islands/` — páginas interactivas de React montadas como islas (admin, login, proyecto…).
+- `src/components/Hero.astro` — hero de la home.
+- `components/` — componentes de React compartidos.
+- `lib/` — Notion, auth en servidor, utilidades.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Comandos
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Comando | |
+| --- | --- |
+| `npm run dev` | servidor de desarrollo |
+| `npm run build` | build de producción (`.vercel/output`) |
+| `npm run check` | chequeo de tipos (`astro check`) |
+| `npm run lint` | ESLint |

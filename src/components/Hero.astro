@@ -1,0 +1,70 @@
+---
+import DecodeHeadline from "@/components/home/DecodeHeadline";
+import PixelTrail from "@/components/home/PixelTrail";
+
+const CONTACT_EMAIL = "serlismaldonado@heskala.com";
+const HEADLINE = "Desarrollo de Software, IA y Herramientas";
+
+// Máscara SVG para que los bordes de la foto se deshagan en pixeles.
+// Cada celda del borde se dibuja o no según su distancia al borde (más adentro = más probable).
+function pixelEdgeMask(cols: number, rows: number, depth = 4) {
+  const hash = (a: number, b: number) => {
+    const n = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+    return n - Math.floor(n);
+  };
+  const cells: string[] = [];
+  for (let x = 0; x < cols; x++) {
+    for (let y = 0; y < rows; y++) {
+      const d = Math.min(x, y, cols - 1 - x, rows - 1 - y);
+      if (d >= depth || hash(x, y) < (d + 1) / (depth + 1)) {
+        cells.push(`<rect x="${x}" y="${y}" width="1.02" height="1.02"/>`);
+      }
+    }
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cols} ${rows}" preserveAspectRatio="none" shape-rendering="crispEdges" fill="#000">${cells.join("")}</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+// Celdas de ~5 px: el borde se ve pixelado sin comerse la foto.
+const mask = pixelEdgeMask(46, 52, 5);
+const maskStyle = `-webkit-mask-image:${mask};mask-image:${mask};-webkit-mask-size:100% 100%;mask-size:100% 100%`;
+---
+
+<section class="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-black px-6 py-20">
+  <PixelTrail client:load />
+
+  <div class="relative z-10 flex w-full max-w-[820px] flex-col items-center gap-7">
+    <div class="w-full rounded-[10px] border border-zinc-800 bg-zinc-950 p-4 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] sm:p-5">
+      <div class="mb-4 flex items-center gap-2 font-mono text-[13px] text-zinc-500">
+        <span class="h-3 w-3 rounded-full bg-red-500"></span>
+        <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
+        <span class="h-3 w-3 rounded-full bg-green-500"></span>
+        <span class="ml-1.5">serlismaldonado.com</span>
+      </div>
+
+      <div class="grid items-center gap-6 sm:grid-cols-[230px_1fr] sm:gap-8">
+        <img
+          src="/serlis.jpg"
+          alt="Serlis Maldonado"
+          width="900"
+          height="900"
+          loading="eager"
+          fetchpriority="high"
+          class="mx-auto aspect-[23/26] w-full max-w-[230px] object-cover"
+          style={maskStyle}
+        />
+        <DecodeHeadline
+          client:load
+          text={HEADLINE}
+          className="font-dot text-[34px] font-black leading-[1.05] tracking-[-0.04em] text-white sm:text-[46px]"
+        />
+      </div>
+    </div>
+
+    <a
+      href={`mailto:${CONTACT_EMAIL}`}
+      class="rounded-full border-2 border-[#D8E64A] bg-black px-10 py-3 font-mono text-sm text-white transition-colors hover:bg-[#D8E64A] hover:text-black"
+    >
+      Hablemos →
+    </a>
+  </div>
+</section>

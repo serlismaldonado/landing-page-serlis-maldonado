@@ -1,0 +1,79 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import PostBody from "@/components/blog/PostBody";
+import { NewsletterForm } from "@/components/blog/NewsletterForm";
+import { getPost } from "@/lib/blog";
+
+const { slug } = Astro.params;
+let post: Awaited<ReturnType<typeof getPost>>;
+try {
+  post = await getPost(slug!);
+} catch {
+  return new Response(null, { status: 404, statusText: "Not found" });
+}
+const { markdown, metadata } = post;
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
+---
+
+<Base title={`${metadata.title} — Serlis Maldonado`} description={metadata.description} image={metadata.coverImage}>
+
+    <div class="bg-zinc-950 min-h-screen">
+      {metadata.coverImage && (
+        <div class="relative w-full h-48 md:h-64 bg-zinc-900 overflow-hidden">
+          <img src={metadata.coverImage} alt={metadata.title} class="absolute inset-0 h-full w-full object-cover" style="filter: grayscale(100%) brightness(0.7) contrast(1.6)" fetchpriority="high" />
+          <div class="absolute inset-0 bg-gradient-to-b from-black/0 to-zinc-950" />
+        </div>
+      )}
+
+      <article class:list={["max-w-[680px] mx-auto px-6 pb-20", metadata.coverImage ? "-mt-16 relative z-10" : "pt-12"]}>
+        <a
+          href="/blog"
+          class="font-mono text-xs text-zinc-600 hover:text-zinc-400 transition-colors mb-8 inline-block"
+        >
+          ← blog
+        </a>
+
+        <header class="mb-6">
+          <p class="font-mono text-[11px] text-zinc-600 mb-4 tracking-wide uppercase">
+            {metadata.date}
+          </p>
+          <h1 class="text-[40px] sm:text-[48px] font-bold text-white tracking-[-0.03em] leading-[1.1] mb-4">
+            {metadata.title}
+          </h1>
+          <div class="flex items-center gap-2.5 mb-4">
+            <img src="/avatar.jpg" alt="Serlis Maldonado" width="28" height="28" class="rounded-full object-cover" />
+            <span class="text-[13px] text-zinc-400">Serlis Maldonado</span>
+          </div>
+          <p class="text-xl text-zinc-400 leading-relaxed font-normal mb-6">
+            {metadata.description}
+          </p>
+          {metadata.tags && metadata.tags.length > 0 && (
+            <div class="flex gap-2">
+              {metadata.tags.map((tag) => (
+                <span
+                  class="font-mono text-[11px] text-zinc-600 border border-zinc-800 px-2 py-0.5 rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <hr class="border-zinc-800/60 mb-6" />
+
+        <PostBody markdown={markdown} />
+
+        <NewsletterForm client:visible />
+
+        <hr class="border-zinc-800/60 mt-12 mb-8" />
+
+        <a
+          href="/blog"
+          class="font-mono text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+        >
+          ← volver al blog
+        </a>
+      </article>
+    </div>
+</Base>

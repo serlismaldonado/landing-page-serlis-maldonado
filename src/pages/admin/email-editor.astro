@@ -1,0 +1,13 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import EmailEditorPage from "@/src/islands/EmailEditorPage";
+import { requireAdminPage } from "./_guard";
+
+const redirect = await requireAdminPage(Astro);
+if (redirect) return redirect;
+---
+
+<Base title="Editor de emails — Serlis Maldonado">
+  <meta name="robots" content="noindex" slot="head" />
+  <EmailEditorPage client:only="react" />
+</Base>

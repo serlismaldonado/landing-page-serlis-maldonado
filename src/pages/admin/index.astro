@@ -1,0 +1,13 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import AdminPage from "@/src/islands/AdminPage";
+import { requireAdminPage } from "./_guard";
+
+const redirect = await requireAdminPage(Astro);
+if (redirect) return redirect;
+---
+
+<Base title="Admin — Serlis Maldonado">
+  <meta name="robots" content="noindex" slot="head" />
+  <AdminPage client:only="react" />
+</Base>

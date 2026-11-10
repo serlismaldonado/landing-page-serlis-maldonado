@@ -1,0 +1,11 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import ProjectPage from "@/src/islands/ProjectPage";
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect("/");
+---
+
+<Base title="Proyecto — Serlis Maldonado">
+  <ProjectPage client:only="react" id={id} />
+</Base>

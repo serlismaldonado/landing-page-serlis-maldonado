@@ -1,26 +1,13 @@
 import { query, QueryCtx, MutationCtx } from "../_generated/server";
 import { v } from "convex/values";
-import { authComponent } from "../auth";
+import { requireAdmin } from "../auth";
 
 // ============================================
 // HELPER: Verificar usuario autenticado
 // ============================================
 
 export async function requireAuth(ctx: QueryCtx | MutationCtx) {
-  try {
-    const user = await authComponent.getAuthUser(ctx);
-    if (!user) {
-      throw new Error("Unauthorized: Authentication required");
-    }
-    return user;
-  } catch (error: unknown) {
-    // Re-lanzar el error con un mensaje más claro
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    if (errorMessage.includes("Unauthenticated")) {
-      throw new Error("Unauthorized: Please sign in to access this resource");
-    }
-    throw error;
-  }
+  return requireAdmin(ctx);
 }
 
 // ============================================
@@ -44,6 +31,7 @@ export const getProjectsByCategory = query({
     return await ctx.db
       .query("projects")
       .withIndex("by_category", (q) => q.eq("category", args.category))
+      .filter((q) => q.eq(q.field("visibility"), "public"))
       .collect();
   },
 });
@@ -51,6 +39,7 @@ export const getProjectsByCategory = query({
 export const getProject = query({
   args: { id: v.id("projects") },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.id);
     if (!project) return null;
 
@@ -125,7 +114,8 @@ export const searchProjects = query({
         }
         return query;
       });
-    return await q.collect();
+    const results = await q.collect();
+    return results.filter((p) => p.visibility === "public");
   },
 });
 
@@ -156,7 +146,12 @@ export const getContributionProjects = query({
   handler: async (ctx) => {
     const projects = await ctx.db
       .query("projects")
-      .filter((q) => q.gt(q.field("intensity"), 0))
+      .filter((q) =>
+        q.and(
+          q.gt(q.field("intensity"), 0),
+          q.eq(q.field("visibility"), "public"),
+        ),
+      )
       .collect();
 
     return projects.map((project) => ({

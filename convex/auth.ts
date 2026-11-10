@@ -2,13 +2,24 @@ import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
 import { components } from "./_generated/api";
 import { DataModel } from "./_generated/dataModel";
-import { query } from "./_generated/server";
+import { query, type QueryCtx, type MutationCtx } from "./_generated/server";
 import { betterAuth } from "better-auth/minimal";
 import { emailOTP } from "better-auth/plugins";
 import { Resend } from "resend";
 import authConfig from "./auth.config";
 
 const siteUrl = process.env.SITE_URL!;
+
+// Emails con acceso al admin, separados por coma (variable de entorno de Convex).
+// Si no está definida, nadie es admin: falla cerrado.
+export function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const admins = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  return admins.includes(email.trim().toLowerCase());
+}
 
 export const authComponent = createClient<DataModel>(components.betterAuth);
 
@@ -28,7 +39,11 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
       emailOTP({
         otpLength: 6,
         expiresIn: 300,
+        // Solo cuentas existentes pueden iniciar sesión; nadie puede registrarse.
+        disableSignUp: true,
         async sendVerificationOTP({ email, otp }) {
+          // No mandamos códigos a emails que no son admin (evita spam desde el login).
+          if (!isAdminEmail(email)) return;
           const resend = new Resend(process.env.RESEND_API_KEY);
           await resend.emails.send({
             from: "Serlis <hola@serlismaldonado.com>",
@@ -52,11 +67,29 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
   });
 };
 
-// Example function for getting the current user
-// Feel free to edit, omit, etc.
 export const getCurrentUser = query({
   args: {},
   handler: async (ctx) => {
-    return authComponent.getAuthUser(ctx);
+    return authComponent.safeGetAuthUser(ctx);
+  },
+});
+
+// Lanza si el usuario no está autenticado o no es admin.
+export async function requireAdmin(ctx: QueryCtx | MutationCtx) {
+  const user = await authComponent.safeGetAuthUser(ctx);
+  if (!user) {
+    throw new Error("Unauthorized: Please sign in to access this resource");
+  }
+  if (!isAdminEmail(user.email)) {
+    throw new Error("Forbidden: admin only");
+  }
+  return user;
+}
+
+export const isAdmin = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await authComponent.safeGetAuthUser(ctx);
+    return isAdminEmail(user?.email);
   },
 });

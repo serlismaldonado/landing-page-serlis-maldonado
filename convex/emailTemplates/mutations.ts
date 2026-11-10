@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation } from "../_generated/server";
 import { emailTemplateType } from "./index";
+import { requireAdmin as requireAuth } from "../auth";
 
 export const create = mutation({
   args: {
@@ -11,6 +12,7 @@ export const create = mutation({
   },
   returns: v.id("emailTemplates"),
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const now = Date.now();
     return await ctx.db.insert("emailTemplates", {
       name: args.name,
@@ -33,6 +35,7 @@ export const update = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const existing = await ctx.db.get(args.id);
     if (!existing) {
       throw new Error("Template not found");
@@ -51,6 +54,7 @@ export const remove = mutation({
   args: { id: v.id("emailTemplates") },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     await ctx.db.delete(args.id);
   },
 });

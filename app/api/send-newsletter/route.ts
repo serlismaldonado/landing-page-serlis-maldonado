@@ -3,8 +3,13 @@ import { NextResponse } from 'next/server'
 import { getPost } from '@/lib/blog'
 import { render } from '@react-email/components'
 import { BlogPostEmail } from '@/emails/BlogPostEmail'
+import { isAdminRequest } from '@/lib/require-admin'
 
 export async function POST(request: Request) {
+  if (!(await isAdminRequest())) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
   try {
   const resend = new Resend(process.env.RESEND_API_KEY)
   const { slug } = await request.json()
@@ -24,7 +29,6 @@ export async function POST(request: Request) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://serlismaldonado.com'
 
   const { metadata } = await getPost(slug)
-  console.log('[send-newsletter] metadata:', JSON.stringify(metadata))
 
   const html = await render(
     BlogPostEmail({
@@ -61,6 +65,6 @@ export async function POST(request: Request) {
   return NextResponse.json({ ok: true, broadcastId: data?.id })
   } catch (err) {
     console.error('[send-newsletter] unexpected error:', err)
-    return NextResponse.json({ error: String(err) }, { status: 500 })
+    return NextResponse.json({ error: 'Error enviando el newsletter' }, { status: 500 })
   }
 }

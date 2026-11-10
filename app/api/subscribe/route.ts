@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY)
-  const { email } = await request.json()
+  const body = await request.json().catch(() => null)
+  const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : ''
 
-  if (!email || typeof email !== 'string' || !email.includes('@')) {
+  if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Email inválido' }, { status: 400 })
   }
 

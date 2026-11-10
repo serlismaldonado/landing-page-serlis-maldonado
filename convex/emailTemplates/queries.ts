@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { query } from "../_generated/server";
 import { emailTemplateType } from "./index";
+import { requireAdmin as requireAuth } from "../auth";
 
 const emailTemplateValidator = v.object({
   _id: v.id("emailTemplates"),
@@ -17,6 +18,7 @@ export const list = query({
   args: { type: v.optional(emailTemplateType) },
   returns: v.array(emailTemplateValidator),
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     if (args.type) {
       const type = args.type;
       return await ctx.db
@@ -33,6 +35,7 @@ export const getById = query({
   args: { id: v.id("emailTemplates") },
   returns: v.union(emailTemplateValidator, v.null()),
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     return await ctx.db.get(args.id);
   },
 });

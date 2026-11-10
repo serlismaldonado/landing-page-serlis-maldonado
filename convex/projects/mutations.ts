@@ -7,6 +7,7 @@ import { requireAuth } from "./queries";
 export const createProject = mutation({
   args: validatorProject,
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const projectId = await ctx.db.insert("projects", {
       ...args,
       visibility: args.visibility ?? "public",
@@ -33,6 +34,7 @@ export const updateProject = mutation({
     order: v.optional(v.float64()),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const { id, ...updates } = args;
     await ctx.db.patch(id, updates);
     return id;
@@ -43,6 +45,7 @@ export const updateProject = mutation({
 export const deleteProject = mutation({
   args: { id: v.id("projects") },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.id);
     if (!project) {
       throw new Error("Project not found");
@@ -66,6 +69,7 @@ export const uploadProjectImage = mutation({
     file: v.id("_storage"),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.projectId);
     if (!project) {
       throw new Error("Project not found");
@@ -89,6 +93,7 @@ export const deleteProjectImage = mutation({
     imageId: v.id("_storage"),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.projectId);
     if (!project) {
       throw new Error("Project not found");
@@ -118,6 +123,7 @@ export const reorderProjects = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     for (const project of args.projects) {
       await ctx.db.patch(project.id, {
         order: project.order,
@@ -131,6 +137,7 @@ export const reorderProjects = mutation({
 export const toggleVisibility = mutation({
   args: { id: v.id("projects") },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.id);
     if (!project) {
       throw new Error("Project not found");
@@ -185,6 +192,7 @@ export const bulkDeleteProjects = mutation({
 export const generateUploadUrl = mutation({
   args: {},
   handler: async (ctx) => {
+    await requireAuth(ctx);
     return await ctx.storage.generateUploadUrl();
   },
 });
@@ -195,6 +203,7 @@ export const uploadCover = mutation({
     file: v.id("_storage"),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.projectId);
     if (!project) {
       throw new Error("Project not found");
@@ -218,6 +227,7 @@ export const deleteCover = mutation({
     coverId: v.id("_storage"),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
     const project = await ctx.db.get(args.projectId);
     if (!project) {
       throw new Error("Project not found");

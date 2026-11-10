@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Doto, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "next-themes";
@@ -12,6 +12,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Tipografía de puntos del titular (la de la portada).
+const doto = Doto({
+  variable: "--font-doto",
+  subsets: ["latin"],
+  weight: "900",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${doto.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <ConvexClientProvider>{children}</ConvexClientProvider>

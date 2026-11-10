@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, LogIn, Mail, Settings, User } from "lucide-react";
+import { Github, Linkedin, Mail, User } from "lucide-react";
 
 export default function ContactLinks() {
   return (
@@ -31,25 +31,11 @@ export default function ContactLinks() {
         <Linkedin className="w-5 h-5" />
       </a>
       <a
-        href="mailto:serlismaldonado@email.com"
+        href="mailto:serlismaldonado@heskala.com"
         className="p-3 rounded-lg bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-green-500 transition-colors"
         title="Email"
       >
         <Mail className="w-5 h-5" />
-      </a>
-      <a
-        href="/admin"
-        className="p-3 rounded-lg bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-green-500 transition-colors"
-        title="Admin"
-      >
-        <Settings className="w-5 h-5" />
-      </a>
-      <a
-        href="/login"
-        className="p-3 rounded-lg bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-green-500 transition-colors"
-        title="Login"
-      >
-        <LogIn className="w-5 h-5" />
       </a>
     </div>
   );

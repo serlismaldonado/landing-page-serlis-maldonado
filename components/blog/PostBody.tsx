@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { optimizedImage } from "@/lib/image";
 
 // Cuerpo del post en Markdown (viene de Notion). Se renderiza en el servidor, sin JS en el cliente.
 const PROSE = `
@@ -29,7 +30,22 @@ const PROSE = `
 export default function PostBody({ markdown }: { markdown: string }) {
   return (
     <div className={PROSE}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          // Imágenes del post: optimizadas y en diferido (las de Notion son PNG grandes).
+          img: ({ src, alt }) => (
+            <img
+              src={optimizedImage(typeof src === "string" ? src : undefined, 1280)}
+              alt={alt ?? ""}
+              loading="lazy"
+              decoding="async"
+            />
+          ),
+        }}
+      >
+        {markdown}
+      </ReactMarkdown>
     </div>
   );
 }

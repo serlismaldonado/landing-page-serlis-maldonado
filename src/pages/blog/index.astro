@@ -2,10 +2,12 @@
 import Base from "@/src/layouts/Base.astro";
 import { NewsletterForm } from "@/components/blog/NewsletterForm";
 import { getAllPosts } from "@/lib/blog";
+import { optimizedImage } from "@/lib/image";
 
 const posts = await getAllPosts();
-// Antes era ISR de 60 s en Next; aquí lo mismo con caché de CDN.
-Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
+// Caché de CDN: 5 min fresca + 30 min sirviendo la anterior mientras se refresca
+// (menos de 1 h, que es lo que duran las URLs firmadas de imágenes de Notion).
+Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=1800");
 ---
 
 <Base title="Blog — Serlis Maldonado" description="Notas técnicas, proceso y herramientas.">
@@ -63,7 +65,7 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-re
                   {metadata.coverImage && (
                     <div class="shrink-0 w-24 h-16 sm:w-32 sm:h-20 rounded-lg overflow-hidden bg-zinc-900">
                       <img
-                        src={metadata.coverImage}
+                        src={optimizedImage(metadata.coverImage, 256)}
                         alt={metadata.title}
                         width="128"
                         height="80"

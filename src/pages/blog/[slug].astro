@@ -3,6 +3,7 @@ import Base from "@/src/layouts/Base.astro";
 import PostBody from "@/components/blog/PostBody";
 import { NewsletterForm } from "@/components/blog/NewsletterForm";
 import { getPost } from "@/lib/blog";
+import { optimizedImage } from "@/lib/image";
 
 const { slug } = Astro.params;
 let post: Awaited<ReturnType<typeof getPost>>;
@@ -12,7 +13,7 @@ try {
   return new Response(null, { status: 404, statusText: "Not found" });
 }
 const { markdown, metadata } = post;
-Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
+Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=1800");
 ---
 
 <Base title={`${metadata.title} — Serlis Maldonado`} description={metadata.description} image={metadata.coverImage}>
@@ -20,7 +21,7 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-re
     <div class="bg-zinc-950 min-h-screen">
       {metadata.coverImage && (
         <div class="relative w-full h-48 md:h-64 bg-zinc-900 overflow-hidden">
-          <img src={metadata.coverImage} alt={metadata.title} class="absolute inset-0 h-full w-full object-cover" style="filter: grayscale(100%) brightness(0.7) contrast(1.6)" fetchpriority="high" />
+          <img src={optimizedImage(metadata.coverImage, 1920, 60)} alt={metadata.title} class="absolute inset-0 h-full w-full object-cover" style="filter: grayscale(100%) brightness(0.7) contrast(1.6)" fetchpriority="high" />
           <div class="absolute inset-0 bg-gradient-to-b from-black/0 to-zinc-950" />
         </div>
       )}

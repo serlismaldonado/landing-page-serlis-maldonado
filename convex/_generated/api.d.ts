@@ -15,6 +15,8 @@ import type * as passwordResetTokens_index from "../passwordResetTokens/index.js
 import type * as projects_index from "../projects/index.js";
 import type * as projects_mutations from "../projects/mutations.js";
 import type * as projects_queries from "../projects/queries.js";
+import type * as settings_functions from "../settings/functions.js";
+import type * as settings_index from "../settings/index.js";
 
 import type {
   ApiFromModules,
@@ -30,6 +32,8 @@ declare const fullApi: ApiFromModules<{
   "projects/index": typeof projects_index;
   "projects/mutations": typeof projects_mutations;
   "projects/queries": typeof projects_queries;
+  "settings/functions": typeof settings_functions;
+  "settings/index": typeof settings_index;
 }>;
 
 /**

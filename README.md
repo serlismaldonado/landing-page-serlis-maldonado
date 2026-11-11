@@ -26,6 +26,16 @@ Solo entran los emails de `ADMIN_EMAILS` (variable de entorno **de Convex**, sep
 npx convex env set ADMIN_EMAILS tu@email.com
 ```
 
+## Temas
+
+Los temas están en `src/themes.ts` (colores, fondo pixel art, nieve y decoraciones). El activo se guarda en Convex:
+
+- Desde el admin: selector **tema** en la cabecera.
+- Desde la terminal: `npx convex run settings/functions:setActiveThemeInternal '{"theme":"navidad"}'` (añade `--prod` para producción).
+- Previsualizar sin activar: `/?theme=navidad`.
+
+Para crear uno nuevo, añádelo a `THEMES` en `src/themes.ts` y su id a `THEME_IDS` en `convex/settings/functions.ts`.
+
 ## Estructura
 
 - `src/pages/` — rutas (`.astro`) y APIs (`src/pages/api/*.ts`).

@@ -1,0 +1,55 @@
+---
+// Dibuja pixel art a partir de una cuadrícula de letras: cada letra es un color de la paleta, "." es vacío.
+// blink: letras cuyos pixeles parpadean (luces, estrellas), cada uno con su propio ritmo.
+interface Props {
+  art: string[];
+  palette: Record<string, string>;
+  cell?: number;
+  class?: string;
+  title?: string;
+  blink?: string;
+}
+const { art, palette, cell = 6, class: className, title, blink = "" } = Astro.props;
+const delay = (x: number, y: number) => {
+  const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+  return ((n - Math.floor(n)) * 2.4).toFixed(2);
+};
+const w = Math.max(...art.map((r) => r.length));
+const h = art.length;
+const rects = art.flatMap((row, y) =>
+  [...row].flatMap((ch, x) => (palette[ch] ? [{ x, y, fill: palette[ch], blink: blink.includes(ch) }] : [])),
+);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${w} ${h}`}
+  width={w * cell}
+  height={h * cell}
+  shape-rendering="crispEdges"
+  class={className}
+  role={title ? "img" : undefined}
+  aria-label={title}
+  aria-hidden={title ? undefined : "true"}
+>
+  {rects.map((r) =>
+    r.blink ? (
+      <rect x={r.x} y={r.y} width="1" height="1" fill={r.fill} class="px-blink" style={`animation-delay:${delay(r.x, r.y)}s`} />
+    ) : (
+      <rect x={r.x} y={r.y} width="1" height="1" fill={r.fill} />
+    ),
+  )}
+</svg>
+
+<style is:global>
+  .px-blink {
+    animation: px-blink 1.6s steps(2, jump-none) infinite;
+  }
+  @keyframes px-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .px-blink { animation: none; }
+  }
+</style>

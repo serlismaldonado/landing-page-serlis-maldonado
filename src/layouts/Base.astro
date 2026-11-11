@@ -1,5 +1,7 @@
 ---
 import "@/src/styles.css";
+import { resolveTheme } from "@/lib/theme";
+import { themeCss } from "@/src/themes";
 
 interface Props {
   title?: string;
@@ -12,16 +14,18 @@ const {
   description = "Desarrollo de software, inteligencia artificial y herramientas para negocios.",
   image = "/serlis.jpg",
 } = Astro.props;
+const theme = await resolveTheme(Astro);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
 ---
 
 <!doctype html>
-<html lang="es" class="dark">
+<html lang="es" class="dark" data-theme={theme.id}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#232933" />
+    <meta name="theme-color" content={theme.themeColor} />
+    {themeCss(theme) && <style set:html={themeCss(theme)} />}
     <link rel="icon" href="/favicon.ico" />
     <title>{title}</title>
     <meta name="description" content={description} />

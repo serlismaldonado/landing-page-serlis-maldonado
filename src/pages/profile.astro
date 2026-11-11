@@ -1,8 +1,140 @@
 ---
 import Base from "@/src/layouts/Base.astro";
-import ProfilePage from "@/src/islands/ProfilePage";
+import ContactLinks from "@/components/home/ContactLinks";
+import { education, experience, focus, profile, skills } from "@/src/data/profile";
+
+// Contenido fijo: se sirve desde el CDN.
+Astro.response.headers.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
 ---
 
-<Base title="Perfil — Serlis Maldonado">
-  <ProfilePage client:only="react" />
+<Base title="Perfil — Serlis Maldonado" description={profile.summary}>
+  <main class="min-h-screen bg-black px-6 pb-16 pt-8 text-zinc-300">
+    <div class="mx-auto max-w-6xl">
+      <nav class="flex items-center justify-between print:hidden">
+        <a href="/" class="text-sm text-zinc-500 transition-colors hover:text-zinc-300">← Inicio</a>
+        <button
+          type="button"
+          onclick="window.print()"
+          class="rounded-full border border-zinc-700 px-5 py-2 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-500 hover:text-white"
+        >
+          Descargar CV
+        </button>
+      </nav>
+
+      <!-- Encabezado: presentación a la izquierda, datos rápidos a la derecha (como la home). -->
+      <header class="mt-14 grid gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-24">
+        <div>
+          <div class="flex items-center gap-5">
+            <img
+              src="/serlis-cutout.webp"
+              alt={profile.name}
+              width="900"
+              height="900"
+              class="h-20 w-20 rounded-full bg-zinc-900 object-cover object-top ring-1 ring-zinc-800"
+            />
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight text-white">{profile.name}</h1>
+              <p class="mt-1 text-zinc-400">{profile.title}</p>
+            </div>
+          </div>
+          <p class="mt-8 max-w-[600px] text-[17px] leading-relaxed text-zinc-300">{profile.summary}</p>
+          <div class="mt-7 flex flex-wrap gap-3 print:hidden">
+            <a
+              href={`mailto:${profile.email}`}
+              class="rounded-full bg-accent px-7 py-3 text-sm font-semibold text-accent-ink transition-colors hover:bg-accent-hover"
+            >
+              Hablemos
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rounded-full border border-zinc-700 px-7 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-500 hover:text-white"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <dl class="grid content-start border-t border-zinc-800">
+          {profile.facts.map(([k, v]) => (
+            <div class="flex items-baseline justify-between gap-6 border-b border-zinc-800 py-3">
+              <dt class="text-sm text-zinc-500">{k}</dt>
+              <dd class="text-right text-[15px] text-white">{v}</dd>
+            </div>
+          ))}
+          <div class="flex items-baseline justify-between gap-6 border-b border-zinc-800 py-3">
+            <dt class="text-sm text-zinc-500">Email</dt>
+            <dd><a href={`mailto:${profile.email}`} class="text-[15px] text-white hover:text-zinc-300">{profile.email}</a></dd>
+          </div>
+        </dl>
+      </header>
+
+      <!-- Secciones tipo CV: título en la columna izquierda, contenido a la derecha. -->
+      <div class="mt-20 grid gap-16">
+        <section class="grid gap-6 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
+          <h2 class="text-sm font-semibold text-white">Enfoque actual</h2>
+          <div class="grid gap-8 sm:grid-cols-2">
+            {focus.map((f) => (
+              <article>
+                <h3 class="text-[17px] font-semibold text-white">
+                  {f.url ? <a href={f.url} target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300">{f.name} →</a> : f.name}
+                </h3>
+                <p class="mt-1 text-sm text-green-500">{f.role}</p>
+                <p class="mt-3 text-[15px] leading-relaxed text-zinc-400">{f.description}</p>
+                <p class="mt-3 text-[13px] text-zinc-500">{f.tags.join(" · ")}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="grid gap-6 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
+          <h2 class="text-sm font-semibold text-white">Experiencia</h2>
+          <ol class="border-t border-zinc-800">
+            {experience.map((e) => (
+              <li class="grid gap-1 border-b border-zinc-800 py-5 sm:grid-cols-[140px_minmax(0,1fr)] sm:gap-8">
+                <span class="font-mono text-xs leading-6 text-zinc-500">{e.period}</span>
+                <div>
+                  <h3 class="text-[16px] font-semibold text-white">
+                    {e.title} <span class="font-normal text-zinc-400">· {e.company}</span>
+                  </h3>
+                  <p class="mt-1.5 text-[15px] leading-relaxed text-zinc-400">{e.description}</p>
+                  <p class="mt-2 text-[13px] text-zinc-500">{e.skills.join(" · ")}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section class="grid gap-6 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
+          <h2 class="text-sm font-semibold text-white">Habilidades</h2>
+          <dl class="grid gap-x-12 gap-y-6 sm:grid-cols-2">
+            {skills.map((s) => (
+              <div>
+                <dt class="text-[15px] font-medium text-white">{s.category}</dt>
+                <dd class="mt-1.5 text-[15px] leading-relaxed text-zinc-400">{s.items.join(", ")}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section class="grid gap-6 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
+          <h2 class="text-sm font-semibold text-white">Formación</h2>
+          <div class="grid gap-4">
+            {education.map((ed) => (
+              <div>
+                <h3 class="text-[16px] font-semibold text-white">{ed.degree}</h3>
+                <p class="mt-1 text-[15px] text-zinc-400">{ed.school}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <footer class="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-800 pt-5 text-xs text-zinc-500 print:hidden">
+        <span>© {new Date().getFullYear()} {profile.name}</span>
+        <ContactLinks compact />
+      </footer>
+    </div>
+  </main>
 </Base>

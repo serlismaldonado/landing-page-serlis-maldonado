@@ -24,6 +24,9 @@ export default defineConfig({
   }),
   // Precarga las páginas al pasar el mouse por un enlace: los posts abren al instante.
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
+  // En navegadores con Speculation Rules (Chrome/Edge), lo precargado además se pre-renderiza:
+  // al hacer clic, la página aparece al instante.
+  experimental: { clientPrerender: true },
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

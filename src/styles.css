@@ -2,11 +2,12 @@
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 @import "@fontsource/doto/900.css";
+@import "@fontsource-variable/funnel-display";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #232933;
+  --background: #1b2028;
   --foreground: #d8dee9;
 }
 
@@ -17,7 +18,7 @@
  * así cada componente toma el tema sin cambiar sus clases.
  */
 @theme {
-  --color-black: #232933;   /* fondo de Fjord */
+  --color-black: #1b2028;   /* fondo: Fjord, un poco más oscuro */
   --color-white: #eceff4;   /* texto principal (nieve) */
 
   --color-zinc-50: #f4f6f9;
@@ -29,8 +30,8 @@
   --color-zinc-600: #677183;
   --color-zinc-700: #4c566a;
   --color-zinc-800: #3b4452;  /* bordes */
-  --color-zinc-900: #2b313b;  /* superficies (fondo + 4 % de blanco) */
-  --color-zinc-950: #232933;  /* fondo */
+  --color-zinc-900: #232933;  /* superficies (el fondo original de Fjord) */
+  --color-zinc-950: #1b2028;  /* fondo */
 
   /* Acentos (antes verde): el azul hielo de Fjord. */
   --color-green-100: #e1f1f5;
@@ -64,6 +65,8 @@
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
   /* Tipografía de puntos del titular (la de la portada). */
   --font-dot: "Doto", ui-monospace, monospace;
+  /* Titular del hero. */
+  --font-display: "Funnel Display Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
@@ -72,56 +75,22 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Impresión (Descargar CV): CV claro sobre blanco, invirtiendo las variables del tema. */
 @media print {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
+  @page { margin: 14mm; }
+  :root {
+    --background: #ffffff;
+    --foreground: #1f2937;
+    --color-black: #ffffff;
+    --color-white: #111827;
+    --color-zinc-200: #1f2937;
+    --color-zinc-300: #374151;
+    --color-zinc-400: #4b5563;
+    --color-zinc-500: #6b7280;
+    --color-zinc-700: #d1d5db;
+    --color-zinc-800: #e5e7eb;
+    --color-zinc-900: #f3f4f6;
+    --color-green-500: #2f6f86;
   }
-
-  body {
-    background: #09090b !important;
-    color: #ededed !important;
-  }
-
-  .bg-zinc-950 {
-    background: #09090b !important;
-  }
-
-  .bg-zinc-900\/50,
-  .bg-zinc-900\/30 {
-    background: rgba(24, 24, 27, 0.5) !important;
-  }
-
-  .text-white {
-    color: #ffffff !important;
-  }
-
-  .text-zinc-400,
-  .text-zinc-500,
-  .text-zinc-600 {
-    color: #a1a1aa !important;
-  }
-
-  .text-green-500,
-  .text-green-600 {
-    color: #22c55e !important;
-  }
-
-  .border-zinc-800 {
-    border-color: #27272a !important;
-  }
-
-  header {
-    position: relative !important;
-    background: #09090b !important;
-  }
-
-  button {
-    display: none !important;
-  }
-
-  [class*="print:hidden"] {
-    display: none !important;
-  }
+  #px { display: none; }
 }

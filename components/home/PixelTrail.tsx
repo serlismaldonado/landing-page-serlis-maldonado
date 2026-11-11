@@ -1,22 +1,17 @@
 import { useEffect, useRef } from "react";
 
-// Fondo pixel art: pixeles que titilan y una estela de chispas que deja el cursor.
-// Pixeles de fondo en los azules hielo de Fjord; la estela en los tonos cálidos de Ember.
+// Fondo pixel art: pixeles que titilan, una estela de chispas que deja el cursor
+// y, si el tema lo pide, nieve de pixeles. Los colores vienen del tema activo (src/themes.ts).
 const CELL = 10;
-const STOPS: [number, number, number][] = [
-  [143, 188, 187],
-  [136, 192, 208],
-  [129, 161, 193],
-];
-const EMBER: [number, number, number][] = [
-  [235, 203, 139],
-  [232, 135, 91],
-  [208, 112, 92],
-];
 const MAX_PARTICLES = 600;
+const FLAKES_PER_100PX = 0.7;
 
 type Rgb = [number, number, number];
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; col: Rgb };
+type Flake = { x: number; y: number; vy: number; drift: number; phase: number; alpha: number };
+
+const FJORD_TWINKLE: Rgb[] = [[143, 188, 187], [136, 192, 208], [129, 161, 193]];
+const FJORD_SPARK: Rgb[] = [[143, 210, 225], [129, 161, 193], [94, 129, 172]];
 
 function mix(a: Rgb, b: Rgb, t: number): Rgb {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
@@ -26,24 +21,40 @@ function gradient(stops: Rgb[], u: number): Rgb {
   const t = Math.max(0, Math.min(1, u));
   return t < 0.5 ? mix(stops[0], stops[1], t * 2) : mix(stops[1], stops[2], (t - 0.5) * 2);
 }
-const brand = (u: number) => gradient(STOPS, u);
-const ember = (u: number) => gradient(EMBER, u);
 
 function hash(a: number, b: number) {
   const n = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
   return n - Math.floor(n);
 }
 
-export default function PixelTrail({ className }: { className?: string }) {
+interface Props {
+  className?: string;
+  twinkle?: Rgb[];
+  spark?: Rgb[];
+  snow?: boolean;
+}
+
+export default function PixelTrail({ className, twinkle = FJORD_TWINKLE, spark = FJORD_SPARK, snow = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const brand = (u: number) => gradient(twinkle, u);
+    const sparkColor = (u: number) => gradient(spark, u);
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const particles: Particle[] = [];
+    let flakes: Flake[] = [];
+    const makeFlake = (y: number): Flake => ({
+      x: Math.random() * width,
+      y,
+      vy: 0.2 + Math.random() * 0.4,
+      drift: 6 + Math.random() * 14,
+      phase: Math.random() * Math.PI * 2,
+      alpha: 0.2 + Math.random() * 0.35,
+    });
     const pointer = { x: 0, y: 0, speed: 0, active: false };
     let width = 0;
     let height = 0;
@@ -57,6 +68,10 @@ export default function PixelTrail({ className }: { className?: string }) {
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (snow) {
+        const count = Math.round((width / 100) * FLAKES_PER_100PX * (height / 100) * 0.35);
+        flakes = Array.from({ length: count }, () => makeFlake(Math.random() * height));
+      }
     };
 
     const onMove = (e: PointerEvent) => {
@@ -93,15 +108,17 @@ export default function PixelTrail({ className }: { className?: string }) {
 
       // Nuevas chispas en la posición del cursor.
       if (pointer.active && !reduceMotion) {
-        const count = 1 + Math.min(6, pointer.speed / 6);
+        // Estela sutil: pocas chispas, solo al moverse, y que se apagan rápido.
+        const count = Math.min(2, pointer.speed / 14);
         for (let i = 0; i < count && particles.length < MAX_PARTICLES; i++) {
+          if (Math.random() > count - i) break;
           particles.push({
-            x: pointer.x + (Math.random() - 0.5) * 30,
-            y: pointer.y + (Math.random() - 0.5) * 30,
-            vx: (Math.random() - 0.5) * 1.4,
-            vy: Math.random() * 0.8,
-            life: 1,
-            col: ember(pointer.x / width),
+            x: pointer.x + (Math.random() - 0.5) * 24,
+            y: pointer.y + (Math.random() - 0.5) * 24,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: Math.random() * 0.5,
+            life: 0.55,
+            col: sparkColor(pointer.x / width),
           });
         }
         pointer.speed *= 0.6;
@@ -110,10 +127,22 @@ export default function PixelTrail({ className }: { className?: string }) {
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.035;
-        p.life -= 0.012;
+        p.vy += 0.025;
+        p.life -= 0.016;
       }
       while (particles.length && particles[0].life <= 0) particles.shift();
+
+      // Nieve de pixeles: cae despacio, se mece y vuelve a empezar arriba.
+      if (snow) {
+        for (const f of flakes) {
+          if (!reduceMotion) {
+            f.y += f.vy;
+            if (f.y > height + CELL) Object.assign(f, makeFlake(-CELL));
+          }
+          const x = f.x + Math.sin(t * 0.0008 + f.phase) * f.drift;
+          pixel(Math.round(x / CELL), Math.round(f.y / CELL), [244, 247, 242], f.alpha * 0.4);
+        }
+      }
       for (const p of particles) {
         if (p.life > 0) pixel(Math.round(p.x / CELL), Math.round(p.y / CELL), p.col, p.life);
       }
@@ -144,6 +173,8 @@ export default function PixelTrail({ className }: { className?: string }) {
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
     };
+    // Los colores se pasan como props estáticos desde el servidor; no cambian en vida del componente.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

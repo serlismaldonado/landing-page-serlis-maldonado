@@ -1,20 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const days = ["Mon", "", "Wed", "", "Fri", "", "Sun"];
+const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+const days = ["Lun", "", "Mié", "", "Vie", "", "Dom"];
 
 const intensityColors = {
   0: "bg-zinc-100 dark:bg-zinc-800",
@@ -151,149 +138,55 @@ export default function ContributionGraph() {
   const handleMouseLeave = () => setTooltipData(null);
 
   if (loading) {
+    // Reserva el mismo espacio que el calendario para que la página no salte al cargar.
     return (
-      <section className="py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header skeleton */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-            <div className="h-6 w-40 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
-            <div className="flex items-center gap-4">
-              <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
-              <div className="flex gap-1">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="w-2.5 h-2.5 rounded-sm bg-zinc-200 dark:bg-zinc-800 animate-pulse"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Graph skeleton */}
-          <div className="bg-white dark:bg-zinc-900 rounded-lg p-3 border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-            <div className="flex gap-1.5 min-w-fit">
-              <div className="flex flex-col justify-between py-0.5 pr-2">
-                {days.map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-3 w-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse"
-                  />
-                ))}
-              </div>
-              <div className="flex gap-1">
-                {Array.from({ length: 52 }).map((_, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col gap-0.5">
-                    {Array.from({ length: 7 }).map((_, dayIndex) => (
-                      <div
-                        key={dayIndex}
-                        className="w-2.5 h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse"
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+      <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-24">
+        <div className="h-[112px] animate-pulse rounded-md bg-zinc-900" />
+        <div className="h-10 w-48 animate-pulse rounded-md bg-zinc-900" />
       </section>
     );
   }
 
   return (
-    <section className="py-2 px-4">
-      <div className="max-w-4xl mx-auto" ref={containerRef}>
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-          <div className="flex items-center gap-4 text-xs text-zinc-500">
-            <span className="font-mono">
-              {totalContributions} contributions
-            </span>
-            <div className="flex items-center gap-1">
-              {[0, 1, 2, 3, 4].map((level) => (
-                <div
-                  key={level}
-                  className={`w-2.5 h-2.5 rounded-sm ${intensityColors[level as keyof typeof intensityColors]}`}
-                />
+    // Misma cuadrícula que el hero: calendario a la izquierda, resumen en la columna derecha.
+    <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-24">
+      <div ref={containerRef} className="min-w-0 lg:order-none order-last">
+        {/* Cuadrícula fluida: 52 semanas que ocupan todo el ancho disponible. */}
+        <div className="overflow-x-auto">
+          <div className="flex min-w-[520px] gap-2">
+            <div className="grid grid-rows-7 gap-[3px] pb-5 pr-1 font-mono text-[10px] text-zinc-500">
+              {days.map((day, index) => (
+                <span key={index} className="flex items-center leading-none">
+                  {day}
+                </span>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Graph container */}
-        <div className="bg-white dark:bg-zinc-900 rounded-lg p-3 border border-zinc-200 dark:border-zinc-800">
-          <div className="overflow-x-auto overflow-y-hidden">
-            <div className="flex gap-1 min-w-fit">
-              {/* Day labels */}
-              <div className="flex flex-col justify-between py-0.5 pr-2 text-[10px] text-zinc-400 font-mono">
-                {days.map((day, index) => (
-                  <span
-                    key={index}
-                    className="h-3 flex items-center justify-end"
-                  >
-                    {day}
+            <div className="flex-1">
+              <div className="grid grid-flow-col grid-rows-7 gap-[3px]" style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}>
+                {weeks.map((week, weekIndex) =>
+                  week.map((cell, dayIndex) => {
+                    const colorClass = intensityColors[cell.intensity as keyof typeof intensityColors];
+                    const isHovered = tooltipData?.date.toDateString() === cell.date.toDateString();
+                    return (
+                      <div
+                        key={`${weekIndex}-${dayIndex}`}
+                        className={`aspect-square rounded-[2px] transition-transform duration-150 ${colorClass} ${
+                          cell.intensity > 0 ? "cursor-pointer hover:scale-125" : ""
+                        } ${isHovered ? "scale-125" : ""}`}
+                        onMouseEnter={(e) => cell.intensity > 0 && handleMouseEnter(cell.date, cell.intensity, cell.count, e)}
+                        onMouseLeave={handleMouseLeave}
+                      />
+                    );
+                  }),
+                )}
+              </div>
+              <div className="mt-2 grid h-3 font-mono text-[10px] leading-3 text-zinc-500" style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}>
+                {weeks.map((_, weekIndex) => (
+                  <span key={weekIndex} className="overflow-visible whitespace-nowrap">
+                    {monthLabels.find((m) => m.index === weekIndex)?.month ?? ""}
                   </span>
                 ))}
               </div>
-
-              {/* Weeks grid */}
-              <div className="flex gap-1">
-                {weeks.map((week, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col gap-0.5">
-                    {week.map((cell, dayIndex) => {
-                      const colorClass =
-                        intensityColors[
-                          cell.intensity as keyof typeof intensityColors
-                        ];
-                      const isHovered =
-                        tooltipData?.date.toDateString() ===
-                        cell.date.toDateString();
-
-                      return (
-                        <div
-                          key={dayIndex}
-                          className={`w-2.5 h-2.5 rounded-sm transition-all duration-150 ${
-                            colorClass
-                          } ${cell.intensity > 0 ? "cursor-pointer hover:scale-125" : "cursor-default"} ${
-                            isHovered ? "scale-125" : ""
-                          }`}
-                          onMouseEnter={(e) =>
-                            cell.intensity > 0 &&
-                            handleMouseEnter(
-                              cell.date,
-                              cell.intensity,
-                              cell.count,
-                              e,
-                            )
-                          }
-                          onMouseLeave={handleMouseLeave}
-                        />
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Month labels - now inside scrollable container */}
-            <div className="flex ml-9 mt-2 min-w-fit">
-              {Array.from({ length: 52 }).map((_, weekIndex) => {
-                const monthLabel = monthLabels.find(
-                  (m) => m.index === weekIndex,
-                );
-                return (
-                  <div
-                    key={weekIndex}
-                    className="flex flex-col gap-0.5 w-[14px]"
-                  >
-                    {monthLabel && (
-                      <span className="font-mono text-[10px] text-zinc-400 h-3">
-                        {monthLabel.month}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
             </div>
           </div>
         </div>
@@ -309,10 +202,10 @@ export default function ContributionGraph() {
             }}
           >
             <div className="font-mono text-sm font-bold text-zinc-900 dark:text-white">
-              {tooltipData.count} contributions
+              {tooltipData.count} contribuciones
             </div>
             <div className="font-mono text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-              {tooltipData.date.toLocaleDateString("en-US", {
+              {tooltipData.date.toLocaleDateString("es-HN", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
@@ -320,6 +213,29 @@ export default function ContributionGraph() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="flex flex-col justify-between gap-3">
+        <div>
+          <a
+            href="https://github.com/serlismaldonado"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-white transition-colors hover:text-zinc-300"
+          >
+            Actividad en GitHub →
+          </a>
+          <p className="mt-2 text-[15px] text-zinc-400">
+            <span className="font-mono text-white">{totalContributions.toLocaleString("es-HN")}</span> contribuciones en el último año
+          </p>
+        </div>
+        <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+          <span>Menos</span>
+          {[0, 1, 2, 3, 4].map((level) => (
+            <div key={level} className={`h-2.5 w-2.5 rounded-[2px] ${intensityColors[level as keyof typeof intensityColors]}`} />
+          ))}
+          <span>Más</span>
+        </div>
       </div>
     </section>
   );

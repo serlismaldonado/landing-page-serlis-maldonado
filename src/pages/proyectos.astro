@@ -1,0 +1,14 @@
+---
+import Base from "@/src/layouts/Base.astro";
+import SearchGridIsland from "@/src/islands/SearchGridIsland";
+---
+
+<Base title="Proyectos — Serlis Maldonado" description="Proyectos de software, IA, diseño y cine documental.">
+  <main class="min-h-screen bg-black px-6 py-16">
+    <div class="mx-auto max-w-4xl">
+      <a href="/" class="text-sm text-zinc-500 transition-colors hover:text-zinc-300">← Inicio</a>
+      <h1 class="mb-8 mt-6 text-3xl font-semibold tracking-tight text-white">Proyectos</h1>
+      <SearchGridIsland client:load />
+    </div>
+  </main>
+</Base>

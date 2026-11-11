@@ -1,0 +1,170 @@
+---
+import PixelArt from "./PixelArt.astro";
+
+// Decoraciones del tema Navidad: guirnalda de luces arriba, árbol y regalos en los márgenes.
+const C = {
+  G: "#2f7d4a", g: "#3f9d5d", D: "#245f39", // verdes del árbol
+  R: "#d9483b", Y: "#f3c745", B: "#5aa9e6", W: "#f4f7f2", T: "#7a4b2a", P: "#b94bd9",
+};
+
+const tree = [
+  "......Y......",
+  ".....YYY.....",
+  "......Y......",
+  "......g......",
+  ".....gGg.....",
+  "....gGRGg....",
+  ".....GGG.....",
+  "....gGGGg....",
+  "...gGBGGGg...",
+  "....GGGYG....",
+  "...gGGGGGg...",
+  "..gGRGGGBGg..",
+  "...GGGGGGG...",
+  "..gGGYGGGGg..",
+  ".gGGGGGRGGGg.",
+  "gGBGGGGGGYGGg",
+  "DDDDDDDDDDDDD",
+  ".....TTT.....",
+  ".....TTT.....",
+];
+
+const giftRed = [
+  "..Y...Y..",
+  "...Y.Y...",
+  "....Y....",
+  "RRRRYRRRR",
+  "RRRRYRRRR",
+  "YYYYYYYYY",
+  "RRRRYRRRR",
+  "RRRRYRRRR",
+  "RRRRYRRRR",
+];
+const giftGreen = giftRed.map((r) => r.replace(/R/g, "g").replace(/Y/g, "W"));
+const giftBlue = giftRed.slice(1).map((r) => r.replace(/R/g, "B").replace(/Y/g, "R"));
+
+// Santa en su trineo (mira a la derecha) y dos renos delante.
+const santa = [
+  "......W.........",
+  ".....RRR........",
+  "....RRRRR.......",
+  "....WWWWW.......",
+  "....SSkSS.......",
+  "....WWWWW.......",
+  ".RR.RWWWRR..RR..",
+  ".RRRRRRRRRRRRR..",
+  "..RRRRYRRRRRR...",
+  "...YYYYYYYYYYYY.",
+  "..Y...........YY",
+];
+const reindeer = [
+  "..........A.A",
+  "...........AA",
+  "..........KKk",
+  "KKKKKKKKKKKKN",
+  "KKKKKKKKKK...",
+  ".KKKKKKKK....",
+  ".K.K...K.K...",
+  ".K.K...K.K...",
+];
+const SLEIGH = { R: "#d9483b", W: "#f4f7f2", S: "#f1c9a5", k: "#3a2a1e", Y: "#f3c745", K: "#8a5a35", A: "#c9a36a", N: "#ff5a4a" };
+
+// Guirnalda: cable con bombillas de colores que parpadean (escalonadas con CSS).
+const bulbs = Array.from({ length: 48 }, (_, i) => ["#d9483b", "#f3c745", "#3f9d5d", "#5aa9e6"][i % 4]);
+---
+
+<div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden">
+  <div class="garland flex justify-between px-2">
+    {bulbs.map((color, i) => (
+      <span class="bulb" style={`--c:${color};--d:${(i % 6) * 0.35}s;margin-top:${4 + Math.round(Math.sin(i / 2.2) * 5 + 5)}px`} />
+    ))}
+  </div>
+</div>
+
+<!-- Santa cruza el cielo cada ~40 s, justo debajo de la guirnalda y detrás del contenido; la nariz del reno de adelante brilla. -->
+<div aria-hidden="true" class="sleigh-track pointer-events-none absolute inset-x-0 top-6 z-0 overflow-hidden">
+  <div class="sleigh flex items-end gap-1">
+    <PixelArt art={santa} palette={SLEIGH} cell={4} />
+    <span class="mb-[30px] h-px w-6 bg-[#f3c745]/70"></span>
+    <PixelArt art={reindeer} palette={SLEIGH} cell={4} />
+    <span class="mb-[30px] h-px w-3 bg-[#f3c745]/70"></span>
+    <PixelArt art={reindeer} palette={SLEIGH} cell={4} blink="N" />
+  </div>
+</div>
+
+<!-- Árbol: se mece despacio y sus adornos y la estrella parpadean. -->
+<div aria-hidden="true" class="pointer-events-none absolute bottom-6 right-6 z-0 hidden xl:block 2xl:right-16">
+  <span class="sway block"><PixelArt art={tree} palette={C} cell={8} blink="YRB" /></span>
+</div>
+
+<!-- Regalos: dan saltitos, cada uno a su tiempo. -->
+<div aria-hidden="true" class="pointer-events-none absolute bottom-6 left-6 z-0 hidden items-end gap-2 xl:flex 2xl:left-16">
+  <span class="hop block" style="--hd:0s"><PixelArt art={giftRed} palette={C} cell={6} /></span>
+  <span class="hop block" style="--hd:0.9s"><PixelArt art={giftGreen} palette={C} cell={5} /></span>
+  <span class="hop block" style="--hd:1.7s"><PixelArt art={giftBlue} palette={C} cell={6} /></span>
+</div>
+
+<style>
+  .garland {
+    background: linear-gradient(to bottom, transparent 6px, rgba(244, 247, 242, 0.12) 6px, rgba(244, 247, 242, 0.12) 7px, transparent 7px);
+  }
+  .bulb {
+    width: 6px;
+    height: 8px;
+    background: var(--c);
+    box-shadow: 0 0 10px var(--c);
+    animation: blink 2.1s steps(2, jump-none) var(--d) infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; box-shadow: none; }
+  }
+  .sleigh-track {
+    height: 80px;
+  }
+  .sleigh {
+    position: absolute;
+    left: 0;
+    width: max-content;
+    opacity: 0.85;
+    animation: sleigh-fly 40s linear infinite;
+  }
+  /* Cruza la pantalla en el primer 45 % del ciclo; el resto del tiempo espera fuera de vista. */
+  @keyframes sleigh-fly {
+    0% { transform: translateX(-260px) translateY(10px); }
+    45% { transform: translateX(calc(100vw + 40px)) translateY(-14px); }
+    100% { transform: translateX(calc(100vw + 40px)) translateY(-14px); }
+  }
+  /* Trineo y renos suben y bajan a pasos, desfasados, como si galoparan. */
+  .sleigh > :global(svg) {
+    animation: sleigh-bob 0.9s steps(1, end) infinite;
+  }
+  .sleigh > :global(svg:nth-of-type(2)) { animation-delay: 0.3s; }
+  .sleigh > :global(svg:nth-of-type(3)) { animation-delay: 0.6s; }
+  @keyframes sleigh-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .sway {
+    transform-origin: 50% 100%;
+    animation: sway 5s ease-in-out infinite;
+  }
+  @keyframes sway {
+    0%, 100% { transform: rotate(-1.5deg); }
+    50% { transform: rotate(1.5deg); }
+  }
+  /* Saltos en pasos (sin suavizado) para que se sienta pixel art. */
+  .hop {
+    animation: hop 3.2s steps(1, end) var(--hd) infinite;
+  }
+  @keyframes hop {
+    0%, 70%, 100% { transform: translateY(0); }
+    76% { transform: translateY(-6px); }
+    82% { transform: translateY(-10px); }
+    88% { transform: translateY(-4px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bulb, .sway, .hop { animation: none; }
+    .sleigh { display: none; }
+  }
+</style>

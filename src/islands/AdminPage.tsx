@@ -18,6 +18,7 @@ import {
 import { Loader2 } from "lucide-react";
 import Link from "@/components/ui/Link";
 import ProjectFormModal from "@/components/projects/ProjectFormModal";
+import ThemePicker from "@/components/admin/ThemePicker";
 
 interface FormData {
   title: string;
@@ -232,6 +233,7 @@ function AdminPage() {
             Admin Dashboard
           </h1>
           <div className="flex items-center gap-4">
+            <ThemePicker />
             <Link
               href="/admin/newsletter"
               className="font-mono text-xs text-zinc-500 hover:text-zinc-300 transition-colors"

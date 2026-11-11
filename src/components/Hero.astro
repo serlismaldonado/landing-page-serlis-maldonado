@@ -1,51 +1,156 @@
 ---
 import DecodeHeadline from "@/components/home/DecodeHeadline";
 import PixelTrail from "@/components/home/PixelTrail";
+import ContributionGraph from "@/components/ContributionGraph";
+import ContactLinks from "@/components/home/ContactLinks";
+import type { Post } from "@/lib/blog";
+import { resolveTheme } from "@/lib/theme";
+import ChristmasDecor from "./ChristmasDecor.astro";
+import ChristmasMusic from "@/components/home/ChristmasMusic";
+import PixelArt from "./PixelArt.astro";
 
+interface Props {
+  posts: Post[];
+  projects: { _id: string; title: string; date?: string }[];
+}
+
+const { posts, projects } = Astro.props;
 const CONTACT_EMAIL = "serlismaldonado@heskala.com";
 const HEADLINE = "Desarrollo de Software, IA y Herramientas";
-
-// Bordes pixelados de la foto: máscara estática generada con scripts/photo-mask.mjs.
-const maskStyle =
-  "-webkit-mask-image:url(/serlis-mask.svg);mask-image:url(/serlis-mask.svg);-webkit-mask-size:100% 100%;mask-size:100% 100%";
+const latestProjects = projects.slice(0, 4);
+const latestPosts = posts.slice(0, 4);
+const theme = await resolveTheme(Astro);
+const christmas = theme.decor === "navidad";
+// Gorro navideño en pixel art para la foto (solo en el tema Navidad).
+const hat = [
+  "..........WW",
+  ".........WWW",
+  "......RRRR..",
+  "....RRRRRR..",
+  "...RRRRRRR..",
+  "..RRRRRRRRR.",
+  ".WWWWWWWWWWW",
+  "WWWWWWWWWWWW",
+];
 ---
 
-<section class="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-black px-6 py-20">
-  <PixelTrail client:load />
+<!-- Toda la home en una pantalla: presentación + listas, actividad de GitHub y contacto. -->
+<section class="relative flex min-h-[100dvh] flex-col justify-center overflow-hidden bg-black px-6 py-10">
+  <PixelTrail client:load twinkle={theme.trail.twinkle} spark={theme.trail.spark} snow={theme.trail.snow} />
+  {christmas && <ChristmasDecor />}
 
-  <div class="relative z-10 flex w-full max-w-[820px] flex-col items-center gap-7">
-    <div class="w-full rounded-[10px] border border-zinc-800 bg-zinc-900 p-4 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.45)] sm:p-5">
-      <div class="mb-4 flex items-center gap-2 font-mono text-[13px] text-zinc-500">
-        <span class="h-3 w-3 rounded-full bg-red-500"></span>
-        <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
-        <span class="h-3 w-3 rounded-full bg-green-500"></span>
-        <span class="ml-1.5">serlismaldonado.com</span>
-      </div>
-
-      <div class="grid items-center gap-6 sm:grid-cols-[230px_1fr] sm:gap-8">
+  <div class="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-24">
+    <!-- Presentación: foto pequeña arriba, luego el texto. -->
+    <div class="min-w-0 max-w-[600px]">
+      <div class="mb-8 flex items-center gap-4">
+        <div class="relative shrink-0">
         <img
-          src="/serlis.jpg"
+          src="/serlis-cutout.webp"
           alt="Serlis Maldonado"
           width="900"
           height="900"
           loading="eager"
           fetchpriority="high"
-          class="mx-auto aspect-[23/26] w-full max-w-[230px] object-cover"
-          style={maskStyle}
+          class="h-16 w-16 rounded-full bg-zinc-900 object-cover object-top ring-1 ring-zinc-800"
         />
-        <DecodeHeadline
-          client:load
-          text={HEADLINE}
-          className="font-dot text-[34px] font-black leading-[1.05] tracking-[-0.04em] text-white sm:text-[46px]"
-        />
+        {christmas && (
+          <span class="hat absolute -top-[13px] left-1/2 block"><PixelArt art={hat} palette={{ R: "#d9483b", W: "#f4f7f2" }} cell={3} blink="" /></span>
+        )}
+        </div>
+        <div class="leading-tight">
+          <p class="font-semibold text-white">Serlis Maldonado</p>
+          <p class="text-sm text-zinc-400">Fundador de Heskala · Honduras</p>
+        </div>
+      </div>
+      <DecodeHeadline
+        client:load
+        text={HEADLINE}
+        className="font-display text-[40px] font-semibold leading-[1.05] tracking-[-0.02em] text-white sm:text-[56px]"
+      />
+      <p class="mt-5 max-w-[520px] text-[17px] leading-relaxed text-zinc-400">
+        Software a la medida, inteligencia artificial y producción audiovisual para negocios en Honduras y la región.
+      </p>
+      <div class="mt-7 flex flex-wrap items-center gap-3">
+        <a
+          href={`mailto:${CONTACT_EMAIL}`}
+          class="rounded-full bg-accent px-7 py-3 text-sm font-semibold text-accent-ink transition-colors hover:bg-accent-hover"
+        >
+          Hablemos
+        </a>
+        <a
+          href="/proyectos"
+          class="rounded-full border border-zinc-700 px-7 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-500 hover:text-white"
+        >
+          Ver proyectos
+        </a>
       </div>
     </div>
 
-    <a
-      href={`mailto:${CONTACT_EMAIL}`}
-      class="rounded-full bg-accent px-10 py-3 font-mono text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover"
-    >
-      Hablemos →
-    </a>
+    <!-- Al lado: últimos posts y proyectos recientes, en listas compactas. -->
+    <div class="flex min-w-0 flex-col gap-9 lg:pt-1">
+      {latestPosts.length > 0 && (
+        <div>
+          <div class="mb-3 flex items-baseline justify-between">
+            <h2 class="text-sm font-semibold text-white">Blog</h2>
+            <a href="/blog" class="text-xs text-zinc-500 transition-colors hover:text-zinc-300">Todos →</a>
+          </div>
+          <ul class="border-t border-zinc-800">
+            {latestPosts.map(({ slug, metadata }) => (
+              <li class="min-w-0 border-b border-zinc-800">
+                <a href={`/blog/${slug}`} data-astro-prefetch="viewport" class="group flex min-w-0 items-baseline justify-between gap-4 py-2">
+                  <span class="min-w-0 truncate text-[15px] text-zinc-300 transition-colors group-hover:text-white">{metadata.title}</span>
+                  <time class="shrink-0 font-mono text-xs text-zinc-500">{metadata.date?.slice(0, 7)}</time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {latestProjects.length > 0 && (
+        <div>
+          <div class="mb-3 flex items-baseline justify-between">
+            <h2 class="text-sm font-semibold text-white">Proyectos recientes</h2>
+            <a href="/proyectos" class="text-xs text-zinc-500 transition-colors hover:text-zinc-300">Todos →</a>
+          </div>
+          <ul class="border-t border-zinc-800">
+            {latestProjects.map((p) => (
+              <li class="min-w-0 border-b border-zinc-800">
+                <a href={`/projects/${p._id}`} data-astro-prefetch="viewport" class="group flex min-w-0 items-baseline justify-between gap-4 py-2">
+                  <span class="min-w-0 truncate text-[15px] text-zinc-300 transition-colors group-hover:text-white">{p.title.trim()}</span>
+                  {p.date && <span class="shrink-0 font-mono text-xs text-zinc-500">{p.date.slice(0, 4)}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto mt-14 w-full max-w-6xl">
+    <ContributionGraph client:visible />
+    <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-800 pt-5 text-xs text-zinc-500">
+      <span>© {new Date().getFullYear()} Serlis Maldonado</span>
+      <div class="flex items-center gap-3">
+        {christmas && <ChristmasMusic client:load />}
+        <ContactLinks compact />
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  /* Gorro navideño: se inclina de un lado a otro, como si estuviera puesto. */
+  .hat {
+    transform-origin: 50% 100%;
+    animation: hat-tilt 3.6s ease-in-out infinite;
+  }
+  @keyframes hat-tilt {
+    0%, 100% { transform: translateX(-50%) rotate(-5deg); }
+    50% { transform: translateX(-50%) rotate(5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hat { animation: none; transform: translateX(-50%); }
+  }
+</style>
